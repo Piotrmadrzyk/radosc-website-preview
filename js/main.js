@@ -154,6 +154,63 @@
     updateJumpHint();
   }
 
+  /* globalny dolny panel Menu — bottom sheet (ETAP 5.6) */
+  var sheet = document.getElementById('menu-sheet');
+  var sheetBackdrop = document.getElementById('menu-sheet-backdrop');
+  var sheetBtn = document.querySelector('.menu-sheet-btn');
+  var sheetClose = document.getElementById('menu-sheet-close');
+  if (sheet && sheetBackdrop && sheetBtn && sheetClose) {
+    var sheetLastFocus = null;
+    var setSheet = function (open) {
+      sheetBtn.setAttribute('aria-expanded', String(open));
+      document.body.classList.toggle('menu-open', open);
+      if (open) {
+        sheetLastFocus = document.activeElement;
+        sheet.hidden = false;
+        sheetBackdrop.hidden = false;
+        requestAnimationFrame(function () {
+          sheet.classList.add('open');
+          sheetBackdrop.classList.add('open');
+        });
+        var firstLink = sheet.querySelector('.sheet-list a');
+        (firstLink || sheetClose).focus();
+      } else {
+        sheet.classList.remove('open');
+        sheetBackdrop.classList.remove('open');
+        window.setTimeout(function () { sheet.hidden = true; sheetBackdrop.hidden = true; }, reduced ? 0 : 300);
+        if (sheetLastFocus && sheetLastFocus.focus) sheetLastFocus.focus();
+      }
+    };
+    sheetBtn.addEventListener('click', function () { setSheet(sheet.hidden); });
+    sheetClose.addEventListener('click', function () { setSheet(false); });
+    sheetBackdrop.addEventListener('click', function () { setSheet(false); });
+    document.addEventListener('keydown', function (e) {
+      if (sheet.hidden) return;
+      if (e.key === 'Escape') { setSheet(false); return; }
+      /* focus trap wewnątrz panelu */
+      if (e.key === 'Tab') {
+        var focusables = sheet.querySelectorAll('.sheet-list a, .sheet-close');
+        var first = focusables[0];
+        var last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        else if (!sheet.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+      }
+    });
+    sheet.addEventListener('click', function (e) {
+      var link = e.target.closest('a[href]');
+      if (!link) return;
+      var href = link.getAttribute('href');
+      var page = href.split('#')[0];
+      var here = window.location.pathname.split('/').pop() || 'index.html';
+      setSheet(false);
+      if (href.indexOf('#') > -1 && page === here) {
+        e.preventDefault();
+        scrollToSection(href.split('#')[1]);
+      }
+    });
+  }
+
   /* filtry realizacji */
   var filterButtons = document.querySelectorAll('.filter-btn');
   var realCards = document.querySelectorAll('.real-card');
