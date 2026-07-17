@@ -108,19 +108,59 @@
      zatrzymać się w złym miejscu. Tu: pozycja liczona z aktualnego layoutu
      (z uwzględnieniem scroll-margin-top), a po zakończeniu przewijania
      następuje jednorazowa korekta, jeśli cel się przesunął. */
+  function anchorDestY(target) {
+    var margin = parseFloat(getComputedStyle(target).scrollMarginTop) || 0;
+    var top = target.getBoundingClientRect().top + window.scrollY - margin;
+    return Math.max(0, Math.min(top, document.documentElement.scrollHeight - window.innerHeight));
+  }
+
+  /* Strażnik kotwic. Sekcje menu (#lunch-menu, #sniadania-menu, #weekend-menu)
+     są renderowane skryptem — klik oddany zanim skrypty się wykonają albo
+     zanim doładują się fonty trafia w układ, który za chwilę urośnie o tysiące
+     pikseli (zmierzono: #sniadania +2324 px na 390 px). Strażnik pilnuje
+     ostatnio wybranej kotwicy i po każdej zmianie wysokości dokumentu w oknie
+     3,5 s wyrównuje pozycję ponownie; ręczny scroll użytkownika przerywa. */
+  var anchorGuard = { id: null, until: 0 };
+  function guardAnchor(id) {
+    anchorGuard.id = id;
+    anchorGuard.until = Date.now() + 3500;
+  }
+  function releaseGuard() { anchorGuard.id = null; }
+  ['wheel', 'touchmove'].forEach(function (ev) {
+    window.addEventListener(ev, releaseGuard, { passive: true });
+  });
+  function realignGuarded(instant) {
+    if (!anchorGuard.id || Date.now() > anchorGuard.until) return;
+    var target = document.getElementById(anchorGuard.id);
+    if (!target) return;
+    if (Math.abs(window.scrollY - anchorDestY(target)) > 4) {
+      window.scrollTo({ top: anchorDestY(target), behavior: 'auto' });
+    }
+  }
+  if ('ResizeObserver' in window) {
+    new ResizeObserver(function () { realignGuarded(); }).observe(document.body);
+  }
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () { realignGuarded(); });
+  }
+  window.addEventListener('load', function () { realignGuarded(); });
+  window.addEventListener('hashchange', function () {
+    if (window.location.hash.length > 1) guardAnchor(window.location.hash.slice(1));
+  });
+  /* wejście z hashem w adresie albo klik oddany przed wykonaniem skryptów:
+     wyrównaj od razu — menu są już wyrenderowane, gdy ten kod działa */
+  if (window.location.hash.length > 1 && document.getElementById(window.location.hash.slice(1))) {
+    guardAnchor(window.location.hash.slice(1));
+    realignGuarded();
+  }
+
   function scrollToSection(id) {
     var target = document.getElementById(id);
     if (!target) return false;
     var noMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    function destY() {
-      var margin = parseFloat(getComputedStyle(target).scrollMarginTop) || 0;
-      var top = target.getBoundingClientRect().top + window.scrollY - margin;
-      return Math.max(0, Math.min(top, document.documentElement.scrollHeight - window.innerHeight));
-    }
-    function settle() {
-      if (Math.abs(window.scrollY - destY()) > 4) window.scrollTo({ top: destY(), behavior: 'auto' });
-    }
-    window.scrollTo({ top: destY(), behavior: noMotion ? 'auto' : 'smooth' });
+    function settle() { realignGuarded(); }
+    guardAnchor(id);
+    window.scrollTo({ top: anchorDestY(target), behavior: noMotion ? 'auto' : 'smooth' });
     if (noMotion) {
       settle();
     } else if ('onscrollend' in window) {
@@ -128,9 +168,11 @@
     } else {
       window.setTimeout(settle, 900);
     }
-    if (window.location.hash !== '#' + id && window.history.pushState) {
-      window.history.pushState(null, '', '#' + id);
-    }
+    try {
+      if (window.location.hash !== '#' + id && window.history.pushState) {
+        window.history.pushState(null, '', '#' + id);
+      }
+    } catch (err) { /* np. podgląd w iframie bez uprawnień do historii */ }
     return true;
   }
   window.RADOSC_SCROLL = scrollToSection;
@@ -138,13 +180,16 @@
   /* pasek skrótów Bistro — gaszenie gradientu po dojechaniu do końca */
   var jumpbar = document.querySelector('.jumpbar');
   var jumptrack = document.querySelector('.jumpbar-track');
+  /* wszystkie kotwice tej samej strony (jumpbar, hero, treść) przewijają
+     deterministycznie; linki panelu Menu mają własny handler */
+  document.addEventListener('click', function (e) {
+    var link = e.target.closest('a[href^="#"]');
+    if (!link || link.closest('#menu-sheet')) return;
+    var id = link.getAttribute('href').slice(1);
+    if (id && scrollToSection(id)) e.preventDefault();
+  });
+
   if (jumpbar && jumptrack) {
-    /* delegacja: każdy chip paska przewija deterministycznie (klik i Enter) */
-    jumpbar.addEventListener('click', function (e) {
-      var link = e.target.closest('a[href^="#"]');
-      if (!link) return;
-      if (scrollToSection(link.getAttribute('href').slice(1))) e.preventDefault();
-    });
     var updateJumpHint = function () {
       var atEnd = jumptrack.scrollLeft + jumptrack.clientWidth >= jumptrack.scrollWidth - 4;
       jumpbar.classList.toggle('at-end', atEnd);
@@ -161,10 +206,22 @@
   var sheetClose = document.getElementById('menu-sheet-close');
   if (sheet && sheetBackdrop && sheetBtn && sheetClose) {
     var sheetLastFocus = null;
+    /* jawny stan zamiast czytania sheet.hidden — hidden zmienia się z opóźnieniem
+       (timeout animacji), więc szybkie kliknięcia gubiły pierwszą interakcję */
+    var sheetOpen = false;
+    var sheetHideTimer = null;
+    var INERT_SEL = 'main, header.site-header, footer.site-footer, nav.jumpbar, nav.mobile-menu';
     var setSheet = function (open) {
+      if (open === sheetOpen) return;
+      sheetOpen = open;
       sheetBtn.setAttribute('aria-expanded', String(open));
       document.body.classList.toggle('menu-open', open);
+      document.querySelectorAll(INERT_SEL).forEach(function (el) {
+        if (open) { el.setAttribute('inert', ''); el.setAttribute('aria-hidden', 'true'); }
+        else { el.removeAttribute('inert'); el.removeAttribute('aria-hidden'); }
+      });
       if (open) {
+        if (sheetHideTimer) { window.clearTimeout(sheetHideTimer); sheetHideTimer = null; }
         sheetLastFocus = document.activeElement;
         sheet.hidden = false;
         sheetBackdrop.hidden = false;
@@ -177,15 +234,22 @@
       } else {
         sheet.classList.remove('open');
         sheetBackdrop.classList.remove('open');
-        window.setTimeout(function () { sheet.hidden = true; sheetBackdrop.hidden = true; }, reduced ? 0 : 300);
-        if (sheetLastFocus && sheetLastFocus.focus) sheetLastFocus.focus();
+        var finishClose = function () {
+          sheetHideTimer = null;
+          sheet.hidden = true;
+          sheetBackdrop.hidden = true;
+          /* fokus wraca na przycisk otwierający dopiero po domknięciu stanu DOM */
+          if (sheetLastFocus && sheetLastFocus.focus) sheetLastFocus.focus();
+        };
+        if (reduced) finishClose();
+        else sheetHideTimer = window.setTimeout(finishClose, 300);
       }
     };
-    sheetBtn.addEventListener('click', function () { setSheet(sheet.hidden); });
+    sheetBtn.addEventListener('click', function () { setSheet(!sheetOpen); });
     sheetClose.addEventListener('click', function () { setSheet(false); });
     sheetBackdrop.addEventListener('click', function () { setSheet(false); });
     document.addEventListener('keydown', function (e) {
-      if (sheet.hidden) return;
+      if (!sheetOpen) return;
       if (e.key === 'Escape') { setSheet(false); return; }
       /* focus trap wewnątrz panelu */
       if (e.key === 'Tab') {
