@@ -966,3 +966,9 @@ a.tile.is-active b{color:var(--gold-dark)}
   .loc-card{grid-template-columns:1fr}
   .loc-map iframe{height:260px;min-height:0}
 }
+
+/* ETAP 5.6 — finalny szlif po audycie Chrome */
+/* .link w tekście ciągłym bez lewego marginesu (margines był projektowany dla hero) */
+p .link, li .link{margin-left:0}
+/* sąsiadujące maplinki w kartach kontaktowych nie zlewają się */
+.contact-card .maplink{margin-right:26px}
