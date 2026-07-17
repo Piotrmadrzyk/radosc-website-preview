@@ -1,0 +1,7 @@
+# PRZYKŁAD — NIE UŻYWAĆ NA PREVIEW.
+# Produkcyjny robots.txt dla https://restauracjaradosc.pl (po migracji).
+
+User-agent: *
+Allow: /
+
+Sitemap: https://restauracjaradosc.pl/sitemap.xml

@@ -1,0 +1,17 @@
+# PRZYKŁAD — NIE UŻYWAĆ NA PREVIEW.
+# Mapa przekierowań 301 do wdrożenia na serwerze produkcyjnym po migracji.
+# Składnia zależy od hostingu (Netlify _redirects / Apache .htaccess / nginx).
+# Stare URL-e są PRZYKŁADOWE — realną listę zbieramy wg sekcji 4 planu migracji.
+
+# Netlify (_redirects):
+# /menu            /pizza.html         301
+# /oferta          /catering.html      301
+# /galeria         /realizacje.html    301
+# /kontakt         /kontakt.html       301
+
+# Apache (.htaccess):
+# Redirect 301 /menu /pizza.html
+# Redirect 301 /oferta /catering.html
+
+# nginx:
+# location = /menu { return 301 /pizza.html; }

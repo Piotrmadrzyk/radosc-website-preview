@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- PRZYKŁAD — NIE UŻYWAĆ NA PREVIEW. Sitemap produkcyjna po migracji. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://restauracjaradosc.pl/</loc></url>
+  <url><loc>https://restauracjaradosc.pl/bistro.html</loc></url>
+  <url><loc>https://restauracjaradosc.pl/pizza.html</loc></url>
+  <url><loc>https://restauracjaradosc.pl/catering.html</loc></url>
+  <url><loc>https://restauracjaradosc.pl/realizacje.html</loc></url>
+  <url><loc>https://restauracjaradosc.pl/kontakt.html</loc></url>
+  <url><loc>https://restauracjaradosc.pl/polityka-prywatnosci.html</loc></url>
+</urlset>
