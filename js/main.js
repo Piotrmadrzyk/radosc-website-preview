@@ -273,7 +273,7 @@
   };
   var DEFAULT_INTRO = 'Opowiedz nam o wydarzeniu — przygotujemy niezobowiązującą propozycję dopasowaną do terminu, miejsca i liczby gości.';
   document.querySelectorAll('[data-inquiry]').forEach(function (card) {
-    card.addEventListener('click', function () {
+    card.addEventListener('click', function (e) {
       var val = card.getAttribute('data-inquiry');
       if (typeField) {
         typeField.value = val;
@@ -282,6 +282,15 @@
       if (intro) {
         intro.textContent = INTRO_TEXTS[val] || DEFAULT_INTRO;
         intro.hidden = false;
+      }
+      /* jawne przewinięcie do formularza — sama zmiana hash nie przewija,
+         gdy #zapytanie już jest w adresie (drugie kliknięcie karty) */
+      var form = document.getElementById('zapytanie');
+      if (form) {
+        e.preventDefault();
+        var noMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        form.scrollIntoView({ behavior: noMotion ? 'auto' : 'smooth', block: 'start' });
+        if (history.replaceState) history.replaceState(null, '', '#zapytanie');
       }
     });
   });

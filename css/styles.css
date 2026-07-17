@@ -633,6 +633,7 @@ label .req{color:var(--gold-light)}
 /* masonry realizacji */
 .masonry{columns:3;column-gap:18px;margin-top:40px}
 .masonry .real-card{display:block;break-inside:avoid;margin-bottom:18px}
+.masonry .real-card.hidden{display:none}
 .masonry .real-card .ph{aspect-ratio:auto}
 .masonry .real-card .ph img{height:auto}
 
