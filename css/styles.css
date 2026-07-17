@@ -972,3 +972,40 @@ a.tile.is-active b{color:var(--gold-dark)}
 p .link, li .link{margin-left:0}
 /* sąsiadujące maplinki w kartach kontaktowych nie zlewają się */
 .contact-card .maplink{margin-right:26px}
+
+/* ============================================================
+   ETAP 5.6.1 — poprawki odbiorowe
+   ============================================================ */
+
+/* karta weekendowa jako wyraźna zapowiedź */
+.soon-badge{display:inline-block;vertical-align:middle;margin-left:14px;
+  font-family:"Inter",sans-serif;font-style:normal;font-size:11px;font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--gold-dark);
+  border:1px solid rgba(169,129,47,.55);border-radius:999px;padding:6px 14px;white-space:nowrap}
+.wk-disclaimer{margin-top:10px;font-size:14.5px;line-height:1.65;color:var(--ink-soft)}
+.wk-disclaimer b{color:var(--gold-dark)}
+.wk-preview{position:relative;margin-top:26px;padding:56px 26px 10px;
+  border:1px dashed rgba(169,129,47,.5);background:rgba(255,255,255,.35)}
+.wk-preview::before{content:"Planowana oferta — już wkrótce";position:absolute;top:16px;left:26px;
+  font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dark)}
+.chip-soon{font-style:normal;font-size:9px;font-weight:700;letter-spacing:.12em;
+  color:var(--gold-dark);border:1px solid rgba(169,129,47,.5);border-radius:999px;
+  padding:2px 7px;margin-left:6px;vertical-align:1px}
+.visually-hidden{position:absolute;width:1px;height:1px;margin:-1px;padding:0;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* siatka kawa/herbata/matcha/napoje */
+.kh-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:34px}
+.kh-card{background:rgba(255,255,255,.6);border:1px solid rgba(21,50,31,.12);
+  border-top:2px solid var(--gold);padding:22px 24px}
+.kh-card h3{font-family:"Fraunces",serif;font-weight:600;font-size:20px;color:var(--ink)}
+.kh-card p{margin-top:6px;font-size:14.5px;line-height:1.65;color:var(--ink-soft)}
+@media (max-width:640px){.kh-grid{grid-template-columns:1fr}}
+
+/* slot na przyszłe zdjęcie sekcji (aktywowany po dodaniu pliku) */
+.media-slot{margin:30px 0 6px;overflow:hidden;background:var(--cream-deep);
+  border:1px solid rgba(21,50,31,.12)}
+.media-slot img{width:100%;height:auto}
+
+/* ikony kroków zamówienia (Pizza) */
+.step-ico{width:26px;height:26px;color:var(--gold);margin-bottom:10px}

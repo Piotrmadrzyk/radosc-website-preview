@@ -139,7 +139,7 @@
     <div class="cta reveal-hero d4">
       <a class="btn btn-fill" href="#lunch-tygodnia">Zobacz menu lunchowe</a>
       <div class="quiet">
-        <a class="link" href="tel:+48723800801">Zadzwoń: <span class="tel-num">723 800 801</span></a>
+        <a class="tel-link" href="tel:+48723800801">Zadzwoń: 723 800 801</a>
       </div>
     </div>
     <p class="micro reveal-hero d5" style="margin-top:22px"><b>Czynne:</b> poniedziałek–piątek, 8:00–17:00 · Jasionka 954c</p>
@@ -154,7 +154,7 @@
     <a href="#sniadania">Śniadania</a>
     <a href="#kawa">Kawa i napoje</a>
     <a href="#desery">Desery</a>
-    <a href="#menu-weekendowe">Menu weekendowe</a>
+    <a href="#menu-weekendowe">Menu weekendowe <em class="chip-soon">wkrótce</em></a>
     <a href="#codziennie">Karta Bistro</a>
   </div>
 </nav>
@@ -189,6 +189,11 @@
       <li><b>Kanapki i sałatki</b> — przygotowane rano, gotowe do zabrania.</li>
       <li><b>Na wynos</b> — zapakujemy każde danie z bufetu i karty.</li>
     </ul>
+    <!-- PHOTO-SLOT: bufet — patrz DOCS/PHOTO_ASSET_REQUIREMENTS.md
+    <figure class="media-slot reveal">
+      <picture><source type="image/webp" srcset="assets/img/bufet-dania-na-wage.webp"><img width="1200" height="900" src="assets/img/bufet-dania-na-wage.jpg" alt="Bufet z daniami na wagę w Bistro Pełne Radości" loading="lazy" decoding="async"></picture>
+    </figure>
+    -->
     <p class="reveal" style="margin-top:28px">
       <a class="btn btn-fill btn-tel" href="tel:+48723800801"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.13.96.36 1.9.7 2.8a2 2 0 0 1-.45 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.27a2 2 0 0 1 2.1-.45c.9.34 1.84.57 2.8.7a2 2 0 0 1 1.7 2z"/></svg><span>Zamów na wynos</span> <b class="tel-num">723 800 801</b></a>
     </p>
@@ -201,6 +206,11 @@
     <p class="sec-eyebrow reveal">Śniadania</p>
     <h2 class="reveal">Na dobry <em>początek dnia.</em></h2>
     <p class="body-text reveal">Bistro otwieramy o 8:00 — wpadnij na śniadanie z pajdą chleba na zakwasie i kawą.</p>
+    <!-- PHOTO-SLOT: śniadania — patrz DOCS/PHOTO_ASSET_REQUIREMENTS.md
+    <figure class="media-slot reveal">
+      <picture><source type="image/webp" srcset="assets/img/sniadanie-jajka.webp"><img width="1200" height="900" src="assets/img/sniadanie-jajka.jpg" alt="Śniadanie z jajkami i pajdą chleba na zakwasie" loading="lazy" decoding="async"></picture>
+    </figure>
+    -->
     <div id="sniadania-menu"></div>
   </div>
 </section>
@@ -211,13 +221,31 @@
     <p class="sec-eyebrow reveal">Kawa i herbata</p>
     <h2 class="reveal">Na kawę, <em>matchę i coś zimnego.</em></h2>
     <p class="lead reveal">Przerwa przy oknie pełnym zieleni — z filiżanką albo szklanką czegoś orzeźwiającego.</p>
-    <ul class="leaf-list reveal">
-      <li><b>Kawa</b> — espresso, cappuccino, flat white, a w cieplejsze dni kawa mrożona.</li>
-      <li><b>Herbata</b> — od klasyki po mieszanki owocowe.</li>
-      <li><b>Matcha</b> — na ciepło i na zimno.</li>
-      <li><b>Na ochłodę</b> — domowe lemoniady i kombucha.</li>
-    </ul>
-    <p class="body-text reveal" style="margin-top:24px">Do każdego <a class="link" href="#sniadania">śniadania</a> kawa jest gratis.</p>
+    <!-- PHOTO-SLOT: kawa — patrz DOCS/PHOTO_ASSET_REQUIREMENTS.md
+    <figure class="media-slot reveal">
+      <picture><source type="image/webp" srcset="assets/img/kawa-espresso.webp"><img width="1200" height="900" src="assets/img/kawa-espresso.jpg" alt="Espresso i kawa mleczna na stole w Bistro" loading="lazy" decoding="async"></picture>
+    </figure>
+    -->
+    <div class="kh-grid">
+      <div class="kh-card reveal">
+        <h3>Kawa</h3>
+        <p>Espresso, cappuccino, flat white — a w cieplejsze dni kawa mrożona.</p>
+      </div>
+      <div class="kh-card reveal">
+        <h3>Herbata</h3>
+        <p>Od klasyki po mieszanki owocowe.</p>
+      </div>
+      <div class="kh-card reveal">
+        <h3>Matcha</h3>
+        <p>Na ciepło i na zimno.</p>
+      </div>
+      <div class="kh-card reveal">
+        <h3>Na ochłodę</h3>
+        <p>Domowe lemoniady i kombucha.</p>
+      </div>
+    </div>
+    <p class="body-text reveal" style="margin-top:26px">Do każdego <a class="link" href="#sniadania">śniadania</a> kawa jest gratis.
+      Pełny wybór kaw i napojów znajdziesz w <a class="link" href="#wk-kawa">planowanej karcie weekendowej</a> poniżej.</p>
   </div>
 </section>
 
@@ -226,7 +254,17 @@
   <div class="wrap narrow">
     <p class="sec-eyebrow reveal">Desery</p>
     <h2 class="reveal">Na słodkie <em>zakończenie.</em></h2>
-    <p class="lead reveal">Do kawy zawsze znajdzie się coś słodkiego — od lekkich bez ze świeżymi owocami po domowe wypieki. Zapytaj obsługę, co dziś przygotowaliśmy.</p>
+    <p class="lead reveal">Do kawy zawsze znajdzie się coś słodkiego — od lekkich bez ze świeżymi owocami po domowe wypieki.</p>
+    <!-- PHOTO-SLOT: desery — patrz DOCS/PHOTO_ASSET_REQUIREMENTS.md
+    <figure class="media-slot reveal">
+      <picture><source type="image/webp" srcset="assets/img/deser-witryna.webp"><img width="1200" height="900" src="assets/img/deser-witryna.jpg" alt="Witryna z deserami dnia w Bistro" loading="lazy" decoding="async"></picture>
+    </figure>
+    -->
+    <ul class="leaf-list reveal">
+      <li><b>Deser dnia</b> — oferta zmienia się na bieżąco; zapytaj obsługę, co dziś przygotowaliśmy.</li>
+      <li><b>Do kawy i na wynos</b> — każdy deser zapakujemy też ze sobą.</li>
+    </ul>
+    <p class="body-text reveal" style="margin-top:24px">Słodkie pozycje pojawią się również w <a class="link" href="#wk-desery">planowanej karcie weekendowej</a> poniżej.</p>
   </div>
 </section>
 
@@ -234,10 +272,11 @@
 <section class="section sec-bistro" id="menu-weekendowe">
   <div class="wrap">
     <p class="sec-eyebrow reveal">Menu weekendowe</p>
-    <h2 class="reveal">Od września — <em>weekendy w Bistro.</em></h2>
+    <h2 class="reveal">Od września — <em>weekendy w Bistro.</em> <span class="soon-badge">Już wkrótce</span></h2>
     <div class="wk-start reveal">
       <b>Od września zapraszamy również na weekendowe menu Bistro.</b>
       <p>Godziny otwarcia weekendowego podamy pod koniec sierpnia. Obserwuj nas na Facebooku i Instagramie.</p>
+      <p class="wk-disclaimer">Poniższa karta to <b>planowana oferta</b> — pozycje, ceny i godziny potwierdzimy przed startem menu weekendowego.</p>
       <div class="social-cta">
         <a href="https://www.facebook.com/bistro.pelneradosci" target="_blank" rel="noopener noreferrer" aria-label="Facebook — Bistro Pełne Radości (otwiera się w nowej karcie)">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7.5h2.5l.5-3h-3V8.6c0-.9.3-1.6 1.6-1.6H16.6V4.3c-.3 0-1.2-.1-2.2-.1-2.2 0-3.9 1.4-3.9 4v2.3H8v3h2.5V21h3z"/></svg>
@@ -249,7 +288,8 @@
         </a>
       </div>
     </div>
-    <div id="weekend-menu"></div>
+    <div id="weekend-menu" class="wk-preview" aria-describedby="wk-preview-note"></div>
+    <p id="wk-preview-note" class="visually-hidden">Karta planowanej oferty weekendowej — jeszcze nieaktywna.</p>
     <p class="veg-legend">🌱 — opcja wegetariańska</p>
   </div>
 </section>
