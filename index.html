@@ -6,6 +6,18 @@
 <title>Radość — Bistro, Pizza i Catering | Jasionka k. Rzeszowa</title>
 <meta name="description" content="Bistro Pełne Radości w Jasionce: lunch pon.–pt., pizza i burgery na miejscu i na wynos, catering na wesela i imprezy firmowe w okolicach Rzeszowa. Tel. 723 800 801.">
 <meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Radość — Bistro, Pizza i Catering | Jasionka k. Rzeszowa">
+<meta property="og:description" content="Bistro Pełne Radości w Jasionce: lunch pon.–pt., pizza i burgery na miejscu i na wynos, catering na wesela i imprezy firmowe w okolicach Rzeszowa. Tel. 723 800 801.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://piotrmadrzyk.github.io/radosc-website-preview/">
+<meta property="og:image" content="https://piotrmadrzyk.github.io/radosc-website-preview/assets/img/bistro-wnetrze-kwiaty-1000.jpg">
+<meta property="og:image:alt" content="Świetliste wnętrze Bistro Pełne Radości z kwiatami i zielenią">
+<meta property="og:locale" content="pl_PL">
+<meta property="og:site_name" content="Radość — Bistro · Catering">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Radość — Bistro, Pizza i Catering | Jasionka k. Rzeszowa">
+<meta name="twitter:description" content="Bistro Pełne Radości w Jasionce: lunch pon.–pt., pizza i burgery na miejscu i na wynos, catering na wesela i imprezy firmowe w okolicach Rzeszowa. Tel. 723 800 801.">
+<meta name="twitter:image" content="https://piotrmadrzyk.github.io/radosc-website-preview/assets/img/bistro-wnetrze-kwiaty-1000.jpg">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2315321F'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='20' font-weight='600' fill='%23F6F1E5' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
 <link rel="preload" href="assets/fonts/fraunces-latin-ext-600-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/inter-latin-ext-400-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -18,33 +30,61 @@
   "@graph": [
     {
       "@type": "Restaurant",
+      "@id": "https://piotrmadrzyk.github.io/radosc-website-preview/#bistro",
       "name": "Bistro Pełne Radości",
-      "servesCuisine": ["polska", "europejska"],
+      "url": "https://piotrmadrzyk.github.io/radosc-website-preview/",
+      "image": "https://piotrmadrzyk.github.io/radosc-website-preview/assets/img/bistro-wnetrze-kwiaty-1000.jpg",
+      "sameAs": [
+        "https://www.facebook.com/bistro.pelneradosci",
+        "https://www.instagram.com/bistro.pelneradosci"
+      ],
+      "servesCuisine": [
+        "polska",
+        "europejska",
+        "pizza"
+      ],
+      "hasMenu": "https://piotrmadrzyk.github.io/radosc-website-preview/pizza.html#menu",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "Jasionka 954c",
         "postalCode": "36-002",
         "addressLocality": "Jasionka",
+        "addressRegion": "podkarpackie",
         "addressCountry": "PL"
       },
       "telephone": "+48723800801",
       "email": "patrycja@restauracjaradosc.pl",
-      "url": "https://piotrmadrzyk.github.io/radosc-website-preview/",
-      "openingHoursSpecification": [{
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        "opens": "08:00",
-        "closes": "17:00"
-      }]
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday"
+          ],
+          "opens": "08:00",
+          "closes": "17:00"
+        }
+      ]
     },
     {
       "@type": "FoodEstablishment",
+      "@id": "https://piotrmadrzyk.github.io/radosc-website-preview/#catering",
       "name": "Radość Catering",
+      "url": "https://piotrmadrzyk.github.io/radosc-website-preview/catering.html",
+      "image": "https://piotrmadrzyk.github.io/radosc-website-preview/assets/img/bufet-glowny.jpg",
+      "areaServed": [
+        "Jasionka",
+        "Rzeszów i okolice"
+      ],
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "Jasionka 953",
         "postalCode": "36-002",
         "addressLocality": "Jasionka",
+        "addressRegion": "podkarpackie",
         "addressCountry": "PL"
       },
       "telephone": "+48601940856",
@@ -184,6 +224,7 @@
       <a class="chip" href="catering.html#oferta">Catering dla firm</a>
       <a class="chip" href="catering.html#oferta">Przyjęcia rodzinne</a>
     </div>
+    <p class="body-text reveal" style="margin-top:30px">Bistro i pracownia cateringowa działają w Jasionce koło Rzeszowa — kilka minut od lotniska Rzeszów-Jasionka, Doliny Lotniczej i strefy Aeropolis.</p>
     <div class="info-strip reveal">
       <span class="item">Bistro: <b><a class="tel-link" href="tel:+48723800801">723 800 801</a></b></span>
       <span class="item">Czynne: <b>pon.–pt. 8:00–17:00</b></span>

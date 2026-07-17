@@ -873,3 +873,11 @@ a.chip{display:inline-block}
 @media (prefers-reduced-motion: reduce){
   .ph,.g-item,.photo-strip figure,.tile-ph{animation:none}
 }
+
+/* FAQ — widoczne pytania i odpowiedzi (bez akordeonów) */
+.faq-list{margin-top:38px;display:grid;gap:22px}
+.faq-item{background:rgba(255,255,255,.6);border:1px solid rgba(21,50,31,.12);
+  border-left:2px solid var(--gold);padding:20px 24px}
+.faq-item dt{font-family:"Fraunces",serif;font-weight:600;font-size:19px;color:var(--ink)}
+.faq-item dd{margin:8px 0 0;font-size:15px;line-height:1.7;color:var(--ink-soft)}
+.faq-item dd a{color:var(--gold-dark)}
