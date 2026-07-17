@@ -1,0 +1,16 @@
+# systemowe / edytory
+.DS_Store
+Thumbs.db
+*.log
+
+# zależności i cache (projekt jest statyczny — nie powinny się pojawić)
+node_modules/
+.cache/
+
+# hosting / narzędzia
+.vercel/
+.netlify/
+
+# pliki tymczasowe
+*.tmp
+*.zip
