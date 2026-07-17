@@ -324,25 +324,33 @@
     'Wesele lub uroczystość': 'Planujesz wesele lub większą uroczystość? Podaj termin, miejsce i orientacyjną liczbę gości. Wspólnie omówimy menu, zakres obsługi i charakter wydarzenia.'
   };
   var DEFAULT_INTRO = 'Opowiedz nam o wydarzeniu — przygotujemy niezobowiązującą propozycję dopasowaną do terminu, miejsca i liczby gości.';
-  document.querySelectorAll('[data-inquiry]').forEach(function (card) {
+  var inquiryCards = document.querySelectorAll('[data-inquiry]');
+  function activateInquiry(card) {
+    var val = card.getAttribute('data-inquiry');
+    inquiryCards.forEach(function (c) { c.classList.toggle('is-active', c === card); });
+    if (typeField) {
+      typeField.value = val;
+      typeField.classList.remove('field-error');
+      typeField.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+    if (intro) {
+      intro.textContent = INTRO_TEXTS[val] || DEFAULT_INTRO;
+      intro.hidden = false;
+    }
+    /* deterministyczne przewinięcie do formularza — sama zmiana hash nie
+       przewija, gdy #zapytanie już jest w adresie (drugie kliknięcie karty) */
+    if (window.RADOSC_SCROLL) return window.RADOSC_SCROLL('zapytanie');
+    return false;
+  }
+  inquiryCards.forEach(function (card) {
     card.addEventListener('click', function (e) {
-      var val = card.getAttribute('data-inquiry');
-      if (typeField) {
-        typeField.value = val;
-        typeField.classList.remove('field-error');
-      }
-      if (intro) {
-        intro.textContent = INTRO_TEXTS[val] || DEFAULT_INTRO;
-        intro.hidden = false;
-      }
-      /* jawne przewinięcie do formularza — sama zmiana hash nie przewija,
-         gdy #zapytanie już jest w adresie (drugie kliknięcie karty) */
-      var form = document.getElementById('zapytanie');
-      if (form) {
+      if (activateInquiry(card)) e.preventDefault();
+    });
+    /* karty są linkami — Enter działa natywnie, Space obsługujemy sami */
+    card.addEventListener('keydown', function (e) {
+      if (e.key === ' ' || e.key === 'Spacebar') {
         e.preventDefault();
-        var noMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        form.scrollIntoView({ behavior: noMotion ? 'auto' : 'smooth', block: 'start' });
-        if (history.replaceState) history.replaceState(null, '', '#zapytanie');
+        activateInquiry(card);
       }
     });
   });

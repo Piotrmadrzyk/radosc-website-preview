@@ -881,3 +881,10 @@ a.chip{display:inline-block}
 .faq-item dt{font-family:"Fraunces",serif;font-weight:600;font-size:19px;color:var(--ink)}
 .faq-item dd{margin:8px 0 0;font-size:15px;line-height:1.7;color:var(--ink-soft)}
 .faq-item dd a{color:var(--gold-dark)}
+
+/* ============================================================
+   ETAP 5.5.1 — stan aktywny kart cateringu, numer bez łamania
+   ============================================================ */
+a.tile.is-active{background:#fff;border-color:var(--gold);
+  box-shadow:0 18px 40px rgba(21,50,31,.14)}
+a.tile.is-active b{color:var(--gold-dark)}
