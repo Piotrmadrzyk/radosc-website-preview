@@ -40,14 +40,14 @@
 
 <main>
 
-<section class="sub-hero sub-hero--catering" aria-label="Realizacje Radości">
+<section class="sub-hero sub-hero--gala" aria-label="Realizacje Radości">
   <div class="scene" aria-hidden="true"></div>
   <div class="veil" aria-hidden="true"></div>
   <div class="glow" aria-hidden="true"></div>
   <div class="sub-hero-frame">
     <p class="eyebrow reveal-hero d1">Realizacje</p>
     <h1 class="reveal-hero d2">Każde wydarzenie ma własny rytm. <em>My dbamy o jego smak.</em></h1>
-    <p class="desc reveal-hero d3">Kadry ze wspólnych stołów — od rodzinnych obiadów po firmowe wieczory. Galerię będziemy stale uzupełniać o kolejne wydarzenia.</p>
+    <p class="desc reveal-hero d3">Prawdziwe kadry z naszych stołów — od rodzinnych obiadów po gale na setki gości.</p>
   </div>
 </section>
 
@@ -65,21 +65,10 @@
       <button class="filter-btn" type="button" data-filter="bistro" aria-pressed="false">Bistro</button>
     </div>
 
-    <div class="real-cards">
-      <article class="real-card reveal" data-cat="rodzinne">
-        <div class="ph">
-          <img src="assets/img/catering-event-goscie-1000.jpg" alt="Rodzina i goście przy długim, wspólnym stole ze świecami i kwiatami" loading="lazy">
-        </div>
-        <div class="txt">
-          <p class="cat">Rodzinne</p>
-          <h3>Rodzinny stół</h3>
-          <p>Wielopokoleniowy stół, świece i kwiaty — uroczystość, przy której nikt nie patrzy na zegarek.</p>
-        </div>
-      </article>
-
+    <div class="masonry">
       <article class="real-card reveal" data-cat="wesela">
         <div class="ph">
-          <img src="assets/img/catering-event-goscie-1000.jpg" alt="Wieczorne przyjęcie weselne przy świątecznie nakrytym stole" loading="lazy" style="object-position:20% 40%">
+          <img src="assets/img/catering-event-goscie-1000.jpg" alt="Goście przy długim, świątecznie nakrytym stole ze świecami i kwiatami" loading="lazy" decoding="async">
         </div>
         <div class="txt">
           <p class="cat">Wesela</p>
@@ -88,35 +77,149 @@
         </div>
       </article>
 
-      <article class="real-card real-card--text reveal" data-cat="firmowe">
+      <article class="real-card reveal" data-cat="wesela firmowe">
+        <div class="ph">
+          <img src="assets/img/event-serwis-1.jpg" alt="Kelnerka dopracowująca elegancki stół z kompozycją kwiatową" loading="lazy" decoding="async">
+        </div>
         <div class="txt">
-          <p class="cat">Firmowe</p>
-          <h3>Spotkanie firmowe</h3>
-          <p>Kolacja zarządu, integracja zespołu albo gala — dyskretny serwis i stół, który robi wrażenie.</p>
+          <p class="cat">Elegancki serwis</p>
+          <h3>Dopracowany stół</h3>
+          <p>Szkło, kwiaty i idealnie odmierzony moment podania.</p>
         </div>
       </article>
 
-      <article class="real-card real-card--text reveal" data-cat="catering firmowe">
+      <article class="real-card reveal" data-cat="firmowe">
+        <div class="ph">
+          <img src="assets/img/event-gala.jpg" alt="Wieczorna gala z wieloma okrągłymi stołami i sceną" loading="lazy" decoding="async">
+        </div>
+        <div class="txt">
+          <p class="cat">Firmowe</p>
+          <h3>Gala na setki gości</h3>
+          <p>Duża skala, jeden standard — od pierwszego stołu po ostatni.</p>
+        </div>
+      </article>
+
+      <article class="real-card reveal" data-cat="firmowe">
+        <div class="ph">
+          <img src="assets/img/event-sala.jpg" alt="Sala wydarzenia pełna nakrytych okrągłych stołów" loading="lazy" decoding="async">
+        </div>
+        <div class="txt">
+          <p class="cat">Firmowe</p>
+          <h3>Sala pełna stołów</h3>
+          <p>Każdy stół nakryty tak samo starannie jak pierwszy.</p>
+        </div>
+      </article>
+
+      <article class="real-card reveal" data-cat="catering firmowe">
+        <div class="ph">
+          <img src="assets/img/bufet-konferencja.jpg" alt="Bufet konferencyjny z przystawkami i dekoracją z zieleni" loading="lazy" decoding="async">
+        </div>
         <div class="txt">
           <p class="cat">Catering</p>
-          <h3>Catering konferencyjny</h3>
-          <p>Przerwy kawowe i bufety zsynchronizowane z agendą — punktualnie i bez zamieszania.</p>
+          <h3>Bufet konferencyjny</h3>
+          <p>Przerwa, na którą czekają wszyscy uczestnicy.</p>
+        </div>
+      </article>
+
+      <article class="real-card reveal" data-cat="catering">
+        <div class="ph">
+          <img src="assets/img/bufet-event.jpg" alt="Bufet eventowy z przekąskami i tropikalną dekoracją" loading="lazy" decoding="async">
+        </div>
+        <div class="txt">
+          <p class="cat">Catering</p>
+          <h3>Bufet eventowy</h3>
+          <p>Kolory, świeżość i porządek — zanim goście zdążą podejść.</p>
+        </div>
+      </article>
+
+      <article class="real-card reveal" data-cat="catering">
+        <div class="ph">
+          <img src="assets/img/bufet-fingerfood.jpg" alt="Deski z finger foodem i mini sałatkami" loading="lazy" decoding="async">
+        </div>
+        <div class="txt">
+          <p class="cat">Catering</p>
+          <h3>Finger food</h3>
+          <p>Małe porcje, duże wrażenie.</p>
+        </div>
+      </article>
+
+      <article class="real-card reveal" data-cat="catering">
+        <div class="ph">
+          <img src="assets/img/plater-przystawki.jpg" alt="Złota taca z przystawkami porcjowanymi" loading="lazy" decoding="async">
+        </div>
+        <div class="txt">
+          <p class="cat">Catering</p>
+          <h3>Przystawki</h3>
+          <p>Porcjowane, świeże i gotowe na powitanie gości.</p>
+        </div>
+      </article>
+
+      <article class="real-card reveal" data-cat="wesela rodzinne">
+        <div class="ph">
+          <img src="assets/img/dekor-stolu.jpg" alt="Dekoracja stołu z tropikalną zielenią i złotem" loading="lazy" decoding="async">
+        </div>
+        <div class="txt">
+          <p class="cat">Dekoracje</p>
+          <h3>Dbałość o detal</h3>
+          <p>Zieleń, złoto i faktury, które robią nastrój.</p>
+        </div>
+      </article>
+
+      <article class="real-card reveal" data-cat="firmowe">
+        <div class="ph">
+          <img src="assets/img/event-serwis-2.jpg" alt="Obsługa kelnerska przygotowująca stoły podczas wydarzenia" loading="lazy" decoding="async">
+        </div>
+        <div class="txt">
+          <p class="cat">Obsługa</p>
+          <h3>Serwis w akcji</h3>
+          <p>Dyskretnie, sprawnie i zawsze o krok przed gościem.</p>
+        </div>
+      </article>
+
+      <article class="real-card reveal" data-cat="rodzinne">
+        <div class="ph">
+          <img src="assets/img/deser-slodki.jpg" alt="Mini bezy z kremem i świeżymi owocami" loading="lazy" decoding="async">
+        </div>
+        <div class="txt">
+          <p class="cat">Rodzinne</p>
+          <h3>Słodki finał</h3>
+          <p>Deser, po którym nikt nie wychodzi od razu.</p>
         </div>
       </article>
 
       <article class="real-card reveal" data-cat="bistro">
         <div class="ph">
-          <img src="assets/img/bistro-wnetrze-kwiaty-1000.jpg" alt="Świetliste wnętrze Bistro pełne kwiatów w porze lunchu" loading="lazy">
+          <img src="assets/img/lunch-dnia.jpg" alt="Zestaw lunchowy podany na drewnianej desce" loading="lazy" decoding="async">
         </div>
         <div class="txt">
           <p class="cat">Bistro</p>
           <h3>Lunch w Bistro</h3>
-          <p>Codzienność Radości: zielona oranżeria, świeże kwiaty i sezonowe menu w porze lunchu.</p>
+          <p>Codzienność Radości — świeżo, domowo, w porze lunchu.</p>
+        </div>
+      </article>
+
+      <article class="real-card reveal" data-cat="bistro">
+        <div class="ph">
+          <img src="assets/img/pizza-piec-1.jpg" alt="Pizza prosto z pieca na stole w Bistro" loading="lazy" decoding="async">
+        </div>
+        <div class="txt">
+          <p class="cat">Bistro</p>
+          <h3>Pizza z pieca</h3>
+          <p>Najlepszy moment: minuta po wyjęciu z pieca.</p>
+        </div>
+      </article>
+
+      <article class="real-card reveal" data-cat="bistro rodzinne">
+        <div class="ph">
+          <img src="assets/img/danie-glowne.jpg" alt="Danie główne podane na białym talerzu" loading="lazy" decoding="async">
+        </div>
+        <div class="txt">
+          <p class="cat">Bistro</p>
+          <h3>Z karty</h3>
+          <p>Kuchnia polska i europejska — z wyczuciem.</p>
         </div>
       </article>
     </div>
-
-    <p class="body-text center reveal">Kolejne kadry z realizacji pojawią się tutaj wraz z nowymi wydarzeniami.</p>
   </div>
 </section>
 

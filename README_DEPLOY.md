@@ -30,7 +30,7 @@ wersja podglądowa (strona ma `noindex`).
 │   └── styles.css      — style: hero desktop/mobile, sekcje, responsywność
 ├── js/main.js          — menu mobilne, nagłówek, animacje, walidacja formularzy, filtry
 ├── assets/fonts/       — pliki woff2
-├── assets/img/         — dwa autentyczne kadry (bistro + catering)
+├── assets/img/         — biblioteka prawdziwych zdjęć (dania, pizza, bufety, serwis, eventy)
 ├── screenshots/        — zrzuty z publicznego adresu po wdrożeniu
 └── .github/workflows/deploy-pages.yml — automatyczne wdrożenie Pages
 ```
