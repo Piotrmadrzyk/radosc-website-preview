@@ -953,3 +953,16 @@ a.tile.is-active b{color:var(--gold-dark)}
   .mobile-cta button span{font-size:15px;line-height:1;color:var(--gold-light)}
   .mobile-cta button:hover,.mobile-cta button:active{background:rgba(246,241,229,.08);color:var(--gold-light)}
 }
+
+/* karta lokalizacji (strona Pizza) */
+.loc-card{display:grid;grid-template-columns:minmax(300px,2fr) 3fr;gap:0;margin-top:40px;
+  background:rgba(255,255,255,.6);border:1px solid rgba(21,50,31,.14);overflow:hidden}
+.loc-info{padding:34px 32px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.loc-info h3{font-family:"Fraunces",serif;font-weight:600;font-size:22px;color:var(--ink)}
+.loc-info address{font-style:normal;font-size:15px;color:var(--ink-soft)}
+.loc-info p{font-size:14.5px;line-height:1.7;color:var(--ink-soft);flex:1}
+.loc-map iframe{display:block;width:100%;height:100%;min-height:280px;border:0}
+@media (max-width:860px){
+  .loc-card{grid-template-columns:1fr}
+  .loc-map iframe{height:260px;min-height:0}
+}
