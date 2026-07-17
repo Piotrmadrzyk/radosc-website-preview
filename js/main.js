@@ -102,6 +102,19 @@
     });
   });
 
+  /* pasek skrótów Bistro — gaszenie gradientu po dojechaniu do końca */
+  var jumpbar = document.querySelector('.jumpbar');
+  var jumptrack = document.querySelector('.jumpbar-track');
+  if (jumpbar && jumptrack) {
+    var updateJumpHint = function () {
+      var atEnd = jumptrack.scrollLeft + jumptrack.clientWidth >= jumptrack.scrollWidth - 4;
+      jumpbar.classList.toggle('at-end', atEnd);
+    };
+    jumptrack.addEventListener('scroll', updateJumpHint, { passive: true });
+    window.addEventListener('resize', updateJumpHint, { passive: true });
+    updateJumpHint();
+  }
+
   /* filtry realizacji */
   var filterButtons = document.querySelectorAll('.filter-btn');
   var realCards = document.querySelectorAll('.real-card');

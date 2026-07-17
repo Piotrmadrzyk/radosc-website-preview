@@ -9,6 +9,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2315321F'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='20' font-weight='600' fill='%23F6F1E5' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
 <link rel="preload" href="assets/fonts/fraunces-latin-ext-600-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/inter-latin-ext-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" as="image" href="assets/img/bistro-wnetrze-kwiaty-1000.jpg">
 <link rel="stylesheet" href="css/fonts.css">
 <link rel="stylesheet" href="css/styles.css">
 <script type="application/ld+json">
@@ -95,7 +96,7 @@
 
     <!-- łuk oranżerii: jeden autentyczny kadr, „od święta” -->
     <div class="arch reveal-hero d5">
-      <img width="1000" height="1000" src="assets/img/catering-event-goscie-1000.jpg" alt="Goście przy wspólnym, świątecznie nakrytym stole podczas wieczornego wydarzenia">
+      <img fetchpriority="high" width="1000" height="1000" src="assets/img/catering-event-goscie-1000.jpg" alt="Goście przy wspólnym, świątecznie nakrytym stole podczas wieczornego wydarzenia">
       <div class="arch-cap">Od święta<b class="cap-long">wieczór przy wspólnym stole</b><b class="cap-short">wspólny stół</b></div>
     </div>
     <div class="day-tag reveal-hero d5">Na co dzień<b>lunch w oranżerii</b></div>
@@ -207,25 +208,29 @@
     <p class="sec-eyebrow reveal">Na początek</p>
     <h2 class="reveal">Poznaj Radość <em>po swojemu.</em></h2>
     <div class="tiles">
-      <a class="tile reveal" href="bistro.html">
+      <a class="tile tile--photo reveal" href="bistro.html">
+        <span class="tile-ph"><img width="900" height="1200" src="assets/img/danie-lunch-2.jpg" alt="Danie lunchowe z warzywami na ozdobnym talerzu" loading="lazy" decoding="async" style="object-position:50% 55%"></span>
         <b>01</b>
         <h3>Bistro</h3>
         <p>Lunch w świetlistej oranżerii — codziennie, na miejscu i na wynos.</p>
         <span class="tile-more">Zobacz <span aria-hidden="true">→</span></span>
       </a>
-      <a class="tile reveal" href="pizza.html">
+      <a class="tile tile--photo reveal" href="pizza.html">
+        <span class="tile-ph"><img width="1043" height="1300" src="assets/img/pizza-stol.jpg" alt="Pizza podana przy stole w Bistro" loading="lazy" decoding="async" style="object-position:50% 55%"></span>
         <b>02</b>
         <h3>Pizza</h3>
         <p>Prosto z pieca — na miejscu i na wynos.</p>
         <span class="tile-more">Zobacz <span aria-hidden="true">→</span></span>
       </a>
-      <a class="tile reveal" href="catering.html">
+      <a class="tile tile--photo reveal" href="catering.html">
+        <span class="tile-ph"><img width="975" height="1300" src="assets/img/bufet-event.jpg" alt="Bufet eventowy z przekąskami i dekoracją" loading="lazy" decoding="async" style="object-position:50% 45%"></span>
         <b>03</b>
         <h3>Catering</h3>
         <p>Wydarzenia rodzinne i firmowe tworzone z wyczuciem.</p>
         <span class="tile-more">Zobacz <span aria-hidden="true">→</span></span>
       </a>
-      <a class="tile reveal" href="realizacje.html">
+      <a class="tile tile--photo reveal" href="realizacje.html">
+        <span class="tile-ph"><img width="904" height="1200" src="assets/img/event-serwis-2.jpg" alt="Obsługa kelnerska podczas wieczornego wydarzenia" loading="lazy" decoding="async" style="object-position:50% 35%"></span>
         <b>04</b>
         <h3>Realizacje</h3>
         <p>Kadry ze wspólnych stołów — od święta.</p>
