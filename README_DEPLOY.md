@@ -18,11 +18,17 @@ wersja podglądowa (strona ma `noindex`).
 ## Struktura
 
 ```
-├── index.html          — cała treść strony (hero + sekcje podglądowe)
+├── index.html          — strona główna (hero + sekcje zapowiedzi)
+├── bistro.html         — podstrona Bistro
+├── pizza.html          — podstrona Pizza (kategorie menu, jak zamówić)
+├── catering.html       — podstrona Catering (oferta, proces, formularz)
+├── realizacje.html     — podstrona Realizacje (filtry JS)
+├── kontakt.html        — podstrona Kontakt (dane, formularz, mapa)
+├── polityka-prywatnosci.html
 ├── css/
 │   ├── fonts.css       — lokalne fonty Fraunces + Inter (latin + latin-ext)
 │   └── styles.css      — style: hero desktop/mobile, sekcje, responsywność
-├── js/main.js          — menu mobilne, nagłówek, animacje reveal, formularz demo
+├── js/main.js          — menu mobilne, nagłówek, animacje, walidacja formularzy, filtry
 ├── assets/fonts/       — pliki woff2
 ├── assets/img/         — dwa autentyczne kadry (bistro + catering)
 ├── screenshots/        — zrzuty z publicznego adresu po wdrożeniu

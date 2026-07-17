@@ -11,6 +11,40 @@
 <link rel="preload" href="assets/fonts/inter-latin-ext-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/fonts.css">
 <link rel="stylesheet" href="css/styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Restaurant",
+      "name": "Bistro Pełne Radości",
+      "servesCuisine": ["polska", "europejska"],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Jasionka 954c",
+        "postalCode": "36-002",
+        "addressLocality": "Jasionka",
+        "addressCountry": "PL"
+      },
+      "telephone": "+48723800801",
+      "email": "patrycja@restauracjaradosc.pl"
+    },
+    {
+      "@type": "FoodEstablishment",
+      "name": "Radość Catering",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Jasionka 953",
+        "postalCode": "36-002",
+        "addressLocality": "Jasionka",
+        "addressCountry": "PL"
+      },
+      "telephone": "+48601940856",
+      "email": "patrycja@restauracjaradosc.pl"
+    }
+  ]
+}
+</script>
 </head>
 <body id="top">
 
@@ -21,11 +55,11 @@
       Rado<i>ść</i><small>Bistro · Catering</small>
     </a>
     <nav class="nav-links" aria-label="Nawigacja główna">
-      <a href="#bistro">Bistro</a>
-      <a class="pizza" href="#pizza">Pizza</a>
-      <a href="#catering">Catering</a>
-      <a href="#realizacje">Realizacje</a>
-      <a href="#kontakt">Kontakt</a>
+      <a href="bistro.html">Bistro</a>
+      <a class="pizza" href="pizza.html">Pizza</a>
+      <a href="catering.html">Catering</a>
+      <a href="realizacje.html">Realizacje</a>
+      <a href="kontakt.html">Kontakt</a>
     </nav>
     <button class="burger" id="burger" type="button" aria-label="Otwórz menu" aria-expanded="false" aria-controls="mobile-menu">
       <span></span><span></span><span></span>
@@ -35,11 +69,11 @@
 
 <!-- menu mobilne -->
 <nav class="mobile-menu" id="mobile-menu" aria-label="Menu mobilne" hidden>
-  <a href="#bistro"><b>01</b>Bistro</a>
-  <a href="#pizza" class="pizza"><b>02</b>Pizza</a>
-  <a href="#catering"><b>03</b>Catering</a>
-  <a href="#realizacje"><b>04</b>Realizacje</a>
-  <a href="#kontakt"><b>05</b>Kontakt</a>
+  <a href="bistro.html"><b>01</b>Bistro</a>
+  <a href="pizza.html" class="pizza"><b>02</b>Pizza</a>
+  <a href="catering.html"><b>03</b>Catering</a>
+  <a href="realizacje.html"><b>04</b>Realizacje</a>
+  <a href="kontakt.html"><b>05</b>Kontakt</a>
 </nav>
 
 <main>
@@ -83,20 +117,20 @@
       <p class="desc reveal-hero d3">Bistro, pizza i wydarzenia tworzone z&nbsp;wyczuciem.</p>
 
       <div class="cta reveal-hero d4">
-        <a class="btn btn-fill" href="#bistro">Poznaj Bistro</a>
+        <a class="btn btn-fill" href="bistro.html">Poznaj Bistro</a>
         <div class="quiet">
-          <a class="btn btn-ghost" href="#kontakt">Zapytaj o catering</a>
-          <a class="link pizza-link" href="#pizza">Zamów pizzę <span aria-hidden="true">→</span></a>
+          <a class="btn btn-ghost" href="catering.html#zapytanie">Zapytaj o catering</a>
+          <a class="link pizza-link" href="pizza.html">Zamów pizzę <span aria-hidden="true">→</span></a>
         </div>
       </div>
       <p class="micro reveal-hero d5"><b>Codziennie:</b> lunch, pizza i burgery — na miejscu i na wynos.</p>
     </div>
 
     <div class="index reveal-hero d6">
-      <a class="item" href="#bistro"><b>01</b>Bistro</a>
-      <a class="item" href="#pizza"><b>02</b>Pizza</a>
-      <a class="item" href="#catering"><b>03</b>Catering</a>
-      <a class="item" href="#realizacje"><b>04</b>Realizacje</a>
+      <a class="item" href="bistro.html"><b>01</b>Bistro</a>
+      <a class="item" href="pizza.html"><b>02</b>Pizza</a>
+      <a class="item" href="catering.html"><b>03</b>Catering</a>
+      <a class="item" href="realizacje.html"><b>04</b>Realizacje</a>
       <a class="scroll" href="#poznaj">Przewiń <span aria-hidden="true">↓</span></a>
     </div>
 
@@ -109,25 +143,25 @@
     <p class="sec-eyebrow reveal">Na początek</p>
     <h2 class="reveal">Poznaj Radość <em>po swojemu.</em></h2>
     <div class="tiles">
-      <a class="tile reveal" href="#bistro">
+      <a class="tile reveal" href="bistro.html">
         <b>01</b>
         <h3>Bistro</h3>
         <p>Lunch w świetlistej oranżerii — codziennie, na miejscu i na wynos.</p>
         <span class="tile-more">Zobacz <span aria-hidden="true">→</span></span>
       </a>
-      <a class="tile reveal" href="#pizza">
+      <a class="tile reveal" href="pizza.html">
         <b>02</b>
         <h3>Pizza</h3>
         <p>Prosto z pieca — na miejscu i na wynos.</p>
         <span class="tile-more">Zobacz <span aria-hidden="true">→</span></span>
       </a>
-      <a class="tile reveal" href="#catering">
+      <a class="tile reveal" href="catering.html">
         <b>03</b>
         <h3>Catering</h3>
         <p>Wydarzenia rodzinne i firmowe tworzone z wyczuciem.</p>
         <span class="tile-more">Zobacz <span aria-hidden="true">→</span></span>
       </a>
-      <a class="tile reveal" href="#realizacje">
+      <a class="tile reveal" href="realizacje.html">
         <b>04</b>
         <h3>Realizacje</h3>
         <p>Kadry ze wspólnych stołów — od święta.</p>
@@ -144,6 +178,7 @@
     <h2 class="reveal">Na co dzień — <em>lunch w oranżerii.</em></h2>
     <p class="lead reveal"><b>Codziennie:</b> lunch, pizza i burgery — na miejscu i na wynos.</p>
     <p class="body-text reveal">Zielone, świetliste wnętrze pełne kwiatów i dziennego światła. Miejsce na spokojny lunch, spotkanie przy stole i chwilę radości w środku tygodnia.</p>
+    <p class="reveal"><a class="link" href="bistro.html">Więcej o Bistro <span aria-hidden="true">→</span></a></p>
   </div>
 </section>
 
@@ -152,8 +187,8 @@
   <div class="wrap narrow">
     <p class="sec-eyebrow gold reveal">02 · Pizza</p>
     <h2 class="reveal">Pizza — <em>prosto z pieca.</em></h2>
-    <p class="body-text reveal">Na miejscu i na wynos. Szczegóły menu i zamówień pojawią się w pełnej wersji strony.</p>
-    <p class="reveal"><a class="link pizza-link" href="#kontakt">Zapytaj o pizzę <span aria-hidden="true">→</span></a></p>
+    <p class="body-text reveal">Na miejscu i na wynos — zamówienia telefoniczne: <a class="tel-link" href="tel:+48723800801">723 800 801</a>.</p>
+    <p class="reveal"><a class="link pizza-link" href="pizza.html">Zobacz stronę Pizzy <span aria-hidden="true">→</span></a></p>
   </div>
 </section>
 
@@ -163,7 +198,7 @@
     <p class="sec-eyebrow reveal">03 · Catering</p>
     <h2 class="reveal">Od święta — <em>wspólny stół.</em></h2>
     <p class="body-text reveal">Wydarzenia rodzinne i firmowe: od kameralnych kolacji po większe przyjęcia. Opowiedz nam o swojej okazji — przygotujemy propozycję.</p>
-    <p class="reveal"><a class="btn btn-fill" href="#kontakt">Zapytaj o catering</a></p>
+    <p class="reveal"><a class="btn btn-fill" href="catering.html">Zapytaj o catering</a></p>
   </div>
 </section>
 
@@ -182,7 +217,7 @@
         <figcaption>Na co dzień<b>lunch w oranżerii</b></figcaption>
       </figure>
     </div>
-    <p class="body-text center reveal">Więcej kadrów z realizacji pokażemy w pełnej wersji strony.</p>
+    <p class="body-text center reveal"><a class="link" href="realizacje.html">Zobacz wszystkie realizacje <span aria-hidden="true">→</span></a></p>
   </div>
 </section>
 
@@ -191,20 +226,25 @@
   <div class="wrap narrow">
     <p class="sec-eyebrow reveal">05 · Kontakt</p>
     <h2 class="reveal">Zapytaj o <em>catering lub stół.</em></h2>
-    <p class="body-text reveal">Napisz, jaka to okazja — wrócimy z odpowiedzią. Pełne dane kontaktowe znajdą się w wersji produkcyjnej strony.</p>
+    <p class="body-text reveal">
+      Bistro: <a class="tel-link" href="tel:+48723800801">723 800 801</a> ·
+      Catering: <a class="tel-link" href="tel:+48601940856">601 940 856</a> ·
+      <a class="tel-link" href="mailto:patrycja@restauracjaradosc.pl">patrycja@restauracjaradosc.pl</a>
+    </p>
+    <p class="body-text reveal">Napisz, jaka to okazja — wrócimy z odpowiedzią. Wszystkie dane i mapę dojazdu znajdziesz na <a class="tel-link" href="kontakt.html">stronie Kontakt</a>.</p>
 
     <form class="demo-form reveal" id="demo-form" novalidate>
-      <p class="form-note">Wersja podglądowa — formularz demonstracyjny.</p>
+      <p class="form-note">Formularz demonstracyjny — wysyłka zostanie podłączona przed startem strony.</p>
       <div class="row">
-        <label>Imię
-          <input type="text" name="name" autocomplete="name" placeholder="Twoje imię">
+        <label>Imię <span class="req">*</span>
+          <input type="text" name="name" autocomplete="name" placeholder="Twoje imię" required>
         </label>
-        <label>E-mail
-          <input type="email" name="email" autocomplete="email" placeholder="twoj@adres.pl">
+        <label>E-mail <span class="req">*</span>
+          <input type="email" name="email" autocomplete="email" placeholder="twoj@adres.pl" required>
         </label>
       </div>
-      <label>Wiadomość
-        <textarea name="message" rows="4" placeholder="Opowiedz o swojej okazji…"></textarea>
+      <label>Wiadomość <span class="req">*</span>
+        <textarea name="message" rows="4" placeholder="Opowiedz o swojej okazji…" required></textarea>
       </label>
       <button class="btn btn-fill" type="submit">Wyślij zapytanie</button>
       <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
@@ -215,16 +255,42 @@
 
 <!-- ————— STOPKA ————— -->
 <footer class="site-footer">
-  <div class="wrap footer-inner">
-    <a class="brand" href="#top">Rado<i>ść</i><small>Bistro · Catering</small></a>
-    <nav class="footer-nav" aria-label="Nawigacja w stopce">
-      <a href="#bistro">Bistro</a>
-      <a href="#pizza">Pizza</a>
-      <a href="#catering">Catering</a>
-      <a href="#realizacje">Realizacje</a>
-      <a href="#kontakt">Kontakt</a>
+  <div class="wrap footer-grid">
+    <div class="f-brand">
+      <a class="brand" href="index.html">Rado<i>ść</i><small>Bistro · Catering</small></a>
+      <p>Bistro, pizza i wydarzenia tworzone z&nbsp;wyczuciem.</p>
+    </div>
+    <nav aria-label="Mapa strony">
+      <h4>Na stronie</h4>
+      <div class="f-nav">
+        <a href="index.html">Strona główna</a>
+        <a href="bistro.html">Bistro</a>
+        <a href="pizza.html">Pizza</a>
+        <a href="catering.html">Catering</a>
+        <a href="realizacje.html">Realizacje</a>
+        <a href="kontakt.html">Kontakt</a>
+      </div>
     </nav>
-    <p class="footer-note">© Radość — Bistro · Catering, Jasionka. Wersja podglądowa.</p>
+    <div>
+      <h4>Bistro Pełne Radości</h4>
+      <address>
+        Jasionka 954c, 36-002 Jasionka<br>
+        Bistro: <a class="tel-link" href="tel:+48723800801">723 800 801</a><br>
+        Manager: <a class="tel-link" href="tel:+48601940856">601 940 856</a>
+      </address>
+    </div>
+    <div>
+      <h4>Radość Catering</h4>
+      <address>
+        Jasionka 953, 36-002 Jasionka<br>
+        Tel.: <a class="tel-link" href="tel:+48601940856">601 940 856</a><br>
+        <a class="tel-link" href="mailto:patrycja@restauracjaradosc.pl">patrycja@restauracjaradosc.pl</a>
+      </address>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <p>© Radość — Bistro · Catering, Jasionka</p>
+    <a href="polityka-prywatnosci.html">Polityka prywatności</a>
   </div>
 </footer>
 

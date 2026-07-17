@@ -19,7 +19,7 @@
   --pad-x:64px;
 }
 
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;overflow-x:hidden}
 html,body{background:var(--cream)}
 body{font-family:"Inter",system-ui,sans-serif;color:var(--ink);line-height:1.5;
   -webkit-font-smoothing:antialiased;overflow-x:hidden}
@@ -396,4 +396,200 @@ h2 em{font-style:italic;font-weight:500;color:var(--gold)}
   .reveal-hero{animation:none;opacity:1;transform:none}
   .reveal{opacity:1;transform:none;transition:none}
   *,*::before,*::after{transition-duration:.01ms !important;animation-duration:.01ms !important}
+}
+
+/* ============================================================
+   PODSTRONY — wspólne komponenty (ETAP 5)
+   ============================================================ */
+
+/* hero podstrony */
+.sub-hero{position:relative;min-height:clamp(430px,56vh,600px);display:flex;align-items:flex-end;
+  overflow:hidden;background:var(--cream)}
+.sub-hero .scene{position:absolute;inset:0;
+  background:url("../assets/img/bistro-wnetrze-kwiaty-1000.jpg") no-repeat 50% 42%/cover;
+  filter:brightness(1.07) saturate(1.03) contrast(1.02);
+  animation:sceneDrift 46s ease-in-out infinite alternate}
+.sub-hero--catering .scene{background-image:url("../assets/img/catering-event-goscie-1000.jpg");
+  background-position:50% 30%}
+.sub-hero .veil{position:absolute;inset:0;background:
+  linear-gradient(180deg,rgba(246,241,229,.94) 0%,rgba(246,241,229,.80) 34%,rgba(246,241,229,.55) 62%,rgba(246,241,229,.88) 100%)}
+.sub-hero .glow{position:absolute;inset:0;background:
+  radial-gradient(70% 55% at 86% 0%,rgba(233,196,124,.26),transparent 62%)}
+.sub-hero-frame{position:relative;z-index:2;max-width:1140px;width:100%;margin:0 auto;
+  padding:170px 24px 58px}
+.sub-hero .eyebrow{margin-bottom:22px}
+.sub-hero h1{font-family:"Fraunces",serif;font-weight:600;letter-spacing:-.012em;line-height:1.06;
+  font-size:clamp(36px,4.6vw,62px);color:var(--ink);max-width:21ch}
+.sub-hero h1 em{font-style:italic;font-weight:500;color:var(--gold)}
+.sub-hero .desc{margin-top:20px;font-size:17px;max-width:52ch}
+.sub-hero .cta{margin-top:28px}
+
+/* aria-current w nawigacji */
+.nav-links a[aria-current="page"]{color:var(--gold-dark);border-bottom:1px solid rgba(138,102,31,.55)}
+.mobile-menu a[aria-current="page"]{color:var(--gold-dark)}
+
+/* sekcje treściowe podstron */
+.two-col{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(34px,5vw,72px);align-items:center}
+.two-col .col-img{position:relative}
+.arch-photo{position:relative;border-radius:999px 999px 0 0;overflow:hidden;
+  aspect-ratio:372/460;box-shadow:0 22px 54px rgba(21,50,31,.16);max-width:430px;margin:0 auto}
+.arch-photo img{width:100%;height:100%;object-fit:cover}
+.arch-photo::after{content:"";position:absolute;inset:0;border-radius:999px 999px 0 0;
+  border:1px solid rgba(216,178,106,.42);
+  background:linear-gradient(180deg,rgba(21,50,31,0) 58%,rgba(14,30,19,.45) 100%)}
+.arch-photo figcaption{position:absolute;left:0;right:0;bottom:18px;z-index:2;text-align:center;
+  font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:rgba(246,241,229,.95);font-weight:500}
+
+/* listy z gałązką */
+.leaf-list{list-style:none;margin:18px 0 0}
+.leaf-list li{position:relative;padding:9px 0 9px 34px;font-size:16px;line-height:1.55;color:var(--ink-soft)}
+.leaf-list li::before{content:"";position:absolute;left:0;top:16px;width:20px;height:1.5px;
+  background:var(--gold)}
+.leaf-list li b{color:var(--ink);font-weight:600}
+
+/* kafle ofertowe (statyczne, bez linku) */
+.tiles.static .tile{cursor:default}
+.tiles.static .tile:hover{transform:none;box-shadow:0 10px 26px rgba(21,50,31,.08)}
+.tiles.cols3{grid-template-columns:repeat(3,1fr)}
+
+/* kroki procesu */
+.steps{counter-reset:step;margin-top:44px;display:grid;grid-template-columns:repeat(5,1fr);gap:20px}
+.steps.cols3{grid-template-columns:repeat(3,1fr)}
+.step{position:relative;padding:26px 20px 20px;background:rgba(255,255,255,.55);
+  border:1px solid rgba(21,50,31,.12)}
+.step b{display:block;font-family:"Fraunces",serif;font-weight:600;font-size:30px;color:var(--gold);
+  margin-bottom:10px}
+.step h3{font-family:"Fraunces",serif;font-weight:600;font-size:19px;color:var(--ink);margin-bottom:8px}
+.step p{font-size:14px;line-height:1.6;color:var(--ink-soft)}
+
+/* kategorie menu (pizza) */
+.menu-cats{margin-top:40px;border-top:1px solid rgba(21,50,31,.18)}
+.menu-cat{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:14px 40px;
+  padding:26px 4px;border-bottom:1px solid rgba(21,50,31,.14)}
+.menu-cat h3{font-family:"Fraunces",serif;font-weight:600;font-size:24px;color:var(--ink)}
+.menu-cat h3 span{display:block;font-family:"Inter",sans-serif;font-weight:600;font-size:11px;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:6px}
+.menu-cat p{font-size:15.5px;line-height:1.65;color:var(--ink-soft);align-self:center}
+.menu-note{margin-top:30px;padding:22px 26px;background:rgba(255,255,255,.6);
+  border:1px solid rgba(169,129,47,.4);font-size:16px;color:var(--ink)}
+.menu-note b{font-weight:600}
+
+/* przyciski telefoniczne */
+.btn-tel{display:inline-flex;align-items:center;gap:12px;font-variant-numeric:tabular-nums}
+.tel-link{font-weight:600;color:var(--ink);border-bottom:1px solid rgba(21,50,31,.35);
+  padding-bottom:2px;transition:color .25s ease,border-color .25s ease;white-space:nowrap}
+.tel-link:hover{color:var(--gold-dark);border-color:var(--gold-dark)}
+.sec-kontakt .tel-link,.site-footer .tel-link{color:var(--cream);border-color:rgba(246,241,229,.4)}
+.sec-kontakt .tel-link:hover,.site-footer .tel-link:hover{color:var(--gold-light);border-color:var(--gold-light)}
+
+/* karty kontaktowe */
+.contact-cards{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:44px}
+.contact-card{background:rgba(255,255,255,.6);border:1px solid rgba(21,50,31,.14);padding:30px 28px}
+.contact-card h3{font-family:"Fraunces",serif;font-weight:600;font-size:24px;color:var(--ink);margin-bottom:6px}
+.contact-card .role{font-size:11.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold-dark);margin-bottom:16px}
+.contact-card address{font-style:normal;font-size:15.5px;line-height:1.7;color:var(--ink-soft)}
+.contact-card address b{color:var(--ink);font-weight:600}
+.contact-card .rows{margin-top:14px;display:flex;flex-direction:column;gap:9px;font-size:15.5px}
+.contact-card .rows span{color:var(--ink-soft)}
+.contact-card .maplink{margin-top:16px;display:inline-block;font-size:13px;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dark);
+  border-bottom:1px solid rgba(138,102,31,.5);padding-bottom:2px;
+  transition:color .25s ease,border-color .25s ease}
+.contact-card .maplink:hover{color:var(--ink);border-color:var(--ink)}
+
+/* mapa bez klucza API */
+.map-embed{margin-top:44px;border:1px solid rgba(21,50,31,.15);background:var(--cream-deep)}
+.map-embed iframe{display:block;width:100%;height:min(420px,52vw);border:0}
+
+/* szybkie tematy (kontakt) */
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.chip{font:inherit;font-size:13.5px;font-weight:500;color:var(--ink);background:rgba(255,255,255,.55);
+  border:1px solid rgba(21,50,31,.28);border-radius:999px;padding:10px 18px;cursor:pointer;
+  transition:background .25s ease,color .25s ease,border-color .25s ease,transform .25s ease}
+.chip:hover{border-color:var(--gold-dark);color:var(--gold-dark);transform:translateY(-1px)}
+.chip.active{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+
+/* filtry realizacji */
+.filters{display:flex;flex-wrap:wrap;gap:10px;margin-top:38px}
+.filter-btn{font:inherit;font-size:12.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink);background:none;border:1px solid rgba(21,50,31,.3);border-radius:999px;
+  padding:11px 20px;cursor:pointer;
+  transition:background .25s ease,color .25s ease,border-color .25s ease}
+.filter-btn:hover{border-color:var(--gold-dark);color:var(--gold-dark)}
+.filter-btn.active{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+
+.real-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:40px}
+.real-card{background:rgba(255,255,255,.55);border:1px solid rgba(21,50,31,.12);
+  display:flex;flex-direction:column;overflow:hidden;
+  transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease}
+.real-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(21,50,31,.12);
+  border-color:rgba(169,129,47,.4)}
+.real-card.hidden{display:none}
+.real-card .ph{position:relative;aspect-ratio:4/3;overflow:hidden}
+.real-card .ph img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.22,.61,.36,1)}
+.real-card:hover .ph img{transform:scale(1.04)}
+.real-card .ph::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(21,50,31,0) 62%,rgba(14,30,19,.38) 100%)}
+.real-card .txt{padding:22px 22px 24px;display:flex;flex-direction:column;gap:8px;flex:1}
+.real-card .cat{font-size:10.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-dark)}
+.real-card h3{font-family:"Fraunces",serif;font-weight:600;font-size:21px;color:var(--ink)}
+.real-card p{font-size:14px;line-height:1.6;color:var(--ink-soft)}
+.real-card--text{justify-content:flex-end;background:var(--ink)}
+.real-card--text .txt{padding-top:46px}
+.real-card--text .cat{color:var(--gold-light)}
+.real-card--text h3{color:var(--cream)}
+.real-card--text p{color:rgba(246,241,229,.75)}
+.real-card--text:hover{border-color:rgba(216,178,106,.5)}
+
+/* formularz — walidacja */
+.field-error{border-color:#C96F5B !important;background:rgba(201,111,91,.12) !important}
+.form-status.is-error{color:#E5A793}
+label .req{color:var(--gold-light)}
+
+/* rozbudowana stopka */
+.site-footer{padding:64px 24px 40px}
+.footer-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:38px;align-items:start}
+.footer-grid h4{font-size:12px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold-light);margin-bottom:16px}
+.footer-grid p,.footer-grid address{font-style:normal;font-size:14.5px;line-height:1.75;
+  color:rgba(246,241,229,.75)}
+.footer-grid .f-nav{display:flex;flex-direction:column;gap:9px;font-size:14px}
+.footer-grid .f-nav a{padding-bottom:1px;border-bottom:1px solid transparent;width:fit-content;
+  transition:color .25s ease,border-color .25s ease}
+.footer-grid .f-nav a:hover{color:var(--gold-light);border-color:rgba(216,178,106,.5)}
+.footer-grid .f-brand p{margin-top:14px;max-width:26ch}
+.footer-bottom{margin-top:46px;padding-top:22px;border-top:1px solid rgba(246,241,229,.16);
+  display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.footer-bottom p{font-size:12.5px;color:rgba(246,241,229,.55)}
+.footer-bottom a{font-size:12.5px;color:rgba(246,241,229,.75);border-bottom:1px solid rgba(246,241,229,.3);
+  padding-bottom:1px;transition:color .25s ease,border-color .25s ease}
+.footer-bottom a:hover{color:var(--gold-light);border-color:var(--gold-light)}
+
+/* strona polityki */
+.legal{max-width:760px}
+.legal h2{font-size:clamp(26px,3vw,34px);margin-top:44px}
+.legal p{margin-bottom:16px}
+
+/* responsywność podstron */
+@media (max-width:1060px){
+  .real-cards{grid-template-columns:repeat(2,1fr)}
+  .steps{grid-template-columns:repeat(3,1fr)}
+  .tiles.cols3{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:860px){
+  .sub-hero-frame{padding:130px var(--pad-x) 44px}
+  .two-col{grid-template-columns:1fr;gap:34px}
+  .two-col .col-img{order:-1}
+  .arch-photo{max-width:320px}
+  .menu-cat{grid-template-columns:1fr;gap:10px}
+  .contact-cards{grid-template-columns:1fr}
+  .steps,.steps.cols3{grid-template-columns:1fr 1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:560px){
+  .real-cards{grid-template-columns:1fr}
+  .steps,.steps.cols3{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr;gap:30px}
+  .tiles.cols3{grid-template-columns:1fr}
 }
