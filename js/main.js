@@ -180,7 +180,7 @@
     h += '<div class="menu-list">';
     data.items.forEach(function (it) {
       h += '<div class="menu-item"><div class="row">' +
-           '<span class="name">' + esc(it.name) + '</span>' +
+           '<span class="name">' + esc(it.name) + (it.veg ? LEAF : '') + '</span>' +
            '<span class="dots" aria-hidden="true"></span>' +
            (it.price != null ? '<span class="price">' + esc(it.price) + ' zł</span>' : '') +
            '</div>' +
@@ -201,5 +201,83 @@
   });
   renderMenu(window.RADOSC_SNIADANIA, 'sniadania-menu', {
     title: 'Śniadania', text: ''
+  });
+})();
+
+/* ============================================================
+   ETAP 5.3 — menu weekendowe, antipasti/makarony,
+   aktywne karty cateringowe
+   ============================================================ */
+(function () {
+  'use strict';
+  function esc(s) {
+    return String(s || '').replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+  var LEAF = ' <span class="veg-leaf" role="img" aria-label="opcja wegetariańska" title="opcja wegetariańska">🌱</span>';
+
+  function itemsHtml(items) {
+    var h = '<div class="menu-list">';
+    items.forEach(function (it) {
+      var desc = [it.desc, it.grams].filter(Boolean).join(' · ');
+      h += '<div class="menu-item"><div class="row">' +
+           '<span class="name">' + esc(it.name) + (it.veg ? LEAF : '') + '</span>' +
+           '<span class="dots" aria-hidden="true"></span>' +
+           (it.price != null ? '<span class="price">' + esc(it.price) + ' zł</span>' : '') +
+           '</div>' +
+           (desc ? '<p class="desc">' + esc(desc) + '</p>' : '') + '</div>';
+    });
+    return h + '</div>';
+  }
+
+  /* antipasti + makarony (strona Pizza) */
+  function renderExtra(data, boxId) {
+    var box = document.getElementById(boxId);
+    if (!box || !data || !data.items || !data.items.length) return;
+    var h = '';
+    if (data.sizeNote) h += '<p class="menu-size-note">' + esc(data.sizeNote) + '</p>';
+    h += itemsHtml(data.items);
+    if (data.note) h += '<p class="menu-size-note">' + esc(data.note) + '</p>';
+    box.innerHTML = h;
+  }
+  renderExtra(window.RADOSC_ANTIPASTI, 'antipasti-menu');
+  renderExtra(window.RADOSC_MAKARONY, 'makarony-menu');
+
+  /* menu weekendowe (strona Bistro) */
+  var wkBox = document.getElementById('weekend-menu');
+  if (wkBox && window.RADOSC_WEEKEND) {
+    var W = window.RADOSC_WEEKEND;
+    var h = '';
+    W.categories.forEach(function (cat) {
+      h += '<h3 class="wk-cat">' + esc(cat.title) + '</h3>' + itemsHtml(cat.items);
+    });
+    wkBox.innerHTML = h;
+  }
+
+  /* aktywne karty cateringowe → wspólny formularz */
+  var typeField = document.getElementById('inquiry-type');
+  var intro = document.getElementById('inquiry-intro');
+  var INTRO_TEXTS = {
+    'Catering dla firm': 'Organizujesz spotkanie, szkolenie, konferencję albo chcesz zamawiać lunche dla zespołu? Napisz kilka zdań. Przygotujemy niezobowiązującą propozycję dopasowaną do liczby osób, miejsca i charakteru wydarzenia.',
+    'Catering konferencyjny': 'Organizujesz spotkanie, szkolenie, konferencję albo chcesz zamawiać lunche dla zespołu? Napisz kilka zdań. Przygotujemy niezobowiązującą propozycję dopasowaną do liczby osób, miejsca i charakteru wydarzenia.',
+    'Spotkanie biznesowe': 'Organizujesz spotkanie, szkolenie, konferencję albo chcesz zamawiać lunche dla zespołu? Napisz kilka zdań. Przygotujemy niezobowiązującą propozycję dopasowaną do liczby osób, miejsca i charakteru wydarzenia.',
+    'Przyjęcie rodzinne': 'Planujesz komunię, chrzciny, urodziny, rocznicę lub inne rodzinne spotkanie? Opowiedz nam o terminie i liczbie gości. Skontaktujemy się, aby poznać szczegóły i przygotować indywidualną propozycję.',
+    'Komunia lub chrzciny': 'Planujesz komunię, chrzciny, urodziny, rocznicę lub inne rodzinne spotkanie? Opowiedz nam o terminie i liczbie gości. Skontaktujemy się, aby poznać szczegóły i przygotować indywidualną propozycję.',
+    'Wesele lub uroczystość': 'Planujesz wesele lub większą uroczystość? Podaj termin, miejsce i orientacyjną liczbę gości. Wspólnie omówimy menu, zakres obsługi i charakter wydarzenia.'
+  };
+  var DEFAULT_INTRO = 'Opowiedz nam o wydarzeniu — przygotujemy niezobowiązującą propozycję dopasowaną do terminu, miejsca i liczby gości.';
+  document.querySelectorAll('[data-inquiry]').forEach(function (card) {
+    card.addEventListener('click', function () {
+      var val = card.getAttribute('data-inquiry');
+      if (typeField) {
+        typeField.value = val;
+        typeField.classList.remove('field-error');
+      }
+      if (intro) {
+        intro.textContent = INTRO_TEXTS[val] || DEFAULT_INTRO;
+        intro.hidden = false;
+      }
+    });
   });
 })();

@@ -31,7 +31,7 @@
 <header class="site-header" id="site-header">
   <div class="header-inner">
     <a class="brand" href="index.html" aria-label="Radość — strona główna">
-      Rado<i>ść</i><small>Bistro · Catering</small>
+      <span class="lg-top">BISTR<svg class="lg-o" viewBox="0 0 26 22" aria-hidden="true" focusable="false"><circle cx="6.6" cy="4.6" r="2.7" fill="currentColor"/><circle cx="19.4" cy="4.6" r="2.7" fill="currentColor"/><path d="M3.4 9.6 A 9.8 9.8 0 0 0 22.6 9.6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span><small>Pełne Radości</small>
     </a>
     <nav class="nav-links" aria-label="Nawigacja główna">
       <a href="bistro.html">Bistro</a>
@@ -78,47 +78,56 @@
   <div class="wrap">
     <p class="sec-eyebrow reveal">Zakres</p>
     <h2 class="reveal">Wydarzenia, które <em>karmimy.</em></h2>
-    <div class="tiles static">
-      <div class="tile reveal">
+    <p class="body-text reveal">Kliknij kartę, która pasuje do Twojego wydarzenia — formularz niżej ustawi się automatycznie.</p>
+    <div class="tiles">
+      <a class="tile reveal" href="#zapytanie" data-inquiry="Catering dla firm" aria-label="Zapytaj o ofertę — catering dla firm">
         <b>01</b>
         <h3>Catering dla firm</h3>
         <p>Codzienne i okazjonalne zamówienia dla zespołów — od śniadań po lunche do biura.</p>
-      </div>
-      <div class="tile reveal">
+        <span class="tile-more">Zapytaj o ofertę <span aria-hidden="true">→</span></span>
+      </a>
+      <a class="tile reveal" href="#zapytanie" data-inquiry="Catering konferencyjny" aria-label="Zapytaj o ofertę — catering konferencyjny">
         <b>02</b>
         <h3>Catering konferencyjny</h3>
         <p>Przerwy kawowe, bufety i serwisy dopasowane do agendy konferencji czy szkolenia.</p>
-      </div>
-      <div class="tile reveal">
+        <span class="tile-more">Zapytaj o ofertę <span aria-hidden="true">→</span></span>
+      </a>
+      <a class="tile reveal" href="#zapytanie" data-inquiry="Catering eventowy" aria-label="Zapytaj o ofertę — catering eventowy">
         <b>03</b>
         <h3>Catering eventowy</h3>
         <p>Obsługa wydarzeń plenerowych i firmowych — od finger foodu po pełne menu.</p>
-      </div>
-      <div class="tile reveal">
+        <span class="tile-more">Zapytaj o ofertę <span aria-hidden="true">→</span></span>
+      </a>
+      <a class="tile reveal" href="#zapytanie" data-inquiry="Przyjęcie rodzinne" aria-label="Zapytaj o ofertę — przyjęcia rodzinne">
         <b>04</b>
         <h3>Przyjęcia rodzinne</h3>
         <p>Urodziny, jubileusze i rodzinne obiady — stół, przy którym wszyscy czują się u siebie.</p>
-      </div>
-      <div class="tile reveal">
+        <span class="tile-more">Zapytaj o ofertę <span aria-hidden="true">→</span></span>
+      </a>
+      <a class="tile reveal" href="#zapytanie" data-inquiry="Wesele lub uroczystość" aria-label="Zapytaj o ofertę — wesela i uroczystości">
         <b>05</b>
-        <h3>Wesela</h3>
+        <h3>Wesela i uroczystości</h3>
         <p>Menu i obsługa na najważniejszy dzień — dopracowane od pierwszego toastu po tort.</p>
-      </div>
-      <div class="tile reveal">
+        <span class="tile-more">Zapytaj o ofertę <span aria-hidden="true">→</span></span>
+      </a>
+      <a class="tile reveal" href="#zapytanie" data-inquiry="Komunia lub chrzciny" aria-label="Zapytaj o ofertę — komunie i chrzciny">
         <b>06</b>
         <h3>Komunie i chrzciny</h3>
         <p>Rodzinne uroczystości w spokojnej, jasnej oprawie i ze sprawdzonym menu.</p>
-      </div>
-      <div class="tile reveal">
+        <span class="tile-more">Zapytaj o ofertę <span aria-hidden="true">→</span></span>
+      </a>
+      <a class="tile reveal" href="#zapytanie" data-inquiry="Spotkanie biznesowe" aria-label="Zapytaj o ofertę — spotkania biznesowe">
         <b>07</b>
         <h3>Spotkania biznesowe</h3>
         <p>Kameralne kolacje i lunche biznesowe — dyskretnie i na czas.</p>
-      </div>
-      <div class="tile reveal">
+        <span class="tile-more">Zapytaj o ofertę <span aria-hidden="true">→</span></span>
+      </a>
+      <a class="tile reveal" href="#zapytanie" data-inquiry="Wynajem sali" aria-label="Zapytaj o ofertę — wynajem sal">
         <b>08</b>
         <h3>Wynajem sal</h3>
         <p>Przestrzeń na Twoje wydarzenie wraz z pełnym zapleczem kuchni Radości.</p>
-      </div>
+        <span class="tile-more">Zapytaj o ofertę <span aria-hidden="true">→</span></span>
+      </a>
     </div>
   </div>
 </section>
@@ -232,21 +241,42 @@
 
 <!-- WYDARZENIA RODZINNE -->
 <section class="section sec-bistro" id="rodzinne">
-  <div class="wrap narrow">
-    <p class="sec-eyebrow reveal">Wydarzenia rodzinne</p>
-    <h2 class="reveal">Święta, które <em>smakują jak dom.</em></h2>
-    <p class="body-text reveal">Wesela, komunie, chrzciny, urodziny i jubileusze — uroczystości, przy których najbardziej liczy się spokój gospodarzy. Bierzemy na siebie menu i obsługę, żebyś mógł po prostu być ze swoimi gośćmi.</p>
-    <p class="reveal"><a class="btn btn-fill" href="#zapytanie">Porozmawiajmy o Twojej uroczystości</a></p>
+  <div class="wrap">
+    <div class="two-col">
+      <div>
+        <p class="sec-eyebrow reveal">Wydarzenia rodzinne</p>
+        <h2 class="reveal">Święta, które <em>smakują jak dom.</em></h2>
+        <p class="body-text reveal">Wesela, komunie, chrzciny, urodziny i jubileusze — uroczystości, przy których najbardziej liczy się spokój gospodarzy. Bierzemy na siebie menu i obsługę, żebyś mógł po prostu być ze swoimi gośćmi.</p>
+        <p class="reveal"><a class="btn btn-fill" href="#zapytanie" data-inquiry="Przyjęcie rodzinne">Porozmawiajmy o Twojej uroczystości</a></p>
+      </div>
+      <div class="col-img reveal">
+        <figure class="arch-photo">
+          <img src="assets/img/catering-event-goscie-1000.jpg" alt="Rodzina i goście przy długim, świątecznie nakrytym stole ze świecami i kwiatami" loading="lazy" decoding="async">
+          <figcaption>wspólny stół</figcaption>
+        </figure>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- OFERTA DLA FIRM -->
 <section class="section" id="dla-firm">
-  <div class="wrap narrow">
-    <p class="sec-eyebrow reveal">Oferta dla firm</p>
-    <h2 class="reveal">Od przerwy kawowej <em>po galę firmową.</em></h2>
-    <p class="body-text reveal">Obsługujemy firmy w Jasionce i okolicach Rzeszowa — konferencje, szkolenia, spotkania zarządów, integracje i codzienne zamówienia do biura. Ustalimy stały, przewidywalny standard i menu, które nie nudzi się po tygodniu.</p>
-    <p class="reveal"><a class="link" href="mailto:patrycja@restauracjaradosc.pl">Napisz: patrycja@restauracjaradosc.pl</a></p>
+  <div class="wrap">
+    <div class="two-col">
+      <div class="col-img reveal" style="order:0">
+        <figure class="arch-photo">
+          <img src="assets/img/bufet-konferencja.jpg" alt="Bufet konferencyjny obsługiwany podczas firmowego wydarzenia" loading="lazy" decoding="async">
+          <figcaption>bufet konferencyjny</figcaption>
+        </figure>
+      </div>
+      <div>
+        <p class="sec-eyebrow reveal">Oferta dla firm</p>
+        <h2 class="reveal">Od przerwy kawowej <em>po galę firmową.</em></h2>
+        <p class="body-text reveal">Obsługujemy firmy w Jasionce i okolicach Rzeszowa — konferencje, szkolenia, spotkania zarządów, integracje i codzienne zamówienia do biura. Ustalimy stały, przewidywalny standard i menu, które nie nudzi się po tygodniu.</p>
+        <p class="reveal"><a class="btn btn-fill" href="#zapytanie" data-inquiry="Catering dla firm">Zapytaj o ofertę</a></p>
+        <p class="reveal" style="margin-top:14px"><a class="link" href="mailto:patrycja@restauracjaradosc.pl">Napisz: patrycja@restauracjaradosc.pl</a></p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -254,8 +284,10 @@
 <section class="section sec-kontakt" id="zapytanie">
   <div class="wrap narrow">
     <p class="sec-eyebrow reveal">Zapytanie o catering</p>
-    <h2 class="reveal">Opowiedz nam <em>o swoim wydarzeniu.</em></h2>
-    <p class="body-text reveal">Napisz, jaka to okazja, ilu gości się spodziewasz i kiedy planujesz wydarzenie — wrócimy z propozycją. Możesz też po prostu zadzwonić: <a class="tel-link" href="tel:+48601940856">601 940 856</a>.</p>
+    <h2 class="reveal">Zapytaj <em>niezobowiązująco.</em></h2>
+    <p class="body-text reveal">Podaj podstawowe informacje. Skontaktujemy się, aby poznać szczegóły i przygotować propozycję dopasowaną do Twojego wydarzenia.</p>
+
+    <p id="inquiry-intro" hidden></p>
 
     <form class="demo-form reveal" novalidate>
       <p class="form-note">Formularz demonstracyjny — wysyłka zostanie podłączona przed startem strony.</p>
@@ -271,8 +303,19 @@
         <label>E-mail <span class="req">*</span>
           <input type="email" name="email" autocomplete="email" placeholder="twoj@adres.pl" required>
         </label>
-        <label>Rodzaj wydarzenia
-          <input type="text" name="event" placeholder="np. wesele, konferencja, urodziny">
+        <label>Typ zapytania
+          <select name="event" id="inquiry-type">
+            <option value="">— wybierz albo kliknij kartę powyżej —</option>
+            <option>Catering dla firm</option>
+            <option>Catering konferencyjny</option>
+            <option>Catering eventowy</option>
+            <option>Przyjęcie rodzinne</option>
+            <option>Wesele lub uroczystość</option>
+            <option>Komunia lub chrzciny</option>
+            <option>Spotkanie biznesowe</option>
+            <option>Wynajem sali</option>
+            <option>Inne</option>
+          </select>
         </label>
       </div>
       <div class="row">
@@ -286,7 +329,7 @@
       <label>Miejscowość wydarzenia
         <input type="text" name="place" placeholder="np. Jasionka, Rzeszów…">
       </label>
-      <label>Wiadomość <span class="req">*</span>
+      <label>Opis potrzeb <span class="req">*</span>
         <textarea name="message" rows="5" placeholder="Opowiedz o wydarzeniu — rodzaj posiłków, obsługa kelnerska, szczególne życzenia…" required></textarea>
       </label>
       <label class="consent">
@@ -294,6 +337,7 @@
         <span>Wyrażam zgodę na kontakt w sprawie mojego zapytania. <span class="req">*</span></span>
       </label>
       <button class="btn btn-fill" type="submit">Wyślij zapytanie</button>
+      <p class="no-oblig">Wysłanie zapytania nie zobowiązuje do zamówienia.</p>
       <p class="form-status" role="status" aria-live="polite"></p>
     </form>
 
@@ -316,7 +360,7 @@
 <footer class="site-footer">
   <div class="wrap footer-grid">
     <div class="f-brand">
-      <a class="brand" href="index.html">Rado<i>ść</i><small>Bistro · Catering</small></a>
+      <a class="brand" href="index.html"><span class="lg-top">BISTR<svg class="lg-o" viewBox="0 0 26 22" aria-hidden="true" focusable="false"><circle cx="6.6" cy="4.6" r="2.7" fill="currentColor"/><circle cx="19.4" cy="4.6" r="2.7" fill="currentColor"/><path d="M3.4 9.6 A 9.8 9.8 0 0 0 22.6 9.6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span><small>Pełne Radości</small></a>
       <p>Bistro, pizza i wydarzenia tworzone z&nbsp;wyczuciem.</p>
     </div>
     <nav aria-label="Mapa strony">

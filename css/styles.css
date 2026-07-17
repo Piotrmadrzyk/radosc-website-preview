@@ -762,3 +762,59 @@ label .req{color:var(--gold-light)}
   .check-cols{grid-template-columns:1fr}
   .info-strip{gap:10px 24px;padding:18px 20px}
 }
+
+/* ============================================================
+   ETAP 5.3 — logo z buźką, menu weekendowe, aktywne karty
+   ============================================================ */
+
+/* logo „BISTRO PEŁNE RADOŚCI” — O jako buźka (SVG, currentColor) */
+.brand{line-height:1}
+.brand .lg-top{display:flex;align-items:center;font-family:"Inter",sans-serif;
+  font-weight:500;font-size:21px;letter-spacing:.24em;color:var(--ink)}
+.brand .lg-o{width:.98em;height:.82em;margin-left:.07em;margin-top:.05em;flex:none;color:var(--gold);
+  display:inline-block}
+.brand small{display:block;font-family:"Inter",sans-serif;font-weight:500;font-size:9px;
+  letter-spacing:.42em;text-transform:uppercase;color:var(--ink-soft);margin-top:5px}
+.site-footer .brand .lg-top{color:var(--cream)}
+.site-footer .brand small{color:rgba(246,241,229,.6)}
+.sec-kontakt .brand .lg-top{color:var(--cream)}
+@media (max-width:860px){
+  .brand .lg-top{font-size:17px}
+  .brand small{font-size:8px;letter-spacing:.36em;margin-top:4px}
+}
+
+/* nagłówki kategorii menu weekendowego */
+.wk-cat{font-family:"Fraunces",serif;font-weight:600;font-size:26px;color:var(--ink);
+  margin-top:44px;padding-bottom:10px;border-bottom:1px solid rgba(169,129,47,.4)}
+.wk-cat:first-child{margin-top:34px}
+#weekend-menu .menu-list{margin-top:16px}
+.wk-start{margin-top:34px;padding:24px 28px;background:rgba(255,255,255,.6);
+  border:1px solid rgba(169,129,47,.4)}
+.wk-start b{font-weight:600;color:var(--ink)}
+.wk-start p{font-size:15.5px;line-height:1.65;color:var(--ink-soft);margin-top:6px}
+.social-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
+.social-cta a{display:inline-flex;align-items:center;gap:9px;font-size:12.5px;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--ink);
+  border:1px solid rgba(21,50,31,.35);border-radius:999px;padding:10px 18px;
+  transition:color .25s ease,border-color .25s ease,transform .25s ease}
+.social-cta a:hover{color:var(--gold-dark);border-color:var(--gold-dark);transform:translateY(-1px)}
+.social-cta svg{width:15px;height:15px;flex:none}
+
+/* aktywne karty cateringowe */
+a.tile{cursor:pointer}
+a.tile:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+a.tile .tile-more{margin-top:4px}
+
+/* wybrana kategoria nad formularzem */
+#inquiry-intro{margin:0 0 22px;padding:18px 22px;background:rgba(246,241,229,.10);
+  border-left:2px solid var(--gold-light);font-size:15px;line-height:1.65;
+  color:rgba(246,241,229,.9)}
+#inquiry-intro[hidden]{display:none}
+.demo-form select{display:block;width:100%;margin-top:8px;
+  background:rgba(246,241,229,.07);border:1px solid rgba(246,241,229,.30);
+  color:var(--cream);font:inherit;font-size:15px;padding:13px 14px;border-radius:2px;
+  transition:border-color .25s ease,background .25s ease}
+.demo-form select:focus{outline:none;border-color:var(--gold-light);background:rgba(246,241,229,.12)}
+.demo-form select option{color:#15321F;background:#F6F1E5}
+.no-oblig{font-size:13.5px;color:rgba(246,241,229,.7);margin-top:14px}
+a.chip{display:inline-block}
