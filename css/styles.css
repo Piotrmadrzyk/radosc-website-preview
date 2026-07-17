@@ -888,3 +888,10 @@ a.chip{display:inline-block}
 a.tile.is-active{background:#fff;border-color:var(--gold);
   box-shadow:0 18px 40px rgba(21,50,31,.14)}
 a.tile.is-active b{color:var(--gold-dark)}
+
+/* numer telefonu w CTA nigdy nie łamie się w środku */
+.tel-num{white-space:nowrap}
+.btn{min-height:48px}
+
+/* linki telefoniczne — numer zawsze w jednym kawalku */
+.tel-link{white-space:nowrap}
