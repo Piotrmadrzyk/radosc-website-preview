@@ -53,8 +53,6 @@ section[id],footer[id]{scroll-margin-top:84px}
 .nav-links a{padding-bottom:2px;border-bottom:1px solid transparent;
   transition:color .25s ease, border-color .25s ease}
 .nav-links a:hover{color:var(--gold-dark);border-color:rgba(138,102,31,.55)}
-.nav-links a.pizza{color:var(--gold-dark);border-bottom:1px solid rgba(138,102,31,.55)}
-.nav-links a.pizza:hover{color:var(--ink)}
 
 .burger{display:none;width:44px;height:36px;position:relative;background:none;border:0;cursor:pointer;padding:7px 5px}
 .burger span{position:absolute;left:5px;right:5px;height:1.8px;background:var(--ink);
@@ -76,7 +74,6 @@ section[id],footer[id]{scroll-margin-top:84px}
   transition:color .25s ease,padding-left .25s ease}
 .mobile-menu a b{font-family:"Inter",sans-serif;font-size:12px;font-weight:600;color:var(--gold);letter-spacing:.15em}
 .mobile-menu a:hover{color:var(--gold-dark);padding-left:6px}
-.mobile-menu a.pizza{color:var(--gold-dark)}
 body.menu-open{overflow:hidden}
 
 /* ============================================================
@@ -603,8 +600,8 @@ label .req{color:var(--gold-light)}
   background-position:50% 62%}
 .sub-hero--bufet .scene{background-image:url("../assets/img/bufet-glowny.jpg");
   background-position:50% 55%}
-.sub-hero--gala .scene{background-image:url("../assets/img/event-gala.jpg");
-  background-position:50% 30%}
+.sub-hero--gala .scene{background-image:url("../assets/img/event-sala.jpg");
+  background-position:50% 42%}
 .sub-hero--gala .veil{background:
   linear-gradient(180deg,rgba(246,241,229,.90) 0%,rgba(246,241,229,.70) 36%,rgba(246,241,229,.50) 64%,rgba(246,241,229,.90) 100%)}
 
@@ -818,3 +815,30 @@ a.tile .tile-more{margin-top:4px}
 .demo-form select option{color:#15321F;background:#F6F1E5}
 .no-oblig{font-size:13.5px;color:rgba(246,241,229,.7);margin-top:14px}
 a.chip{display:inline-block}
+
+/* ============================================================
+   ETAP 5.4 — poprawki po audycie Chrome:
+   pasek skrótów Bistro, kotwice kategorii, social w stopce
+   ============================================================ */
+
+/* pasek skrótów na stronie Bistro (pod hero) */
+.jumpbar{background:var(--cream-deep);border-top:1px solid rgba(21,50,31,.10);
+  border-bottom:1px solid rgba(21,50,31,.10)}
+.jumpbar-track{display:flex;gap:8px;align-items:center;
+  overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+  padding-top:14px;padding-bottom:14px}
+.jumpbar-track::-webkit-scrollbar{display:none}
+.jumpbar a{flex:none;white-space:nowrap;font-size:12px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink);
+  border:1px solid rgba(21,50,31,.30);border-radius:999px;padding:9px 16px;
+  transition:color .25s ease,border-color .25s ease,background .25s ease}
+.jumpbar a:hover{color:var(--gold-dark);border-color:var(--gold-dark)}
+.jumpbar a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+/* kotwice kategorii menu weekendowego — nagłówek nie chowa się pod stały header */
+.wk-cat{scroll-margin-top:96px}
+
+/* social media w stopce (ciemne tło) */
+.site-footer .social-cta{margin-top:18px}
+.site-footer .social-cta a{color:rgba(246,241,229,.85);border-color:rgba(246,241,229,.35)}
+.site-footer .social-cta a:hover{color:var(--gold-light);border-color:var(--gold-light)}

@@ -244,13 +244,18 @@
   renderExtra(window.RADOSC_ANTIPASTI, 'antipasti-menu');
   renderExtra(window.RADOSC_MAKARONY, 'makarony-menu');
 
-  /* menu weekendowe (strona Bistro) */
+  /* menu weekendowe (strona Bistro); id kategorii = kotwica dla paska skrótów */
+  function slug(s) {
+    var MAP = { 'ą':'a','ć':'c','ę':'e','ł':'l','ń':'n','ó':'o','ś':'s','ź':'z','ż':'z' };
+    return String(s).toLowerCase().replace(/[ąćęłńóśźż]/g, function (c) { return MAP[c]; })
+      .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  }
   var wkBox = document.getElementById('weekend-menu');
   if (wkBox && window.RADOSC_WEEKEND) {
     var W = window.RADOSC_WEEKEND;
     var h = '';
     W.categories.forEach(function (cat) {
-      h += '<h3 class="wk-cat">' + esc(cat.title) + '</h3>' + itemsHtml(cat.items);
+      h += '<h3 class="wk-cat" id="wk-' + slug(cat.title) + '">' + esc(cat.title) + '</h3>' + itemsHtml(cat.items);
     });
     wkBox.innerHTML = h;
   }
