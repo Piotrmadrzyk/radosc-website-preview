@@ -654,3 +654,111 @@ label .req{color:var(--gold-light)}
   .photo-strip figcaption{display:none}
   .masonry{columns:1}
 }
+
+/* ============================================================
+   ETAP 5.2 — sprzedaż, menu, konwersja
+   ============================================================ */
+
+/* pasek informacyjny (telefon · godziny · adres) */
+.info-strip{display:flex;flex-wrap:wrap;gap:14px 36px;margin-top:38px;padding:20px 26px;
+  background:rgba(255,255,255,.55);border:1px solid rgba(21,50,31,.14);
+  font-size:15px;color:var(--ink-soft);align-items:center}
+.info-strip b{color:var(--ink);font-weight:600}
+.info-strip .item{display:flex;align-items:center;gap:10px}
+.info-strip .item::before{content:"";width:18px;height:1.5px;background:var(--gold);flex:none}
+
+/* karty „Co dziś w Radości?” */
+.today-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px}
+.today-card{background:rgba(255,255,255,.55);border:1px solid rgba(21,50,31,.12);
+  display:flex;flex-direction:column;overflow:hidden;
+  transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease}
+.today-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(21,50,31,.12);
+  border-color:rgba(169,129,47,.45)}
+.today-card .ph{aspect-ratio:16/10;overflow:hidden}
+.today-card .ph img{width:100%;height:100%;object-fit:cover;
+  transition:transform 1.1s cubic-bezier(.22,.61,.36,1)}
+.today-card:hover .ph img{transform:scale(1.045)}
+.today-card .txt{padding:24px 24px 26px;display:flex;flex-direction:column;gap:10px;flex:1}
+.today-card h3{font-family:"Fraunces",serif;font-weight:600;font-size:23px;color:var(--ink)}
+.today-card p{font-size:14.5px;line-height:1.6;color:var(--ink-soft);flex:1}
+.today-card .btn{align-self:flex-start;margin-top:6px}
+
+/* menu lunchowe — karty dni */
+.lunch-week{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:40px}
+.lunch-day{background:rgba(255,255,255,.6);border:1px solid rgba(21,50,31,.13);padding:26px 26px 22px}
+.lunch-day h3{font-family:"Fraunces",serif;font-weight:600;font-size:24px;color:var(--ink);
+  padding-bottom:12px;margin-bottom:16px;border-bottom:1px solid rgba(169,129,47,.35)}
+.lunch-item{margin-bottom:14px}
+.lunch-item:last-child{margin-bottom:0}
+.lunch-item .tag{display:block;font-size:10.5px;font-weight:600;letter-spacing:.20em;
+  text-transform:uppercase;color:var(--gold-dark);margin-bottom:3px}
+.lunch-item .name{font-size:16.5px;font-weight:600;color:var(--ink);line-height:1.4}
+.lunch-item .desc{font-size:14px;color:var(--ink-soft);line-height:1.55}
+.veg-leaf{display:inline-block;color:#4C7A3D;font-size:14px;margin-left:6px;font-style:normal}
+.lunch-extra{margin-top:22px;padding:22px 26px;background:var(--cream-deep);
+  border:1px solid rgba(21,50,31,.12)}
+.lunch-extra h3{font-family:"Fraunces",serif;font-weight:600;font-size:20px;color:var(--ink);margin-bottom:12px}
+.lunch-hours-line{margin-top:26px;font-size:15.5px;color:var(--ink)}
+.lunch-hours-line b{font-weight:600}
+.veg-legend{margin-top:14px;font-size:13px;color:var(--ink-soft)}
+
+/* karta menu (pizza / burgery / śniadania) */
+.menu-list{margin-top:36px;display:grid;grid-template-columns:1fr 1fr;gap:6px 56px}
+.menu-item{display:block;padding:16px 0;border-bottom:1px solid rgba(21,50,31,.13);
+  break-inside:avoid}
+.menu-item .row{display:flex;align-items:baseline;gap:12px}
+.menu-item .name{font-family:"Fraunces",serif;font-weight:600;font-size:20px;color:var(--ink)}
+.menu-item .dots{flex:1;border-bottom:1px dotted rgba(21,50,31,.35);transform:translateY(-4px)}
+.menu-item .price{font-weight:600;font-size:18px;color:var(--gold-dark);white-space:nowrap;
+  font-variant-numeric:tabular-nums}
+.menu-item .desc{margin-top:5px;font-size:14px;line-height:1.55;color:var(--ink-soft);max-width:52ch}
+.menu-size-note{margin-top:26px;font-size:14.5px;font-weight:500;color:var(--ink)}
+.menu-empty{margin-top:36px;padding:30px 32px;background:rgba(255,255,255,.6);
+  border:1px solid rgba(169,129,47,.4)}
+.menu-empty h3{font-family:"Fraunces",serif;font-weight:600;font-size:22px;color:var(--ink);margin-bottom:10px}
+.menu-empty p{font-size:15.5px;line-height:1.65;color:var(--ink-soft)}
+
+/* checklist informacji (catering) */
+.check-cols{display:grid;grid-template-columns:1fr 1fr;gap:0 44px;margin-top:30px}
+
+/* zgoda w formularzu */
+.consent{display:flex;gap:12px;align-items:flex-start;margin:4px 0 22px;
+  font-size:13.5px !important;font-weight:400 !important;letter-spacing:0 !important;
+  text-transform:none !important;color:rgba(246,241,229,.8) !important;line-height:1.55}
+.consent input{width:18px !important;height:18px;margin-top:2px;flex:none;accent-color:var(--gold)}
+
+/* „wolisz porozmawiać” */
+.alt-contact{margin-top:30px;padding-top:24px;border-top:1px solid rgba(246,241,229,.2);
+  font-size:16px;color:rgba(246,241,229,.85)}
+.alt-contact b{font-family:"Fraunces",serif;font-weight:600;font-size:19px;color:var(--cream);display:block;margin-bottom:6px}
+
+/* ————— STAŁY PASEK MOBILNY ————— */
+.mobile-cta{display:none}
+@media (max-width:860px){
+  .mobile-cta{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;
+    background:rgba(16,38,24,.96);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+    border-top:1px solid rgba(216,178,106,.35);
+    padding-bottom:env(safe-area-inset-bottom)}
+  .mobile-cta a{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:3px;min-height:56px;padding:9px 4px;
+    font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--cream);
+    border-right:1px solid rgba(246,241,229,.12);transition:background .25s ease,color .25s ease}
+  .mobile-cta a:last-child{border-right:0}
+  .mobile-cta a span{font-size:15px;line-height:1;color:var(--gold-light)}
+  .mobile-cta a:hover,.mobile-cta a:active{background:rgba(246,241,229,.08);color:var(--gold-light)}
+  body{padding-bottom:calc(56px + env(safe-area-inset-bottom))}
+  .site-footer{padding-bottom:calc(44px + 56px + env(safe-area-inset-bottom))}
+}
+
+/* responsywność menu */
+@media (max-width:1060px){
+  .today-cards{grid-template-columns:1fr 1fr}
+}
+@media (max-width:860px){
+  .menu-list{grid-template-columns:1fr;gap:0}
+  .lunch-week{grid-template-columns:1fr;gap:14px}
+  .today-cards{grid-template-columns:1fr;gap:16px}
+  .today-card .ph{aspect-ratio:16/8}
+  .check-cols{grid-template-columns:1fr}
+  .info-strip{gap:10px 24px;padding:18px 20px}
+}

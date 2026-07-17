@@ -28,7 +28,10 @@ wersja podglądowa (strona ma `noindex`).
 ├── css/
 │   ├── fonts.css       — lokalne fonty Fraunces + Inter (latin + latin-ext)
 │   └── styles.css      — style: hero desktop/mobile, sekcje, responsywność
-├── js/main.js          — menu mobilne, nagłówek, animacje, walidacja formularzy, filtry
+├── js/main.js          — menu mobilne, nagłówek, animacje, walidacja, filtry, render menu
+├── assets/data/
+│   ├── lunch-menu.js   — JEDYNE miejsce edycji menu lunchowego (co tydzień)
+│   └── menu.js         — JEDYNE miejsce edycji kart: pizza, burgery, śniadania
 ├── assets/fonts/       — pliki woff2
 ├── assets/img/         — biblioteka prawdziwych zdjęć (dania, pizza, bufety, serwis, eventy)
 ├── screenshots/        — zrzuty z publicznego adresu po wdrożeniu
@@ -70,6 +73,16 @@ git push origin preview/redesign-2026
 Poprawki zlecaj Claude Code w tej samej sesji/projekcie — edytuje pliki,
 testuje lokalnie (zrzuty w 5 szerokościach ekranu), commituje i wypycha na
 `preview/redesign-2026`; link pozostaje ten sam.
+
+## Aktualizacja menu (co tydzień)
+
+1. Edytuj `assets/data/lunch-menu.js` (bloki START/KONIEC MENU LUNCHOWE).
+2. `git add -A && git commit -m "menu: lunch <zakres dat>" && git push origin preview/redesign-2026`.
+3. Po ok. minucie strona Bistro pokaże nowe menu.
+
+Karty pizzy i burgerów: `assets/data/menu.js` — po otrzymaniu grafiki menu
+wystarczy dopisać pozycje wg formatu w komentarzu; pusta lista pokazuje
+elegancki komunikat „potwierdź telefonicznie”.
 
 ## Treści — dane do potwierdzenia
 

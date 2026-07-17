@@ -64,7 +64,7 @@
       e.preventDefault();
       var invalid = [];
       form.querySelectorAll('[required]').forEach(function (field) {
-        var ok = field.value.trim() !== '';
+        var ok = field.type === 'checkbox' ? field.checked : field.value.trim() !== '';
         if (ok && field.type === 'email') ok = EMAIL_RE.test(field.value.trim());
         field.classList.toggle('field-error', !ok);
         if (!ok) invalid.push(field);
@@ -119,5 +119,87 @@
         card.classList.toggle('hidden', f !== 'all' && cats.indexOf(f) === -1);
       });
     });
+  });
+})();
+
+/* ============================================================
+   Renderowanie menu z plików danych (assets/data/lunch-menu.js,
+   assets/data/menu.js) — menu edytuje się TYLKO tam.
+   ============================================================ */
+(function () {
+  'use strict';
+  function esc(s) {
+    return String(s || '').replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+  var LEAF = ' <span class="veg-leaf" role="img" aria-label="opcja wegetariańska" title="opcja wegetariańska">🌱</span>';
+
+  /* menu lunchowe (strona Bistro) */
+  var lunchBox = document.getElementById('lunch-menu');
+  if (lunchBox && window.RADOSC_LUNCH) {
+    var L = window.RADOSC_LUNCH;
+    var h = '';
+    if (L.note) h += '<p class="lead"><b>' + esc(L.note) + '</b></p>';
+    h += '<div class="lunch-week">';
+    L.days.forEach(function (d) {
+      h += '<div class="lunch-day"><h3>' + esc(d.day) + '</h3>';
+      h += '<div class="lunch-item"><span class="tag">Zupa dnia</span>' +
+           '<span class="name">' + esc(d.soup.name) + (d.soup.veg ? LEAF : '') + '</span></div>';
+      d.mains.forEach(function (m) {
+        h += '<div class="lunch-item"><span class="tag">' + esc(m.label) + '</span>' +
+             '<span class="name">' + esc(m.name) + (m.veg ? LEAF : '') + '</span>' +
+             (m.desc ? '<p class="desc">' + esc(m.desc) + '</p>' : '') + '</div>';
+      });
+      h += '</div>';
+    });
+    if (L.vegetarian) {
+      h += '<div class="lunch-day lunch-veg"><h3>' + esc(L.vegetarian.title) + '</h3>';
+      L.vegetarian.items.forEach(function (m) {
+        h += '<div class="lunch-item"><span class="name">' + esc(m.name) + (m.veg ? LEAF : '') + '</span>' +
+             (m.desc ? '<p class="desc">' + esc(m.desc) + '</p>' : '') + '</div>';
+      });
+      h += '</div>';
+    }
+    h += '</div>';
+    h += '<p class="veg-legend">🌱 — opcja wegetariańska</p>';
+    lunchBox.innerHTML = h;
+  }
+
+  /* karty menu: pizza / burgery / śniadania */
+  function renderMenu(data, boxId, empty) {
+    var box = document.getElementById(boxId);
+    if (!box || !data) return;
+    if (!data.items || !data.items.length) {
+      box.innerHTML =
+        '<div class="menu-empty"><h3>' + empty.title + '</h3><p>' + empty.text + '</p></div>';
+      return;
+    }
+    var h = '';
+    if (data.sizeNote) h += '<p class="menu-size-note">' + esc(data.sizeNote) + '</p>';
+    h += '<div class="menu-list">';
+    data.items.forEach(function (it) {
+      h += '<div class="menu-item"><div class="row">' +
+           '<span class="name">' + esc(it.name) + '</span>' +
+           '<span class="dots" aria-hidden="true"></span>' +
+           (it.price != null ? '<span class="price">' + esc(it.price) + ' zł</span>' : '') +
+           '</div>' +
+           (it.desc ? '<p class="desc">' + esc(it.desc) + '</p>' : '') + '</div>';
+    });
+    h += '</div>';
+    if (data.note) h += '<p class="menu-size-note">' + esc(data.note) + '</p>';
+    box.innerHTML = h;
+  }
+
+  renderMenu(window.RADOSC_PIZZA, 'pizza-menu', {
+    title: 'Aktualne menu pizzy potwierdzisz telefonicznie.',
+    text: 'Pełną kartę pizzy przygotowujemy do publikacji. Zadzwoń — powiemy, co dziś pieczemy: <a class="tel-link" href="tel:+48723800801">723 800 801</a>.'
+  });
+  renderMenu(window.RADOSC_BURGERY, 'burger-menu', {
+    title: 'Menu burgerów potwierdzisz telefonicznie.',
+    text: 'Kartę burgerów przygotowujemy do publikacji. Zamówienia i pytania: <a class="tel-link" href="tel:+48723800801">723 800 801</a>.'
+  });
+  renderMenu(window.RADOSC_SNIADANIA, 'sniadania-menu', {
+    title: 'Śniadania', text: ''
   });
 })();

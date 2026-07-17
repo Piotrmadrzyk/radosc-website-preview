@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pizza — Radość | Jasionka</title>
-<meta name="description" content="Pizza z Bistro Pełne Radości w Jasionce — prosto z pieca, na świeżych składnikach. Na miejscu i na wynos. Zamówienia: 723 800 801.">
+<title>Pizza i burgery Jasionka — Bistro Pełne Radości</title>
+<meta name="description" content="Pizza i burgery w Jasionce — prosto z pieca, na miejscu i na wynos. Zamówienia telefoniczne: 723 800 801. Bistro Pełne Radości, pon.–pt. 8:00–17:00.">
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2315321F'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='20' font-weight='600' fill='%23F6F1E5' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="css/fonts.css">
@@ -23,7 +23,14 @@
     "addressCountry": "PL"
   },
   "telephone": "+48723800801",
-  "email": "patrycja@restauracjaradosc.pl"
+  "email": "patrycja@restauracjaradosc.pl",
+  "url": "https://piotrmadrzyk.github.io/radosc-website-preview/pizza.html",
+  "openingHoursSpecification": [{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    "opens": "08:00",
+    "closes": "17:00"
+  }]
 }
 </script>
 </head>
@@ -107,27 +114,30 @@
   </div>
 </section>
 
-<!-- MENU -->
+<!-- MENU PIZZY -->
 <section class="section sec-bistro" id="menu">
-  <div class="wrap narrow">
-    <p class="sec-eyebrow reveal">Menu</p>
-    <h2 class="reveal">Czego możesz się <em>spodziewać.</em></h2>
-    <div class="menu-cats reveal">
-      <div class="menu-cat">
-        <h3><span>Kategoria</span>Klasyki</h3>
-        <p>Pizze, które zna każdy stół — na bazie pomidorów, sera i sprawdzonych połączeń.</p>
-      </div>
-      <div class="menu-cat">
-        <h3><span>Kategoria</span>Z zielenią</h3>
-        <p>Lżejsze kompozycje ze świeżymi warzywami i ziołami — w duchu naszej oranżerii.</p>
-      </div>
-      <div class="menu-cat">
-        <h3><span>Kategoria</span>Sezonowe</h3>
-        <p>Zmienne propozycje według pory roku i tego, co aktualnie najlepsze u dostawców.</p>
-      </div>
+  <div class="wrap">
+    <p class="sec-eyebrow gold reveal">Menu pizzy</p>
+    <h2 class="reveal">Karta <em>pizzy.</em></h2>
+    <div id="pizza-menu">
+      <noscript><p>Aktualne menu i ceny potwierdzisz telefonicznie: 723 800 801.</p></noscript>
     </div>
-    <p class="menu-note reveal"><b>Aktualne menu i ceny potwierdzisz telefonicznie lub bezpośrednio w Bistro.</b><br>
-      Zadzwoń: <a class="tel-link" href="tel:+48723800801">723 800 801</a></p>
+    <p class="menu-note reveal" style="margin-top:34px"><b>Zadzwoń i zamów:</b> <a class="tel-link" href="tel:+48723800801">723 800 801</a><br>
+      Odbiór w Bistro Pełnym Radości, Jasionka 954c.<br>
+      Poniedziałek–piątek, 8:00–17:00.</p>
+  </div>
+</section>
+
+<!-- MENU BURGERÓW -->
+<section class="section" id="burgery">
+  <div class="wrap">
+    <p class="sec-eyebrow reveal">Burgery</p>
+    <h2 class="reveal">Burgery — <em>konkretnie i świeżo.</em></h2>
+    <p class="body-text reveal">Smażone na bieżąco, na miejscu i na wynos — tak jak pizza.</p>
+    <div id="burger-menu"></div>
+    <p class="reveal" style="margin-top:30px">
+      <a class="btn btn-fill" href="tel:+48723800801">Zadzwoń i zamów — 723 800 801</a>
+    </p>
   </div>
 </section>
 
@@ -153,7 +163,10 @@
         <p>Zabierz pizzę ze sobą albo usiądź u nas i zjedz ją na miejscu, póki jest najlepsza.</p>
       </div>
     </div>
-    <p class="body-text reveal" style="margin-top:34px">Pizza dostępna na miejscu i na wynos — w Bistro Pełne Radości, Jasionka 954c.</p>
+    <p class="body-text reveal" style="margin-top:34px">Pizza i burgery dostępne na miejscu i na wynos — w Bistro Pełne Radości, Jasionka 954c, od poniedziałku do piątku w godzinach 8:00–17:00.</p>
+    <p class="reveal">
+      <a class="btn btn-ghost" href="https://www.google.com/maps/dir/?api=1&amp;destination=Jasionka+954C%2C+36-002+Jasionka" target="_blank" rel="noopener">Wyznacz trasę</a>
+    </p>
   </div>
 </section>
 
@@ -181,7 +194,8 @@
       <address>
         Jasionka 954c, 36-002 Jasionka<br>
         Bistro: <a class="tel-link" href="tel:+48723800801">723 800 801</a><br>
-        Manager: <a class="tel-link" href="tel:+48601940856">601 940 856</a>
+        Manager: <a class="tel-link" href="tel:+48601940856">601 940 856</a><br>
+        pon.–pt. 8:00–17:00
       </address>
     </div>
     <div>
@@ -199,6 +213,22 @@
   </div>
 </footer>
 
+<nav class="mobile-cta" aria-label="Szybkie działania">
+  <a href="tel:+48723800801" aria-label="Zadzwoń do Bistro: 723 800 801">
+    <span aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.13.96.36 1.9.7 2.8a2 2 0 0 1-.45 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.27a2 2 0 0 1 2.1-.45c.9.34 1.84.57 2.8.7a2 2 0 0 1 1.7 2z"/></svg></span>
+    Zadzwoń
+  </a>
+  <a href="#menu" aria-label="Przejdź do menu">
+    <span aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="14" y2="17"/></svg></span>
+    Menu
+  </a>
+  <a href="catering.html#zapytanie" aria-label="Zapytaj o catering">
+    <span aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
+    Catering
+  </a>
+</nav>
+
+<script src="assets/data/menu.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
