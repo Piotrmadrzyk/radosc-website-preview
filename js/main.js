@@ -102,10 +102,49 @@
     });
   });
 
+  /* Deterministyczne przewijanie do sekcji (jumpbar, karty cateringu).
+     Natywny smooth-scroll na długiej stronie bywa przerywany (dotyk,
+     doładowanie fontów/obrazów zmienia layout w trakcie animacji) i potrafi
+     zatrzymać się w złym miejscu. Tu: pozycja liczona z aktualnego layoutu
+     (z uwzględnieniem scroll-margin-top), a po zakończeniu przewijania
+     następuje jednorazowa korekta, jeśli cel się przesunął. */
+  function scrollToSection(id) {
+    var target = document.getElementById(id);
+    if (!target) return false;
+    var noMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function destY() {
+      var margin = parseFloat(getComputedStyle(target).scrollMarginTop) || 0;
+      var top = target.getBoundingClientRect().top + window.scrollY - margin;
+      return Math.max(0, Math.min(top, document.documentElement.scrollHeight - window.innerHeight));
+    }
+    function settle() {
+      if (Math.abs(window.scrollY - destY()) > 4) window.scrollTo({ top: destY(), behavior: 'auto' });
+    }
+    window.scrollTo({ top: destY(), behavior: noMotion ? 'auto' : 'smooth' });
+    if (noMotion) {
+      settle();
+    } else if ('onscrollend' in window) {
+      window.addEventListener('scrollend', settle, { once: true });
+    } else {
+      window.setTimeout(settle, 900);
+    }
+    if (window.location.hash !== '#' + id && window.history.pushState) {
+      window.history.pushState(null, '', '#' + id);
+    }
+    return true;
+  }
+  window.RADOSC_SCROLL = scrollToSection;
+
   /* pasek skrótów Bistro — gaszenie gradientu po dojechaniu do końca */
   var jumpbar = document.querySelector('.jumpbar');
   var jumptrack = document.querySelector('.jumpbar-track');
   if (jumpbar && jumptrack) {
+    /* delegacja: każdy chip paska przewija deterministycznie (klik i Enter) */
+    jumpbar.addEventListener('click', function (e) {
+      var link = e.target.closest('a[href^="#"]');
+      if (!link) return;
+      if (scrollToSection(link.getAttribute('href').slice(1))) e.preventDefault();
+    });
     var updateJumpHint = function () {
       var atEnd = jumptrack.scrollLeft + jumptrack.clientWidth >= jumptrack.scrollWidth - 4;
       jumpbar.classList.toggle('at-end', atEnd);
