@@ -1,4 +1,10 @@
 /* RADOŚĆ — interakcje (wspólne dla wszystkich podstron) */
+window.__MAIN_JS_EXECUTIONS__ = (window.__MAIN_JS_EXECUTIONS__ || 0) + 1;
+console.info('[RADOSC] main.js loaded', {
+  build: window.__RADOSC_BUILD__,
+  executions: window.__MAIN_JS_EXECUTIONS__,
+  src: document.currentScript ? document.currentScript.src : null
+});
 (function () {
   'use strict';
 
@@ -14,31 +20,7 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  /* menu mobilne */
-  function setMenu(open) {
-    burger.setAttribute('aria-expanded', String(open));
-    burger.setAttribute('aria-label', open ? 'Zamknij menu' : 'Otwórz menu');
-    document.body.classList.toggle('menu-open', open);
-    if (open) {
-      menu.hidden = false;
-      requestAnimationFrame(function () { menu.classList.add('open'); });
-    } else {
-      menu.classList.remove('open');
-      window.setTimeout(function () { menu.hidden = true; }, reduced ? 0 : 300);
-    }
-  }
-  burger.addEventListener('click', function () {
-    setMenu(burger.getAttribute('aria-expanded') !== 'true');
-  });
-  menu.addEventListener('click', function (e) {
-    if (e.target.closest('a')) setMenu(false);
-  });
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && burger.getAttribute('aria-expanded') === 'true') {
-      setMenu(false);
-      burger.focus();
-    }
-  });
+  /* hamburger i menu mobilne: obsługa w js/critical-navigation.js */
 
   /* subtelne wejścia sekcji przy przewijaniu */
   var revealed = document.querySelectorAll('.reveal');
@@ -102,44 +84,34 @@
     });
   });
 
-  /* ===== Nawigacja kotwic — model deterministyczny (ETAP 5.6.2) =====
-     Zanim ten plik się wykona, kotwice działają natywnie (zwykłe href).
-     Po inicjalizacji: klik = preventDefault + JEDEN scrollTo liczony od
-     realnej wysokości sticky headera + MAKSYMALNIE JEDNA korekta w rAF.
-     Sekcje menu renderuje skrypt — koniec renderu emituje app:content-ready;
-     tylko na ten jeden moment może czekać zapamiętany cel. Bez ResizeObserverów
-     i wielosekundowych okien pilnujących scrolla. */
+  /* ===== Nawigacja kotwic (ETAP 5.6.3 — uproszczenie awaryjne) =====
+     Zanim main.js się wykona, kotwice działają natywnie (zwykłe href).
+     Po inicjalizacji: preventDefault + pushState + navigateToSection:
+     JEDEN scrollTo behavior:auto liczony od realnej wysokości headera
+     + MAKSYMALNIE JEDNA korekta scrollBy w requestAnimationFrame.
+     Bez smooth (przywrócimy po odbiorze live), bez scrollend,
+     bez ResizeObserverów i timerów. */
   var contentReady = false;
   var pendingAnchor = null;
 
-  function headerOffset() {
-    var h = header ? header.getBoundingClientRect().height : 0;
-    return Math.max(h + 14, 84);
-  }
-  function anchorTop(target) {
-    var top = target.getBoundingClientRect().top + window.scrollY - headerOffset();
-    return Math.max(0, Math.min(top, document.documentElement.scrollHeight - window.innerHeight));
-  }
-  function performScroll(id, opts) {
+  function navigateToSection(id, opts) {
     var target = document.getElementById(id);
     if (!target) return false;
-    var noMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var behavior = (opts.instant || noMotion) ? 'auto' : 'smooth';
-    window.scrollTo({ top: anchorTop(target), behavior: behavior });
-    var corrected = false;
-    var correctOnce = function () {
-      if (corrected) return;
-      corrected = true;
-      requestAnimationFrame(function () {
-        if (Math.abs(window.scrollY - anchorTop(target)) > 4) {
-          window.scrollTo({ top: anchorTop(target), behavior: 'auto' });
-        }
-      });
-    };
-    if (behavior === 'auto') correctOnce();
-    else if ('onscrollend' in window) window.addEventListener('scrollend', correctOnce, { once: true });
-    else window.setTimeout(correctOnce, 700);
-    if (opts.hash) {
+    var d = window.__RADOSC_DIAGNOSTICS__;
+    var offset = header ? header.getBoundingClientRect().height : 0;
+    var rectBefore = target.getBoundingClientRect().top;
+    var yBefore = window.scrollY;
+    var destination = Math.max(0, yBefore + rectBefore - offset - 16);
+    if (d) d.lastScrollAttempt = { id: id, rectTopBefore: Math.round(rectBefore), scrollYBefore: Math.round(yBefore), destination: Math.round(destination), at: Math.round(performance.now()) };
+    window.scrollTo({ top: destination, behavior: 'auto' });
+    requestAnimationFrame(function () {
+      var correction = target.getBoundingClientRect().top - offset - 16;
+      if (Math.abs(correction) > 4) {
+        window.scrollBy({ top: correction, behavior: 'auto' });
+      }
+      if (d) d.lastScrollResult = { id: id, scrollYAfter: Math.round(window.scrollY), rectTopAfter: Math.round(target.getBoundingClientRect().top), at: Math.round(performance.now()) };
+    });
+    if (opts && opts.hash) {
       try {
         if (window.location.hash !== '#' + id && window.history.pushState) {
           window.history.pushState(null, '', '#' + id);
@@ -150,19 +122,21 @@
   }
   function scrollToSection(id, opts) {
     if (!document.getElementById(id)) return false;
-    var options = { hash: !opts || opts.hash !== false, instant: !!(opts && opts.instant) };
+    var options = { hash: !opts || opts.hash !== false };
+    if (window.__RADOSC_DIAGNOSTICS__) window.__RADOSC_DIAGNOSTICS__.lastAnchorRequest = { id: id, contentReady: contentReady, at: Math.round(performance.now()) };
     if (!contentReady) { pendingAnchor = { id: id, opts: options }; return true; }
-    return performScroll(id, options);
+    return navigateToSection(id, options);
   }
   document.addEventListener('app:content-ready', function () {
     contentReady = true;
+    if (window.__RADOSC_DIAGNOSTICS__) window.__RADOSC_DIAGNOSTICS__.contentReady = true;
     if (pendingAnchor) {
-      performScroll(pendingAnchor.id, pendingAnchor.opts);
+      navigateToSection(pendingAnchor.id, pendingAnchor.opts);
       pendingAnchor = null;
     } else if (window.location.hash.length > 1 && document.getElementById(window.location.hash.slice(1))) {
       /* wejście z hashem albo natywny skok sprzed inicjalizacji:
-         jedno bezzwłoczne wyrównanie do finalnego układu */
-      performScroll(window.location.hash.slice(1), { hash: false, instant: true });
+         dokładnie jedno wyrównanie do finalnego układu */
+      navigateToSection(window.location.hash.slice(1), { hash: false });
     }
   }, { once: true });
   window.RADOSC_SCROLL = scrollToSection;
@@ -173,10 +147,14 @@
   /* wszystkie kotwice tej samej strony (jumpbar, hero, treść) przewijają
      deterministycznie; linki panelu Menu mają własny handler */
   document.addEventListener('click', function (e) {
-    var link = e.target.closest('a[href^="#"]');
-    if (!link || link.closest('#menu-sheet')) return;
-    var id = link.getAttribute('href').slice(1);
-    if (id && scrollToSection(id)) e.preventDefault();
+    if (e.defaultPrevented) return;
+    var link = e.target.closest ? e.target.closest('a[href*="#"]') : null;
+    if (!link) return;
+    var hash = link.hash || '';
+    if (hash.length < 2) return;
+    var samePage = link.pathname === window.location.pathname && link.hostname === window.location.hostname;
+    if (!samePage) return;
+    if (scrollToSection(hash.slice(1))) e.preventDefault();
   });
 
   if (jumpbar && jumptrack) {
@@ -189,88 +167,7 @@
     updateJumpHint();
   }
 
-  /* globalny dolny panel Menu — bottom sheet (ETAP 5.6) */
-  var sheet = document.getElementById('menu-sheet');
-  var sheetBackdrop = document.getElementById('menu-sheet-backdrop');
-  var sheetBtn = document.querySelector('.menu-sheet-btn');
-  var sheetClose = document.getElementById('menu-sheet-close');
-  if (sheet && sheetBackdrop && sheetBtn && sheetClose) {
-    var sheetLastFocus = null;
-    /* jawny stan zamiast czytania sheet.hidden — hidden zmienia się z opóźnieniem
-       (timeout animacji), więc szybkie kliknięcia gubiły pierwszą interakcję */
-    var sheetOpen = false;
-    var sheetHideTimer = null;
-    var INERT_SEL = 'main, header.site-header, footer.site-footer, nav.jumpbar, nav.mobile-menu';
-    var setSheet = function (open) {
-      if (open === sheetOpen) return;
-      sheetOpen = open;
-      sheetBtn.setAttribute('aria-expanded', String(open));
-      document.body.classList.toggle('menu-open', open);
-      document.querySelectorAll(INERT_SEL).forEach(function (el) {
-        if (open) { el.setAttribute('inert', ''); el.setAttribute('aria-hidden', 'true'); }
-        else { el.removeAttribute('inert'); el.removeAttribute('aria-hidden'); }
-      });
-      if (open) {
-        if (sheetHideTimer) { window.clearTimeout(sheetHideTimer); sheetHideTimer = null; }
-        sheetLastFocus = document.activeElement;
-        sheet.hidden = false;
-        sheetBackdrop.hidden = false;
-        requestAnimationFrame(function () {
-          sheet.classList.add('open');
-          sheetBackdrop.classList.add('open');
-        });
-        var firstLink = sheet.querySelector('.sheet-list a');
-        (firstLink || sheetClose).focus();
-      } else {
-        sheet.classList.remove('open');
-        sheetBackdrop.classList.remove('open');
-        var finishClose = function () {
-          sheetHideTimer = null;
-          sheet.hidden = true;
-          sheetBackdrop.hidden = true;
-          /* fokus wraca na przycisk otwierający dopiero po domknięciu stanu DOM */
-          if (sheetLastFocus && sheetLastFocus.focus) sheetLastFocus.focus();
-        };
-        if (reduced) finishClose();
-        else sheetHideTimer = window.setTimeout(finishClose, 300);
-      }
-    };
-    /* jedna wspólna ścieżka zamknięcia dla X / Escape / backdropu / wyboru pozycji */
-    var closeSheet = function (reason) { setSheet(false); };
-    sheetBtn.addEventListener('click', function () { setSheet(!sheetOpen); });
-    sheetClose.addEventListener('click', function () { closeSheet('close-button'); });
-    sheetBackdrop.addEventListener('click', function (e) {
-      /* klik w tło nie może przejść do elementów pod spodem */
-      e.preventDefault();
-      e.stopPropagation();
-      closeSheet('backdrop');
-    });
-    document.addEventListener('keydown', function (e) {
-      if (!sheetOpen) return;
-      if (e.key === 'Escape') { closeSheet('escape'); return; }
-      /* focus trap wewnątrz panelu */
-      if (e.key === 'Tab') {
-        var focusables = sheet.querySelectorAll('.sheet-list a, .sheet-close');
-        var first = focusables[0];
-        var last = focusables[focusables.length - 1];
-        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-        else if (!sheet.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
-      }
-    });
-    sheet.addEventListener('click', function (e) {
-      var link = e.target.closest('a[href]');
-      if (!link) return;
-      var href = link.getAttribute('href');
-      var page = href.split('#')[0];
-      var here = window.location.pathname.split('/').pop() || 'index.html';
-      closeSheet('item');
-      if (href.indexOf('#') > -1 && page === here) {
-        e.preventDefault();
-        scrollToSection(href.split('#')[1]);
-      }
-    });
-  }
+  /* dolny panel Menu: obsługa w js/critical-navigation.js */
 
   /* filtry realizacji */
   var filterButtons = document.querySelectorAll('.filter-btn');
@@ -291,12 +188,10 @@
     });
   });
 
-  /* kliknięcia w hamburger / przycisk Menu oddane zanim ten plik się wykonał
-     (mikro-kolejka z <head>) — odtwórz teraz, gdy handlery są podpięte */
-  if (window.__earlyNav && window.__earlyNav.drain) {
-    window.__earlyNav.drain().forEach(function (el) {
-      if (el && el.click) el.click();
-    });
+  /* diagnostyka: pełna nawigacja podpięta */
+  if (window.__RADOSC_DIAGNOSTICS__) {
+    window.__RADOSC_DIAGNOSTICS__.navigationInitialized = true;
+    window.__RADOSC_DIAGNOSTICS__.initializedAt = performance.now();
   }
 })();
 
@@ -463,14 +358,18 @@
       intro.textContent = INTRO_TEXTS[val] || DEFAULT_INTRO;
       intro.hidden = false;
     }
-    /* bezpośrednie przewinięcie do formularza (bez zmiany hasha) + fokus
-       na nagłówku sekcji — czytelne także dla czytników ekranu */
+    /* ta sama funkcja przewijania co kotwice (bez zmiany hasha);
+       fokus dopiero po przewinięciu i korekcie, z preventScroll */
     if (window.RADOSC_SCROLL && window.RADOSC_SCROLL('zapytanie', { hash: false })) {
-      var zh = document.querySelector('#zapytanie h2');
-      if (zh) {
-        if (!zh.hasAttribute('tabindex')) zh.setAttribute('tabindex', '-1');
-        zh.focus({ preventScroll: true });
-      }
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          var zh = document.querySelector('#zapytanie h2');
+          if (zh) {
+            if (!zh.hasAttribute('tabindex')) zh.setAttribute('tabindex', '-1');
+            zh.focus({ preventScroll: true });
+          }
+        });
+      });
       return true;
     }
     return false;
