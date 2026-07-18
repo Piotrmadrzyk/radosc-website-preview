@@ -26,7 +26,18 @@ Własny moduł bez zależności; inicjalizacja strzeżona flagą
 | `kuchnia` | lunch-dnia, lunch-zupa, pasta-domowa | 3 |
 | `o-bistro` | bistro-wnetrze-kwiaty-1000 | 1 |
 | `wnetrze` | bistro-stol, serwis-talerze, catering-event-goscie-1000 | 3 |
-| `social` | mini-lunch, mini-pizza, mini-radosc | 3 |
+| `realizacje` (ETAP 6.1, strona Realizacje) | 14 kart galerii; lista nawigacji liczona przy otwarciu wyłącznie z kart widocznych w aktywnym filtrze | 14 |
+
+Uwaga (ETAP 6.0): grupa `social` przestała istnieć — miniatury sekcji
+„Z życia Bistro" są linkami do profili FB/IG, nie otwierają lightboxa.
+ETAP 6.1: miniatura „Codziennie w Radości" = `mini-codziennie`
+(kadr 4:5 z sniadanie-stol; plik mini-radosc usunięty), podpis trzeciej
+miniatury zmieniony uczciwie na „Pizza prosto z pieca" (w repo nie ma
+zdjęcia kulis pracy kuchni). Lightbox dostał dyskretne strzałki
+poprzednie/następne w pasku podpisu (aktywne tylko w grupach >1 zdjęcia,
+wyłączane na końcach — bez zapętlania) i pętlę fokusu obejmującą X oraz
+strzałki. Blok social przy Menu Weekendowym odchudzony do jednego
+zdania z linkiem „Sprawdź aktualności".
 
 Zasady: nawigacja wyłącznie w obrębie grupy (bez zapętlania, licznik
 „2 / 3"); pojedyncze zdjęcie = brak licznika i brak nawigacji. Mobile:
