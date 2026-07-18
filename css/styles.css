@@ -71,8 +71,10 @@ section[id],footer[id]{scroll-margin-top:84px}
 /* menu mobilne */
 .mobile-menu{position:fixed;inset:0;z-index:35;background:var(--cream);
   display:flex;flex-direction:column;justify-content:center;gap:8px;padding:96px 34px 60px;
-  opacity:0;pointer-events:none;transition:opacity .3s ease}
-.mobile-menu.open{opacity:1;pointer-events:auto}
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .25s ease, visibility 0s linear .25s}
+/* otwarcie bez tranzycji: stan widoczny natychmiast po kliknięciu */
+.mobile-menu.open{opacity:1;visibility:visible;pointer-events:auto;transition:none}
 .mobile-menu a{font-family:"Fraunces",serif;font-weight:500;font-size:34px;color:var(--ink);
   padding:12px 0;border-bottom:1px solid rgba(21,50,31,.14);display:flex;align-items:baseline;gap:16px;
   transition:color .25s ease,padding-left .25s ease}
