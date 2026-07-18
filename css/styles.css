@@ -1105,15 +1105,32 @@ p .link, li .link{margin-left:0}
   transition:transform .22s ease,opacity .16s ease;will-change:transform}
 .lb-overlay.open .lb-stage img{transform:scale(1)}
 .lb-stage img.lb-loading{opacity:.35}
-.lb-bar{display:flex;align-items:baseline;justify-content:space-between;gap:18px;width:100%;
+.lb-bar{display:flex;align-items:center;justify-content:space-between;gap:18px;width:100%;
   padding:0 4px;color:rgba(246,241,229,.92)}
 .lb-cap{font-size:12px;font-weight:500;letter-spacing:.18em;text-transform:uppercase}
-.lb-count{font-family:"Fraunces",serif;font-size:14px;color:var(--gold-light);white-space:nowrap}
+.lb-count{font-family:"Fraunces",serif;font-size:14px;color:var(--gold-light);white-space:nowrap;
+  min-width:52px;text-align:center}
+/* ETAP 6.1 — dyskretne strzałki nawigacji w pasku podpisu */
+.lb-nav{display:flex;align-items:center;gap:10px;flex:none}
+.lb-nav[hidden]{display:none}
+.lb-arrow{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;
+  border-radius:50%;border:1px solid rgba(246,241,229,.35);background:none;color:var(--cream);
+  cursor:pointer;transition:background .2s ease,border-color .2s ease,opacity .2s ease}
+.lb-arrow:hover:not(:disabled){background:rgba(246,241,229,.22);border-color:rgba(246,241,229,.6)}
+.lb-arrow:disabled{opacity:.32;cursor:default}
+.lb-arrow svg{width:16px;height:16px}
 body.lb-open{overflow:hidden}
 @media (prefers-reduced-motion:reduce){
-  .lb-overlay,.lb-stage img,.lb-ico,.lb-close{transition:none}
+  .lb-overlay,.lb-stage img,.lb-ico,.lb-close,.lb-arrow{transition:none}
   .lb-stage img{transform:none}
 }
+
+/* ETAP 6.1 — indywidualne komunikaty błędów pól formularza */
+.field-msg{display:block;margin-top:7px;font-size:12.5px;font-weight:500;letter-spacing:.02em;
+  line-height:1.45;text-transform:none;color:#E5A793}
+.field-msg[hidden]{display:none}
+.consent{flex-wrap:wrap}
+.consent .field-msg{flex-basis:100%;margin-top:0}
 
 /* ============================================================
    ETAP 5.8 — „Z życia Bistro": zaproszenia na Facebooka

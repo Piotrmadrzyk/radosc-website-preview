@@ -41,17 +41,68 @@ console.info('[RADOSC] main.js loaded', {
      (np. Formspree) wymaga wyłącznie ustawienia atrybutu action="..."
      na <form> i usunięcia <p class="form-note"> — bez zmian w JS:
      gdy action jest ustawione, po pozytywnej walidacji submit
-     przechodzi natywnie do usługi; bez action działa tryb demo. */
+     przechodzi natywnie do usługi; bez action działa tryb demo.
+     ETAP 6.1: każde błędne pole dostaje aria-invalid="true" oraz
+     widoczny, konkretny komunikat powiązany przez aria-describedby;
+     błąd znika dopiero, gdy wartość jest naprawdę poprawna. */
   var EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+  var errSeq = 0;
+  function fieldValid(field) {
+    var ok = field.type === 'checkbox' ? field.checked : field.value.trim() !== '';
+    if (ok && field.type === 'email') ok = EMAIL_RE.test(field.value.trim());
+    return ok;
+  }
+  function fieldErrorMessage(field) {
+    if (field.type === 'checkbox') return 'Zaznacz zgodę na kontakt.';
+    if (field.type === 'email') {
+      return field.value.trim() === '' ? 'Podaj adres e-mail.' : 'Podaj poprawny adres e-mail.';
+    }
+    if (field.type === 'tel') return 'Podaj numer telefonu.';
+    if (field.name === 'name') return 'Podaj imię i nazwisko.';
+    if (field.tagName === 'TEXTAREA') return 'Napisz krótką wiadomość.';
+    if (field.tagName === 'SELECT') return 'Wybierz typ zapytania.';
+    return 'Uzupełnij to pole.';
+  }
+  function setFieldError(field, message) {
+    field.classList.add('field-error');
+    field.setAttribute('aria-invalid', 'true');
+    var msg = field.__radoscErr;
+    if (!msg) {
+      msg = document.createElement('span');
+      msg.className = 'field-msg';
+      msg.id = 'field-msg-' + (++errSeq);
+      field.__radoscErr = msg;
+      (field.closest('label') || field.parentNode).appendChild(msg);
+    }
+    msg.textContent = message;
+    msg.hidden = false;
+    field.setAttribute('aria-describedby', msg.id);
+  }
+  function clearFieldError(field) {
+    if (!field || !field.classList) return;
+    field.classList.remove('field-error');
+    field.removeAttribute('aria-invalid');
+    field.removeAttribute('aria-describedby');
+    if (field.__radoscErr) { field.__radoscErr.hidden = true; field.__radoscErr.textContent = ''; }
+  }
+  function revalidateField(field) {
+    /* korekta na żywo dopiero po pierwszej nieudanej wysyłce danego pola */
+    if (!field || !field.classList || !field.hasAttribute || !field.hasAttribute('required')) return;
+    if (!field.classList.contains('field-error')) return;
+    if (fieldValid(field)) clearFieldError(field);
+    else setFieldError(field, fieldErrorMessage(field));
+  }
   document.querySelectorAll('.demo-form').forEach(function (form) {
     var status = form.querySelector('.form-status');
     form.addEventListener('submit', function (e) {
       var invalid = [];
       form.querySelectorAll('[required]').forEach(function (field) {
-        var ok = field.type === 'checkbox' ? field.checked : field.value.trim() !== '';
-        if (ok && field.type === 'email') ok = EMAIL_RE.test(field.value.trim());
-        field.classList.toggle('field-error', !ok);
-        if (!ok) invalid.push(field);
+        if (fieldValid(field)) {
+          clearFieldError(field);
+        } else {
+          setFieldError(field, fieldErrorMessage(field));
+          invalid.push(field);
+        }
       });
       if (invalid.length) {
         e.preventDefault();
@@ -60,18 +111,17 @@ console.info('[RADOSC] main.js loaded', {
         invalid[0].focus();
         return;
       }
-      if (form.getAttribute('action')) return; // produkcja: natywna wysyłka do usługi
+      if (form.getAttribute('action')) { status.classList.remove('is-error'); return; } // produkcja: natywna wysyłka do usługi
       e.preventDefault();
       status.classList.remove('is-error');
       status.textContent =
         'Dziękujemy! Wysyłka formularza zostanie podłączona przed startem strony — ' +
         'do tego czasu prosimy o kontakt telefoniczny lub e-mail.';
       form.reset();
-      form.querySelectorAll('.field-error').forEach(function (f) { f.classList.remove('field-error'); });
+      form.querySelectorAll('.field-error').forEach(clearFieldError);
     });
-    form.addEventListener('input', function (e) {
-      if (e.target.classList) e.target.classList.remove('field-error');
-    });
+    form.addEventListener('input', function (e) { revalidateField(e.target); });
+    form.addEventListener('change', function (e) { revalidateField(e.target); });
   });
 
   /* szybkie tematy (kontakt) — uzupełniają pole tematu w formularzu */
@@ -353,7 +403,12 @@ console.info('[RADOSC] main.js loaded', {
   var inquiryCards = document.querySelectorAll('[data-inquiry]');
   function activateInquiry(card) {
     var val = card.getAttribute('data-inquiry');
-    inquiryCards.forEach(function (c) { c.classList.toggle('is-active', c === card); });
+    inquiryCards.forEach(function (c) {
+      var on = c === card;
+      c.classList.toggle('is-active', on);
+      /* stan wciśnięcia tylko dla kart oferty (mają aria-pressed w HTML) */
+      if (c.hasAttribute('aria-pressed')) c.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
     if (typeField) {
       typeField.value = val;
       typeField.classList.remove('field-error');
@@ -364,14 +419,18 @@ console.info('[RADOSC] main.js loaded', {
       intro.hidden = false;
     }
     /* ta sama funkcja przewijania co kotwice (bez zmiany hasha);
-       fokus dopiero po przewinięciu i korekcie, z preventScroll */
+       fokus dopiero po przewinięciu i korekcie, z preventScroll.
+       ETAP 6.1: fokus na polu „Typ zapytania" — użytkownik od razu
+       widzi, że formularz ustawił się zgodnie z klikniętą kartą. */
     if (window.RADOSC_SCROLL && window.RADOSC_SCROLL('zapytanie', { hash: false })) {
       requestAnimationFrame(function () {
         requestAnimationFrame(function () {
-          var zh = document.querySelector('#zapytanie h2');
-          if (zh) {
-            if (!zh.hasAttribute('tabindex')) zh.setAttribute('tabindex', '-1');
-            zh.focus({ preventScroll: true });
+          var focusTarget = typeField || document.querySelector('#zapytanie h2');
+          if (focusTarget) {
+            if (focusTarget.tagName === 'H2' && !focusTarget.hasAttribute('tabindex')) {
+              focusTarget.setAttribute('tabindex', '-1');
+            }
+            focusTarget.focus({ preventScroll: true });
           }
         });
       });
