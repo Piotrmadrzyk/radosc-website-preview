@@ -1051,6 +1051,11 @@ p .link, li .link{margin-left:0}
 /* kolaż Bufetu: kadr główny + dwa mniejsze obok */
 .bm-collage{grid-template-columns:1.55fr 1fr;grid-auto-rows:minmax(0,1fr)}
 .bm-collage .bm-main{grid-row:1/3}
+/* na desktopie mniejsze kadry wypełniają cały wiersz siatki —
+   bez pustych przerw pod kadrem (aspect-ratio wraca na mobile) */
+@media (min-width:641px){
+  .bm-collage .bm-figure:not(.bm-main),.bm-collage .bm-ph{aspect-ratio:auto;height:100%}
+}
 
 /* placeholder na fotografię własną — zaplanowany element projektu */
 .bm-ph{position:relative;display:flex;flex-direction:column;align-items:center;
@@ -1089,6 +1094,9 @@ p .link, li .link{margin-left:0}
 @media (max-width:900px){
   .bm-split,.bm-split.rev{grid-template-columns:1fr}
   .bm-split .bm-media{order:-1}
+  /* w układzie jednokolumnowym wystarczy jeden placeholder w kolumnie mediów —
+     dwa puste kadry jeden pod drugim wyglądałyby na niedokończone */
+  .bm-split .bm-media .bm-ph.sm{display:none}
   .wk-head{grid-template-columns:1fr}
   .wk-head .bm-figure{aspect-ratio:16/10}
 }
@@ -1096,6 +1104,8 @@ p .link, li .link{margin-left:0}
   .bm-media{gap:10px}
   .bm-collage{grid-template-columns:1fr 1fr;grid-auto-rows:auto}
   .bm-collage .bm-main{grid-column:1/-1;grid-row:auto;aspect-ratio:16/10}
+  /* wysokie kadry 4/5 nie zabierają na mobile całego ekranu */
+  .r45{aspect-ratio:4/3}
   .bm-ph b{font-size:15px}
   .bm-steps{flex-direction:column;gap:12px}
 }
