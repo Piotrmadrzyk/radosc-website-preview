@@ -9,8 +9,6 @@ console.info('[RADOSC] main.js loaded', {
   'use strict';
 
   var header = document.getElementById('site-header');
-  var burger = document.getElementById('burger');
-  var menu = document.getElementById('mobile-menu');
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* nagłówek: tło po przewinięciu */

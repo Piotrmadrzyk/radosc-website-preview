@@ -24,22 +24,25 @@ window.__RADOSC_DIAGNOSTICS__ = {
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }
 
-  function setMenu(open) {
+  /* JEDYNY właściciel stanu hamburgera. Cały stan ustawiany SYNCHRONICZNIE
+     w jednym miejscu — bez requestAnimationFrame (w tle bywa dławiony do zera)
+     i bez tranzycji przy otwieraniu: po pierwszym kliknięciu menu ma od razu
+     computed opacity 1 (stan otwarty steruje CSS .mobile-menu.open). */
+  function setMobileNavigationState(isOpen) {
     var burger = document.getElementById('burger');
     var menu = document.getElementById('mobile-menu');
     if (!burger || !menu) return;
-    state.menu = open;
-    burger.setAttribute('aria-expanded', String(open));
-    burger.setAttribute('aria-label', open ? 'Zamknij menu' : 'Otwórz menu');
-    document.body.classList.toggle('menu-open', open);
-    if (open) {
-      menu.hidden = false;
-      requestAnimationFrame(function () { menu.classList.add('open'); });
-    } else {
-      menu.classList.remove('open');
-      window.setTimeout(function () { menu.hidden = true; }, reduced() ? 0 : 300);
-    }
+    state.menu = isOpen;
+    menu.classList.toggle('open', isOpen);
+    document.body.classList.toggle('menu-open', isOpen);
+    burger.setAttribute('aria-expanded', String(isOpen));
+    burger.setAttribute('aria-label', isOpen ? 'Zamknij menu' : 'Otwórz menu');
+    menu.removeAttribute('hidden');
   }
+  function openMobileNavigation() { setMobileNavigationState(true); }
+  function closeMobileNavigation() { setMobileNavigationState(false); }
+  function toggleMobileNavigation() { setMobileNavigationState(!state.menu); }
+  function setMenu(open) { setMobileNavigationState(open); }
 
   function setSheet(open) {
     var sheet = document.getElementById('menu-sheet');
@@ -83,7 +86,23 @@ window.__RADOSC_DIAGNOSTICS__ = {
 
   document.addEventListener('click', function (e) {
     if (!e.target || !e.target.closest) return;
-    if (e.target.closest('#burger')) { setMenu(!state.menu); return; }
+    var burgerEl = document.getElementById('burger');
+    if (burgerEl && (e.target.closest('#burger') || burgerEl.contains(e.target))) {
+      var before = state.menu;
+      toggleMobileNavigation();
+      var menuEl = document.getElementById('mobile-menu');
+      if (window.__RADOSC_DIAGNOSTICS__) {
+        window.__RADOSC_DIAGNOSTICS__.lastHamburgerEvent = {
+          deliveredAt: Math.round(performance.now()),
+          target: e.target.tagName + (e.target.id ? '#' + e.target.id : ''),
+          beforeOpen: before,
+          afterOpen: state.menu,
+          ariaExpanded: burgerEl.getAttribute('aria-expanded'),
+          finalOpacity: menuEl ? getComputedStyle(menuEl).opacity : null
+        };
+      }
+      return;
+    }
     if (e.target.closest('.menu-sheet-btn')) { setSheet(!state.sheet); return; }
     if (e.target.closest('#menu-sheet-close')) { e.preventDefault(); setSheet(false); return; }
     if (e.target.closest('#menu-sheet-backdrop')) {
@@ -93,7 +112,11 @@ window.__RADOSC_DIAGNOSTICS__ = {
       setSheet(false);
       return;
     }
-    if (e.target.closest('#mobile-menu a')) { setMenu(false); return; }
+    var menuHit = e.target.closest('#mobile-menu');
+    if (menuHit) {
+      if (state.menu && !document.getElementById('burger').contains(e.target)) closeMobileNavigation();
+      return;
+    }
     if (e.target.closest('#menu-sheet a')) { setSheet(false); return; }
   });
 
