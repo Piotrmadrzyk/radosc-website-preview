@@ -22,6 +22,7 @@
 <link rel="preload" href="assets/fonts/fraunces-latin-ext-600-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/inter-latin-ext-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" as="image" href="assets/img/bistro-wnetrze-kwiaty-1000.jpg">
+<link rel="preload" href="js/main.js" as="script">
 <link rel="stylesheet" href="css/fonts.css">
 <link rel="stylesheet" href="css/styles.css">
 <script type="application/ld+json">
@@ -92,6 +93,22 @@
     }
   ]
 }
+</script>
+<script>
+/* Kolejka pierwszych kliknięć w hamburger/przycisk Menu oddanych zanim
+   załaduje się main.js (wolne łącze) — main.js odtwarza je po inicjalizacji. */
+(function () {
+  var q = [];
+  function h(e) {
+    var t = e.target && e.target.closest ? e.target.closest('#burger,.menu-sheet-btn') : null;
+    if (t) q.push(t);
+  }
+  document.addEventListener('click', h, true);
+  window.__earlyNav = { drain: function () {
+    document.removeEventListener('click', h, true);
+    var out = q.slice(); q.length = 0; return out;
+  } };
+})();
 </script>
 </head>
 <body id="top">
