@@ -1051,10 +1051,16 @@ p .link, li .link{margin-left:0}
 /* kolaż Bufetu: kadr główny + dwa mniejsze obok */
 .bm-collage{grid-template-columns:1.55fr 1fr;grid-auto-rows:minmax(0,1fr)}
 .bm-collage .bm-main{grid-row:1/3}
+/* ETAP 5.7.1 — kadr główny przycięty do kwadratu i zakotwiczony na dole
+   zdjęcia: ciemna szyba lady zostaje poza kadrem, jedzenie dominuje */
+.bm-collage .bm-main{aspect-ratio:1/1}
 /* na desktopie mniejsze kadry wypełniają cały wiersz siatki —
-   bez pustych przerw pod kadrem (aspect-ratio wraca na mobile) */
+   bez pustych przerw pod kadrem (aspect-ratio wraca na mobile).
+   5.7.1: obrazy małych kadrów pozycjonowane absolutnie, żeby nie wnosiły
+   własnej wysokości — wiersze siatki wynikają z kwadratu kadru głównego */
 @media (min-width:641px){
-  .bm-collage .bm-figure:not(.bm-main),.bm-collage .bm-ph{aspect-ratio:auto;height:100%}
+  .bm-collage .bm-figure:not(.bm-main),.bm-collage .bm-ph{aspect-ratio:auto;height:100%;min-height:0}
+  .bm-collage .bm-figure:not(.bm-main) img{position:absolute;inset:0;height:100%}
 }
 
 /* placeholder na fotografię własną — zaplanowany element projektu */

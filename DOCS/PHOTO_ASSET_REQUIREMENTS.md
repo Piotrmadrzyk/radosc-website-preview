@@ -19,11 +19,11 @@ Wcześniej osadzone: `lunch-dnia` + `lunch-zupa` + `pasta-domowa` (Z kuchni),
 
 | Sekcja | Kadr / treść | Uwagi |
 |---|---|---|
-| Kawa (Bistro) | filiżanka kawy z naszego ekspresu na stoliku, zieleń oranżerii w tle | obecnie sekcję ilustruje herbata; kadr kawowy z sesji „stół i kawa" użyto w Śniadaniach |
+| Kawa (Bistro) | filiżanka kawy z naszego ekspresu na stoliku, zieleń oranżerii w tle | **docelowo po nowej sesji zdjęciowej podmienić lub uzupełnić sekcję o kadr kawy albo ekspresu** (audyt 5.7.1: obecna herbata = AKCEPTOWALNE TYMCZASOWO); kadr kawowy z sesji „stół i kawa" użyto w Śniadaniach |
 | Desery (Bistro) | witryna słodkości w całości | świadomie NIE pokazujemy witryny bez prawdziwego zdjęcia |
 | Herbata / matcha | matcha latte w szkle | opcjonalny drugi kadr |
 | Burgery (Pizza) | burger z frytkami z karty, zbliżenie | zakomentowany `PHOTO-SLOT` w `pizza.html` → `#burgery` |
-| Wnętrze | drugi kadr wnętrza (żeby nie powtarzać `bistro-wnetrze-kwiaty` w „O Bistro" i „Wnętrze") | jedyny duplikat na stronie |
+| Wnętrze | dodatkowe kadry wnętrza za dnia | duplikat usunięty w 5.7.1 — `bistro-wnetrze-kwiaty` tylko w „O Bistro"; trzeci kadr paska to `catering-event-goscie-1000` (wieczór przy wspólnym stole w Bistro) |
 
 Zasady dla nowych plików: JPEG min. 1600 px po dłuższym boku, bez logotypów
 osób trzecich, konwersja skryptem sharp (JPEG q82 + WebP q76, szerokość
