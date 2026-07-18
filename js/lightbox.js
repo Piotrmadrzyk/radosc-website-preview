@@ -114,8 +114,11 @@
     }
     stage.addEventListener('pointerup', endGesture);
     stage.addEventListener('pointercancel', endGesture);
-    // klik w sam obraz bez przesunięcia nie zamyka i nie nawiguję — ignorujemy
+    // klik w sam obraz bez przesunięcia nie zamyka i nie nawiguje — ignorujemy
     imgEl.addEventListener('click', function (e) { e.stopPropagation(); });
+    // natywny drag&drop obrazka przerywałby gest przeciągania (pointercancel)
+    imgEl.setAttribute('draggable', 'false');
+    imgEl.addEventListener('dragstart', function (e) { e.preventDefault(); });
   }
 
   function bestSrc(item) {
