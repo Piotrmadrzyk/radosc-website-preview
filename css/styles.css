@@ -272,13 +272,8 @@ h2 em{font-style:italic;font-weight:500;color:var(--gold)}
 
 /* stopka */
 .site-footer{background:#102618;color:var(--cream);padding:52px 24px 44px}
-.footer-inner{display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap}
 .site-footer .brand{color:var(--cream)}
 .site-footer .brand small{color:rgba(246,241,229,.6)}
-.footer-nav{display:flex;gap:26px;font-size:12.5px;font-weight:500;letter-spacing:.12em;text-transform:uppercase}
-.footer-nav a{padding-bottom:2px;border-bottom:1px solid transparent;transition:color .25s ease,border-color .25s ease}
-.footer-nav a:hover{color:var(--gold-light);border-color:rgba(216,178,106,.5)}
-.footer-note{font-size:12.5px;color:rgba(246,241,229,.55)}
 
 /* wejścia przy przewijaniu */
 .reveal{opacity:0;transform:translateY(22px);
@@ -379,8 +374,6 @@ h2 em{font-style:italic;font-weight:500;color:var(--gold)}
   /* sekcje */
   .tiles{grid-template-columns:1fr 1fr;gap:14px}
   .tile{min-height:0;padding:22px 18px 18px}
-  .footer-inner{flex-direction:column;align-items:flex-start;gap:22px}
-  .footer-nav{flex-wrap:wrap;gap:16px 22px}
 }
 
 @media (max-width:560px){
@@ -415,8 +408,6 @@ h2 em{font-style:italic;font-weight:500;color:var(--gold)}
   background:url("../assets/img/bistro-wnetrze-kwiaty-1000.jpg") no-repeat 50% 42%/cover;
   filter:brightness(1.07) saturate(1.03) contrast(1.02);
   animation:sceneDrift 46s ease-in-out infinite alternate}
-.sub-hero--catering .scene{background-image:url("../assets/img/catering-event-goscie-1000.jpg");
-  background-position:50% 30%}
 .sub-hero .veil{position:absolute;inset:0;background:
   linear-gradient(180deg,rgba(246,241,229,.94) 0%,rgba(246,241,229,.80) 34%,rgba(246,241,229,.55) 62%,rgba(246,241,229,.88) 100%)}
 .sub-hero .glow{position:absolute;inset:0;background:
@@ -468,17 +459,6 @@ h2 em{font-style:italic;font-weight:500;color:var(--gold)}
 .step h3{font-family:"Fraunces",serif;font-weight:600;font-size:19px;color:var(--ink);margin-bottom:8px}
 .step p{font-size:14px;line-height:1.6;color:var(--ink-soft)}
 
-/* kategorie menu (pizza) */
-.menu-cats{margin-top:40px;border-top:1px solid rgba(21,50,31,.18)}
-.menu-cat{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:14px 40px;
-  padding:26px 4px;border-bottom:1px solid rgba(21,50,31,.14)}
-.menu-cat h3{font-family:"Fraunces",serif;font-weight:600;font-size:24px;color:var(--ink)}
-.menu-cat h3 span{display:block;font-family:"Inter",sans-serif;font-weight:600;font-size:11px;
-  letter-spacing:.22em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:6px}
-.menu-cat p{font-size:15.5px;line-height:1.65;color:var(--ink-soft);align-self:center}
-.menu-note{margin-top:30px;padding:22px 26px;background:rgba(255,255,255,.6);
-  border:1px solid rgba(169,129,47,.4);font-size:16px;color:var(--ink)}
-.menu-note b{font-weight:600}
 
 /* przyciski telefoniczne */
 .btn-tel{display:inline-flex;align-items:center;gap:12px;font-variant-numeric:tabular-nums}
@@ -525,7 +505,6 @@ h2 em{font-style:italic;font-weight:500;color:var(--gold)}
 .filter-btn:hover{border-color:var(--gold-dark);color:var(--gold-dark)}
 .filter-btn.active{background:var(--ink);color:var(--cream);border-color:var(--ink)}
 
-.real-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:40px}
 .real-card{background:rgba(255,255,255,.55);border:1px solid rgba(21,50,31,.12);
   display:flex;flex-direction:column;overflow:hidden;
   transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease}
@@ -541,12 +520,6 @@ h2 em{font-style:italic;font-weight:500;color:var(--gold)}
 .real-card .cat{font-size:10.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-dark)}
 .real-card h3{font-family:"Fraunces",serif;font-weight:600;font-size:21px;color:var(--ink)}
 .real-card p{font-size:14px;line-height:1.6;color:var(--ink-soft)}
-.real-card--text{justify-content:flex-end;background:var(--ink)}
-.real-card--text .txt{padding-top:46px}
-.real-card--text .cat{color:var(--gold-light)}
-.real-card--text h3{color:var(--cream)}
-.real-card--text p{color:rgba(246,241,229,.75)}
-.real-card--text:hover{border-color:rgba(216,178,106,.5)}
 
 /* formularz — walidacja */
 .field-error{border-color:#C96F5B !important;background:rgba(201,111,91,.12) !important}
@@ -579,7 +552,6 @@ label .req{color:var(--gold-light)}
 
 /* responsywność podstron */
 @media (max-width:1060px){
-  .real-cards{grid-template-columns:repeat(2,1fr)}
   .steps{grid-template-columns:repeat(3,1fr)}
   .tiles.cols3{grid-template-columns:repeat(2,1fr)}
 }
@@ -588,13 +560,11 @@ label .req{color:var(--gold-light)}
   .two-col{grid-template-columns:1fr;gap:34px}
   .two-col .col-img{order:-1}
   .arch-photo{max-width:320px}
-  .menu-cat{grid-template-columns:1fr;gap:10px}
   .contact-cards{grid-template-columns:1fr}
   .steps,.steps.cols3{grid-template-columns:1fr 1fr}
   .footer-grid{grid-template-columns:1fr 1fr}
 }
 @media (max-width:560px){
-  .real-cards{grid-template-columns:1fr}
   .steps,.steps.cols3{grid-template-columns:1fr}
   .footer-grid{grid-template-columns:1fr;gap:30px}
   .tiles.cols3{grid-template-columns:1fr}
@@ -702,9 +672,6 @@ label .req{color:var(--gold-light)}
 .lunch-item .name{font-size:16.5px;font-weight:600;color:var(--ink);line-height:1.4}
 .lunch-item .desc{font-size:14px;color:var(--ink-soft);line-height:1.55}
 .veg-leaf{display:inline-block;color:#4C7A3D;font-size:14px;margin-left:6px;font-style:normal}
-.lunch-extra{margin-top:22px;padding:22px 26px;background:var(--cream-deep);
-  border:1px solid rgba(21,50,31,.12)}
-.lunch-extra h3{font-family:"Fraunces",serif;font-weight:600;font-size:20px;color:var(--ink);margin-bottom:12px}
 .lunch-hours-line{margin-top:26px;font-size:15.5px;color:var(--ink)}
 .lunch-hours-line b{font-weight:600}
 .veg-legend{margin-top:14px;font-size:13px;color:var(--ink-soft)}
@@ -919,8 +886,6 @@ a.tile.is-active b{color:var(--gold-dark)}
 .btn-tel{display:inline-flex;align-items:center;justify-content:center;gap:10px}
 .btn-tel svg{width:15px;height:15px;flex:none}
 .btn-tel .tel-num{font-weight:700}
-.btn-ghost.on-dark{border-color:rgba(246,241,229,.45);color:var(--cream)}
-.btn-ghost.on-dark:hover{border-color:var(--cream);background:rgba(246,241,229,.08);color:var(--cream)}
 
 /* dolny panel Menu — bottom sheet */
 .sheet-backdrop{position:fixed;inset:0;z-index:44;background:rgba(14,30,19,.45);
@@ -1041,8 +1006,6 @@ p .link, li .link{margin-left:0}
 /* proporcje kadrów — jawne, żeby zdjęcia nie powodowały CLS */
 .r45{aspect-ratio:4/5}
 .r43{aspect-ratio:4/3}
-.r34{aspect-ratio:3/4}
-.r169{aspect-ratio:16/9}
 .r219{aspect-ratio:21/9}
 
 /* split: kolumna treści + kolumna mediów (Śniadania, Desery) */
@@ -1062,25 +1025,9 @@ p .link, li .link{margin-left:0}
    5.7.1: obrazy małych kadrów pozycjonowane absolutnie, żeby nie wnosiły
    własnej wysokości — wiersze siatki wynikają z kwadratu kadru głównego */
 @media (min-width:641px){
-  .bm-collage .bm-figure:not(.bm-main),.bm-collage .bm-ph{aspect-ratio:auto;height:100%;min-height:0}
+  .bm-collage .bm-figure:not(.bm-main){aspect-ratio:auto;height:100%;min-height:0}
   .bm-collage .bm-figure:not(.bm-main) img{position:absolute;inset:0;height:100%}
 }
-
-/* placeholder na fotografię własną — zaplanowany element projektu */
-.bm-ph{position:relative;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;gap:11px;text-align:center;padding:26px 22px;overflow:hidden;
-  background:
-    radial-gradient(130% 100% at 18% 0%,rgba(255,255,255,.72) 0%,rgba(255,255,255,0) 55%),
-    linear-gradient(165deg,var(--cream-deep) 0%,#E7DEC6 100%);
-  border:1px dashed rgba(169,129,47,.5)}
-.bm-ph svg{width:44px;height:auto;color:var(--gold);opacity:.6}
-.bm-ph b{font-family:"Fraunces",serif;font-weight:600;font-size:17px;line-height:1.3;
-  color:var(--ink);max-width:26ch}
-.bm-ph span{font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--gold-dark)}
-.bm-ph.sm{gap:8px;padding:18px 16px}
-.bm-ph.sm svg{width:32px}
-.bm-ph.sm b{font-size:14.5px}
 
 /* „jak działa bufet" — numeracja w języku kafli 01–03 */
 .bm-steps{display:flex;flex-wrap:wrap;gap:10px 30px;margin-top:24px;
@@ -1097,15 +1044,9 @@ p .link, li .link{margin-left:0}
   align-items:stretch}
 .wk-head .wk-start{margin-top:0}
 
-/* pasek zdjęć w wariancie dwukadrowym (Wnętrze) */
-.photo-strip.cols2{grid-template-columns:repeat(2,1fr)}
-
 @media (max-width:900px){
   .bm-split,.bm-split.rev{grid-template-columns:1fr}
   .bm-split .bm-media{order:-1}
-  /* w układzie jednokolumnowym wystarczy jeden placeholder w kolumnie mediów —
-     dwa puste kadry jeden pod drugim wyglądałyby na niedokończone */
-  .bm-split .bm-media .bm-ph.sm{display:none}
   .wk-head{grid-template-columns:1fr}
   .wk-head .bm-figure{aspect-ratio:16/10}
 }
@@ -1115,7 +1056,6 @@ p .link, li .link{margin-left:0}
   .bm-collage .bm-main{grid-column:1/-1;grid-row:auto;aspect-ratio:16/10}
   /* wysokie kadry 4/5 nie zabierają na mobile całego ekranu */
   .r45{aspect-ratio:4/3}
-  .bm-ph b{font-size:15px}
   .bm-steps{flex-direction:column;gap:12px}
 }
 

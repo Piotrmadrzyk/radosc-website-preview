@@ -8,7 +8,7 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="radosc-build" content="__RADOSC_BUILD_HASH__">
 <!-- RADOSC_BUILD: __RADOSC_BUILD_HASH__ -->
-<script>window.__RADOSC_BUILD__ = { commit: "__RADOSC_BUILD_HASH__", stage: "5.8.1-order-cta-consistency", builtAt: "__RADOSC_BUILD_TIME__" };</script>
+<script>window.__RADOSC_BUILD__ = { commit: "__RADOSC_BUILD_HASH__", stage: "5.9-publication-prep", builtAt: "__RADOSC_BUILD_TIME__" };</script>
 <meta property="og:title" content="Kontakt — Radość | Jasionka">
 <meta property="og:description" content="Kontakt z Radością: Bistro Pełne Radości (Jasionka 954c, 723 800 801) i Radość Catering (Jasionka 953, 601 940 856). patrycja@restauracjaradosc.pl">
 <meta property="og:type" content="website">
@@ -22,7 +22,6 @@
 <meta name="twitter:description" content="Kontakt z Radością: Bistro Pełne Radości (Jasionka 954c, 723 800 801) i Radość Catering (Jasionka 953, 601 940 856). patrycja@restauracjaradosc.pl">
 <meta name="twitter:image" content="https://piotrmadrzyk.github.io/radosc-website-preview/assets/img/catering-event-goscie-1000.jpg">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2315321F'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='20' font-weight='600' fill='%23F6F1E5' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
-<link rel="preload" as="image" href="assets/img/bistro-wnetrze-kwiaty-1000.jpg">
 <link rel="preload" href="js/main.js?v=__RADOSC_BUILD_HASH__" as="script">
 <link rel="preload" href="js/critical-navigation.js?v=__RADOSC_BUILD_HASH__" as="script">
 <script src="js/critical-navigation.js?v=__RADOSC_BUILD_HASH__"></script>
@@ -234,7 +233,11 @@
       <button class="chip" type="button" data-topic="Mam inne pytanie" aria-pressed="false">Mam inne pytanie</button>
     </div>
 
-    <form class="demo-form reveal" novalidate style="margin-top:30px">
+        <!-- INTEGRACJA WYSYŁKI (do wykonania przed startem — patrz DOCS/FORMULARZE_INTEGRACJA.md):
+         1) ustaw action="https://..." wybranej usługi (np. Formspree),
+         2) usuń poniższy <p class="form-note">.
+         JS w js/main.js wykryje action i przepuści natywną wysyłkę po walidacji. -->
+    <form class="demo-form reveal" method="post" novalidate style="margin-top:30px">
       <p class="form-note">Formularz demonstracyjny — wysyłka zostanie podłączona przed startem strony.</p>
       <div class="row">
         <label>Imię i nazwisko <span class="req">*</span>

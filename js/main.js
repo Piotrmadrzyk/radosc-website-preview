@@ -36,12 +36,16 @@ console.info('[RADOSC] main.js loaded', {
     revealed.forEach(function (el) { io.observe(el); });
   }
 
-  /* formularze demonstracyjne — walidacja bez wysyłki */
+  /* formularze — walidacja wspólna dla trybu demo i produkcyjnego.
+     ETAP 5.9: przygotowanie pod przyszłą wysyłkę. Podłączenie usługi
+     (np. Formspree) wymaga wyłącznie ustawienia atrybutu action="..."
+     na <form> i usunięcia <p class="form-note"> — bez zmian w JS:
+     gdy action jest ustawione, po pozytywnej walidacji submit
+     przechodzi natywnie do usługi; bez action działa tryb demo. */
   var EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
   document.querySelectorAll('.demo-form').forEach(function (form) {
     var status = form.querySelector('.form-status');
     form.addEventListener('submit', function (e) {
-      e.preventDefault();
       var invalid = [];
       form.querySelectorAll('[required]').forEach(function (field) {
         var ok = field.type === 'checkbox' ? field.checked : field.value.trim() !== '';
@@ -50,11 +54,14 @@ console.info('[RADOSC] main.js loaded', {
         if (!ok) invalid.push(field);
       });
       if (invalid.length) {
+        e.preventDefault();
         status.classList.add('is-error');
         status.textContent = 'Uzupełnij poprawnie zaznaczone pola, aby wysłać zapytanie.';
         invalid[0].focus();
         return;
       }
+      if (form.getAttribute('action')) return; // produkcja: natywna wysyłka do usługi
+      e.preventDefault();
       status.classList.remove('is-error');
       status.textContent =
         'Dziękujemy! Wysyłka formularza zostanie podłączona przed startem strony — ' +
