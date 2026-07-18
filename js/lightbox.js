@@ -1,5 +1,11 @@
 /* ============================================================
    ETAP 5.8 — grupowy lightbox zdjęć Bistro
+   ETAP 6.1 — rozszerzenie na galerię Realizacji (ten sam komponent):
+   - lista zdjęć liczona przy każdym otwarciu wyłącznie z elementów
+     aktualnie widocznych (filtry Realizacji są respektowane),
+   - dyskretne strzałki poprzednie/następne w pasku podpisu,
+   - focus trap obejmuje X i strzałki,
+   - podpis może pochodzić z data-lb-caption (galerie bez figcaption).
    Jedyny właściciel podglądu zdjęć. Zasady:
    - grupy per sekcja (data-lb="..."), bez mieszania sekcji,
    - swipe (touch) i drag (mysz) przez Pointer Events,
@@ -15,8 +21,8 @@
   window.__RADOSC_LIGHTBOX__ = 1;
 
   var groups = {};   // nazwa -> [{full, alt, caption, el}]
-  var state = { open: false, group: null, index: 0, opener: null };
-  var overlay, stage, imgEl, capEl, cntEl, closeBtn;
+  var state = { open: false, group: null, index: 0, list: [], opener: null };
+  var overlay, stage, imgEl, capEl, cntEl, closeBtn, prevBtn, nextBtn, navBox;
 
   function collect() {
     var items = document.querySelectorAll('[data-lb]');
@@ -32,7 +38,7 @@
         img: img,
         full: fig.getAttribute('data-lb-full') || null, // najlepsze źródło ustalamy przy otwarciu (currentSrc)
         alt: img.getAttribute('alt') || '',
-        caption: capNode ? capNode.textContent.trim() : ''
+        caption: fig.getAttribute('data-lb-caption') || (capNode ? capNode.textContent.trim() : '')
       });
       fig.classList.add('lb-zoomable');
       fig.setAttribute('tabindex', '0');
@@ -45,19 +51,19 @@
       ico.setAttribute('aria-hidden', 'true');
       ico.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8M11 8v6M8 11h6"/></svg>';
       fig.appendChild(ico);
-      (function (n, idx) {
+      (function (n, item) {
         fig.addEventListener('click', function (e) {
           if (e.defaultPrevented) return;
           e.preventDefault();
-          open(n, idx, this);
+          open(n, item, this);
         });
         fig.addEventListener('keydown', function (e) {
           if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
             e.preventDefault();
-            open(n, idx, this);
+            open(n, item, this);
           }
         });
-      })(name, groups[name].length - 1);
+      })(name, groups[name][groups[name].length - 1]);
     }
   }
 
@@ -72,15 +78,29 @@
       '<button type="button" class="lb-close" aria-label="Zamknij podgląd zdjęcia">' +
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>' +
       '</button>' +
-      '<figure class="lb-stage"><img alt=""><figcaption class="lb-bar"><span class="lb-cap"></span><span class="lb-count" aria-live="polite"></span></figcaption></figure>';
+      '<figure class="lb-stage"><img alt=""><figcaption class="lb-bar"><span class="lb-cap"></span>' +
+      '<span class="lb-nav" hidden>' +
+      '<button type="button" class="lb-arrow lb-prev" aria-label="Poprzednie zdjęcie">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>' +
+      '</button>' +
+      '<span class="lb-count" aria-live="polite"></span>' +
+      '<button type="button" class="lb-arrow lb-next" aria-label="Następne zdjęcie">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>' +
+      '</button>' +
+      '</span></figcaption></figure>';
     document.body.appendChild(overlay);
     stage = overlay.querySelector('.lb-stage');
     imgEl = overlay.querySelector('img');
     capEl = overlay.querySelector('.lb-cap');
     cntEl = overlay.querySelector('.lb-count');
     closeBtn = overlay.querySelector('.lb-close');
+    navBox = overlay.querySelector('.lb-nav');
+    prevBtn = overlay.querySelector('.lb-prev');
+    nextBtn = overlay.querySelector('.lb-next');
 
     closeBtn.addEventListener('click', function (e) { e.preventDefault(); close(); });
+    prevBtn.addEventListener('click', function (e) { e.preventDefault(); step(-1); });
+    nextBtn.addEventListener('click', function (e) { e.preventDefault(); step(1); });
     overlay.addEventListener('click', function (e) {
       // klik/tap w tło (nie w obraz i nie w X) zamyka
       if (e.target === overlay || e.target === stage) close();
@@ -91,6 +111,8 @@
     var px = 0, py = 0, dx = 0, dy = 0, tracking = false;
     stage.addEventListener('pointerdown', function (e) {
       if (!state.open) return;
+      // kliknięcia w strzałki/przyciski nie rozpoczynają gestu (capture psułby click)
+      if (e.target.closest && e.target.closest('button')) return;
       tracking = true; px = e.clientX; py = e.clientY; dx = 0; dy = 0;
       try { stage.setPointerCapture(e.pointerId); } catch (err) {}
     });
@@ -126,8 +148,16 @@
     return item.full || item.img.currentSrc || item.img.src;
   }
 
+  function isVisible(el) {
+    return !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+  }
+  function visibleItems(group) {
+    // lista liczona przy otwarciu: zdjęcia ukryte filtrem nie wchodzą do nawigacji
+    return groups[group].filter(function (it) { return isVisible(it.el); });
+  }
+
   function render() {
-    var list = groups[state.group];
+    var list = state.list;
     var item = list[state.index];
     imgEl.classList.add('lb-loading');
     imgEl.src = bestSrc(item);
@@ -136,10 +166,16 @@
     capEl.textContent = item.caption || '';
     if (list.length > 1) {
       cntEl.textContent = (state.index + 1) + ' / ' + list.length;
-      cntEl.removeAttribute('hidden');
+      navBox.removeAttribute('hidden');
+      prevBtn.disabled = state.index === 0;
+      nextBtn.disabled = state.index === list.length - 1;
+      // fokus nie może zostać na wyłączonym przycisku (trap by się rozsypał)
+      if (document.activeElement && document.activeElement.disabled) {
+        closeBtn.focus({ preventScroll: true });
+      }
     } else {
       cntEl.textContent = '';
-      cntEl.setAttribute('hidden', '');
+      navBox.setAttribute('hidden', '');
     }
     overlay.setAttribute('aria-label', 'Powiększone zdjęcie: ' + (item.caption || item.alt || 'fotografia Bistro'));
     // preload sąsiadów w grupie
@@ -150,9 +186,13 @@
     }
   }
 
-  function open(group, index, openerEl) {
-    if (!groups[group] || !groups[group][index]) return;
-    state.open = true; state.group = group; state.index = index; state.opener = openerEl || null;
+  function open(group, item, openerEl) {
+    if (!groups[group]) return;
+    var list = visibleItems(group);
+    var index = list.indexOf(item);
+    if (index === -1) return; // ukryte filtrem zdjęcie nie otwiera podglądu
+    state.open = true; state.group = group; state.list = list; state.index = index;
+    state.opener = openerEl || null;
     overlay.removeAttribute('hidden');
     // wymuś reflow, żeby przejście opacity zadziałało po zdjęciu [hidden]
     void overlay.offsetWidth;
@@ -177,12 +217,21 @@
   }
 
   function step(delta) {
-    var list = groups[state.group];
+    var list = state.list;
     if (!list || list.length < 2) return; // pojedyncze zdjęcie: brak fałszywej nawigacji
     var next = state.index + delta;
     if (next < 0 || next >= list.length) return; // bez zapętlania — licznik trzyma orientację
     state.index = next;
     render();
+  }
+
+  function focusables() {
+    var f = [closeBtn];
+    if (!navBox.hasAttribute('hidden')) {
+      if (!prevBtn.disabled) f.push(prevBtn);
+      if (!nextBtn.disabled) f.push(nextBtn);
+    }
+    return f;
   }
 
   function onKey(e) {
@@ -191,9 +240,14 @@
     if (e.key === 'ArrowRight') { e.preventDefault(); step(1); return; }
     if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); return; }
     if (e.key === 'Tab') {
-      // jedyny fokusowalny element modala to X — pętla fokusu
+      // pętla fokusu po kontrolkach modala (X + aktywne strzałki)
       e.preventDefault();
-      closeBtn.focus();
+      var f = focusables();
+      var i = f.indexOf(document.activeElement);
+      var next = e.shiftKey
+        ? (i <= 0 ? f[f.length - 1] : f[i - 1])
+        : (i === -1 || i === f.length - 1 ? f[0] : f[i + 1]);
+      next.focus();
     }
   }
 
