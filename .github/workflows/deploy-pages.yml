@@ -25,6 +25,21 @@ jobs:
       - name: Pobierz kod
         uses: actions/checkout@v4
 
+      - name: Stempluj build hash i wersje zasobów
+        run: |
+          # data commita (deterministyczna) — lokalna weryfikacja sum kontrolnych
+          BUILD_TIME="$(git log -1 --format=%cI)"
+          find . -name '*.html' -not -path './.git/*' -print0 \
+            | xargs -0 sed -i "s/__RADOSC_BUILD_HASH__/${GITHUB_SHA}/g; s/__RADOSC_BUILD_TIME__/${BUILD_TIME}/g"
+          echo "Ostemplowano build ${GITHUB_SHA} (${BUILD_TIME})"
+
+      - name: Sumy kontrolne publikowanego artefaktu
+        run: |
+          echo "== SHA-256 plików artefaktu (po ostemplowaniu) =="
+          sha256sum index.html bistro.html pizza.html catering.html realizacje.html kontakt.html polityka-prywatnosci.html \
+                    js/main.js js/critical-navigation.js css/styles.css css/fonts.css \
+                    assets/data/menu.js assets/data/lunch-menu.js assets/data/weekend-menu.js
+
       - name: Skonfiguruj GitHub Pages
         uses: actions/configure-pages@v5
         with:
