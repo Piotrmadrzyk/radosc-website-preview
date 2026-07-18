@@ -336,7 +336,10 @@ h2 em{font-style:italic;font-weight:500;color:var(--gold)}
   .desc{margin-top:18px;font-size:15px;line-height:1.6;max-width:30ch}
 
   .cta{margin-top:26px;display:block}
-  .cta .btn-fill{display:block;text-align:center;font-size:13.5px;padding:18px 10px;
+  /* 5.8.1: telefoniczne CTA zamówienia (.btn-tel) zachowuje wszędzie
+     identyczną geometrię wzorca — pełnoszerokościowy wariant hero
+     dotyczy tylko zwykłych CTA nawigacyjnych */
+  .cta .btn-fill:not(.btn-tel){display:block;text-align:center;font-size:13.5px;padding:18px 10px;
     box-shadow:0 12px 26px rgba(21,50,31,.24);max-width:480px}
   .quiet{margin-top:18px;gap:22px}
   .cta .btn-ghost{border:0;padding:0 0 3px;font-size:14px;font-weight:500;
