@@ -19,7 +19,10 @@
   --pad-x:64px;
 }
 
-html{scroll-behavior:smooth;overflow-x:hidden}
+/* scroll-behavior:smooth usunięte (ETAP 5.6.3): sprawiało, że programowe
+   scrollTo z behavior:"auto" animowało się i było przerywalne — kotwice
+   lądowały w losowych miejscach. Powrót do smooth dopiero po odbiorze live. */
+html{overflow-x:hidden}
 html,body{background:var(--cream)}
 body{font-family:"Inter",system-ui,sans-serif;color:var(--ink);line-height:1.5;
   -webkit-font-smoothing:antialiased;overflow-x:hidden}
@@ -1018,3 +1021,12 @@ p .link, li .link{margin-left:0}
   .btn-tel{flex-direction:column;align-items:center;gap:3px;
     padding-top:13px;padding-bottom:13px;line-height:1.35}
 }
+
+/* ============================================================
+   ETAP 5.6.3 — stabilna geometria panelu Menu (fade zamiast
+   przesuwania: X i pozycje listy nie ruszają się pod kursorem)
+   ============================================================ */
+.menu-sheet{transform:none;transition:opacity .2s ease;opacity:0}
+.menu-sheet.open{transform:none;opacity:1}
+.sheet-close{position:relative;z-index:2}
+.sheet-backdrop{pointer-events:auto}
