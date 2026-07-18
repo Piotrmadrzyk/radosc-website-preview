@@ -6,6 +6,9 @@
 <title>Radość — Bistro, Pizza i Catering | Jasionka k. Rzeszowa</title>
 <meta name="description" content="Bistro Pełne Radości w Jasionce: lunch pon.–pt., pizza i burgery na miejscu i na wynos, catering na wesela i imprezy firmowe w okolicach Rzeszowa. Tel. 723 800 801.">
 <meta name="robots" content="noindex, nofollow">
+<meta name="radosc-build" content="__RADOSC_BUILD_HASH__">
+<!-- RADOSC_BUILD: __RADOSC_BUILD_HASH__ -->
+<script>window.__RADOSC_BUILD__ = { commit: "__RADOSC_BUILD_HASH__", stage: "5.6.3", builtAt: "__RADOSC_BUILD_TIME__" };</script>
 <meta property="og:title" content="Radość — Bistro, Pizza i Catering | Jasionka k. Rzeszowa">
 <meta property="og:description" content="Bistro Pełne Radości w Jasionce: lunch pon.–pt., pizza i burgery na miejscu i na wynos, catering na wesela i imprezy firmowe w okolicach Rzeszowa. Tel. 723 800 801.">
 <meta property="og:type" content="website">
@@ -22,9 +25,11 @@
 <link rel="preload" href="assets/fonts/fraunces-latin-ext-600-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/inter-latin-ext-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" as="image" href="assets/img/bistro-wnetrze-kwiaty-1000.jpg">
-<link rel="preload" href="js/main.js" as="script">
-<link rel="stylesheet" href="css/fonts.css">
-<link rel="stylesheet" href="css/styles.css">
+<link rel="preload" href="js/main.js?v=__RADOSC_BUILD_HASH__" as="script">
+<link rel="preload" href="js/critical-navigation.js?v=__RADOSC_BUILD_HASH__" as="script">
+<script src="js/critical-navigation.js?v=__RADOSC_BUILD_HASH__"></script>
+<link rel="stylesheet" href="css/fonts.css?v=__RADOSC_BUILD_HASH__">
+<link rel="stylesheet" href="css/styles.css?v=__RADOSC_BUILD_HASH__">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -93,22 +98,6 @@
     }
   ]
 }
-</script>
-<script>
-/* Kolejka pierwszych kliknięć w hamburger/przycisk Menu oddanych zanim
-   załaduje się main.js (wolne łącze) — main.js odtwarza je po inicjalizacji. */
-(function () {
-  var q = [];
-  function h(e) {
-    var t = e.target && e.target.closest ? e.target.closest('#burger,.menu-sheet-btn') : null;
-    if (t) q.push(t);
-  }
-  document.addEventListener('click', h, true);
-  window.__earlyNav = { drain: function () {
-    document.removeEventListener('click', h, true);
-    var out = q.slice(); q.length = 0; return out;
-  } };
-})();
 </script>
 </head>
 <body id="top">
@@ -512,6 +501,6 @@
   </nav>
 </div>
 
-<script src="js/main.js"></script>
+<script src="js/main.js?v=__RADOSC_BUILD_HASH__"></script>
 </body>
 </html>

@@ -6,6 +6,9 @@
 <title>Catering Jasionka i Rzeszów — firmy i wydarzenia | Radość Catering</title>
 <meta name="description" content="Catering dla firm w Jasionce i okolicach Rzeszowa, catering na imprezy, wesela, komunie i konferencje. Od kameralnych spotkań po wydarzenia na setki gości. Tel. 601 940 856.">
 <meta name="robots" content="noindex, nofollow">
+<meta name="radosc-build" content="__RADOSC_BUILD_HASH__">
+<!-- RADOSC_BUILD: __RADOSC_BUILD_HASH__ -->
+<script>window.__RADOSC_BUILD__ = { commit: "__RADOSC_BUILD_HASH__", stage: "5.6.3", builtAt: "__RADOSC_BUILD_TIME__" };</script>
 <meta property="og:title" content="Catering Jasionka i Rzeszów — firmy i wydarzenia | Radość Catering">
 <meta property="og:description" content="Catering dla firm w Jasionce i okolicach Rzeszowa, catering na imprezy, wesela, komunie i konferencje. Od kameralnych spotkań po wydarzenia na setki gości. Tel. 601 940 856.">
 <meta property="og:type" content="website">
@@ -20,9 +23,11 @@
 <meta name="twitter:image" content="https://piotrmadrzyk.github.io/radosc-website-preview/assets/img/bufet-glowny.jpg">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2315321F'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='20' font-weight='600' fill='%23F6F1E5' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
 <link rel="preload" as="image" href="assets/img/bufet-glowny.jpg">
-<link rel="preload" href="js/main.js" as="script">
-<link rel="stylesheet" href="css/fonts.css">
-<link rel="stylesheet" href="css/styles.css">
+<link rel="preload" href="js/main.js?v=__RADOSC_BUILD_HASH__" as="script">
+<link rel="preload" href="js/critical-navigation.js?v=__RADOSC_BUILD_HASH__" as="script">
+<script src="js/critical-navigation.js?v=__RADOSC_BUILD_HASH__"></script>
+<link rel="stylesheet" href="css/fonts.css?v=__RADOSC_BUILD_HASH__">
+<link rel="stylesheet" href="css/styles.css?v=__RADOSC_BUILD_HASH__">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -78,22 +83,6 @@
     }
   ]
 }
-</script>
-<script>
-/* Kolejka pierwszych kliknięć w hamburger/przycisk Menu oddanych zanim
-   załaduje się main.js (wolne łącze) — main.js odtwarza je po inicjalizacji. */
-(function () {
-  var q = [];
-  function h(e) {
-    var t = e.target && e.target.closest ? e.target.closest('#burger,.menu-sheet-btn') : null;
-    if (t) q.push(t);
-  }
-  document.addEventListener('click', h, true);
-  window.__earlyNav = { drain: function () {
-    document.removeEventListener('click', h, true);
-    var out = q.slice(); q.length = 0; return out;
-  } };
-})();
 </script>
 </head>
 <body id="top">
@@ -539,6 +528,6 @@
   </nav>
 </div>
 
-<script src="js/main.js"></script>
+<script src="js/main.js?v=__RADOSC_BUILD_HASH__"></script>
 </body>
 </html>
