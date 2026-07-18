@@ -102,79 +102,69 @@
     });
   });
 
-  /* Deterministyczne przewijanie do sekcji (jumpbar, karty cateringu).
-     Natywny smooth-scroll na długiej stronie bywa przerywany (dotyk,
-     doładowanie fontów/obrazów zmienia layout w trakcie animacji) i potrafi
-     zatrzymać się w złym miejscu. Tu: pozycja liczona z aktualnego layoutu
-     (z uwzględnieniem scroll-margin-top), a po zakończeniu przewijania
-     następuje jednorazowa korekta, jeśli cel się przesunął. */
-  function anchorDestY(target) {
-    var margin = parseFloat(getComputedStyle(target).scrollMarginTop) || 0;
-    var top = target.getBoundingClientRect().top + window.scrollY - margin;
+  /* ===== Nawigacja kotwic — model deterministyczny (ETAP 5.6.2) =====
+     Zanim ten plik się wykona, kotwice działają natywnie (zwykłe href).
+     Po inicjalizacji: klik = preventDefault + JEDEN scrollTo liczony od
+     realnej wysokości sticky headera + MAKSYMALNIE JEDNA korekta w rAF.
+     Sekcje menu renderuje skrypt — koniec renderu emituje app:content-ready;
+     tylko na ten jeden moment może czekać zapamiętany cel. Bez ResizeObserverów
+     i wielosekundowych okien pilnujących scrolla. */
+  var contentReady = false;
+  var pendingAnchor = null;
+
+  function headerOffset() {
+    var h = header ? header.getBoundingClientRect().height : 0;
+    return Math.max(h + 14, 84);
+  }
+  function anchorTop(target) {
+    var top = target.getBoundingClientRect().top + window.scrollY - headerOffset();
     return Math.max(0, Math.min(top, document.documentElement.scrollHeight - window.innerHeight));
   }
-
-  /* Strażnik kotwic. Sekcje menu (#lunch-menu, #sniadania-menu, #weekend-menu)
-     są renderowane skryptem — klik oddany zanim skrypty się wykonają albo
-     zanim doładują się fonty trafia w układ, który za chwilę urośnie o tysiące
-     pikseli (zmierzono: #sniadania +2324 px na 390 px). Strażnik pilnuje
-     ostatnio wybranej kotwicy i po każdej zmianie wysokości dokumentu w oknie
-     3,5 s wyrównuje pozycję ponownie; ręczny scroll użytkownika przerywa. */
-  var anchorGuard = { id: null, until: 0 };
-  function guardAnchor(id) {
-    anchorGuard.id = id;
-    anchorGuard.until = Date.now() + 3500;
-  }
-  function releaseGuard() { anchorGuard.id = null; }
-  ['wheel', 'touchmove'].forEach(function (ev) {
-    window.addEventListener(ev, releaseGuard, { passive: true });
-  });
-  function realignGuarded(instant) {
-    if (!anchorGuard.id || Date.now() > anchorGuard.until) return;
-    var target = document.getElementById(anchorGuard.id);
-    if (!target) return;
-    if (Math.abs(window.scrollY - anchorDestY(target)) > 4) {
-      window.scrollTo({ top: anchorDestY(target), behavior: 'auto' });
-    }
-  }
-  if ('ResizeObserver' in window) {
-    new ResizeObserver(function () { realignGuarded(); }).observe(document.body);
-  }
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(function () { realignGuarded(); });
-  }
-  window.addEventListener('load', function () { realignGuarded(); });
-  window.addEventListener('hashchange', function () {
-    if (window.location.hash.length > 1) guardAnchor(window.location.hash.slice(1));
-  });
-  /* wejście z hashem w adresie albo klik oddany przed wykonaniem skryptów:
-     wyrównaj od razu — menu są już wyrenderowane, gdy ten kod działa */
-  if (window.location.hash.length > 1 && document.getElementById(window.location.hash.slice(1))) {
-    guardAnchor(window.location.hash.slice(1));
-    realignGuarded();
-  }
-
-  function scrollToSection(id) {
+  function performScroll(id, opts) {
     var target = document.getElementById(id);
     if (!target) return false;
     var noMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    function settle() { realignGuarded(); }
-    guardAnchor(id);
-    window.scrollTo({ top: anchorDestY(target), behavior: noMotion ? 'auto' : 'smooth' });
-    if (noMotion) {
-      settle();
-    } else if ('onscrollend' in window) {
-      window.addEventListener('scrollend', settle, { once: true });
-    } else {
-      window.setTimeout(settle, 900);
+    var behavior = (opts.instant || noMotion) ? 'auto' : 'smooth';
+    window.scrollTo({ top: anchorTop(target), behavior: behavior });
+    var corrected = false;
+    var correctOnce = function () {
+      if (corrected) return;
+      corrected = true;
+      requestAnimationFrame(function () {
+        if (Math.abs(window.scrollY - anchorTop(target)) > 4) {
+          window.scrollTo({ top: anchorTop(target), behavior: 'auto' });
+        }
+      });
+    };
+    if (behavior === 'auto') correctOnce();
+    else if ('onscrollend' in window) window.addEventListener('scrollend', correctOnce, { once: true });
+    else window.setTimeout(correctOnce, 700);
+    if (opts.hash) {
+      try {
+        if (window.location.hash !== '#' + id && window.history.pushState) {
+          window.history.pushState(null, '', '#' + id);
+        }
+      } catch (err) { /* podgląd w iframie bez dostępu do historii */ }
     }
-    try {
-      if (window.location.hash !== '#' + id && window.history.pushState) {
-        window.history.pushState(null, '', '#' + id);
-      }
-    } catch (err) { /* np. podgląd w iframie bez uprawnień do historii */ }
     return true;
   }
+  function scrollToSection(id, opts) {
+    if (!document.getElementById(id)) return false;
+    var options = { hash: !opts || opts.hash !== false, instant: !!(opts && opts.instant) };
+    if (!contentReady) { pendingAnchor = { id: id, opts: options }; return true; }
+    return performScroll(id, options);
+  }
+  document.addEventListener('app:content-ready', function () {
+    contentReady = true;
+    if (pendingAnchor) {
+      performScroll(pendingAnchor.id, pendingAnchor.opts);
+      pendingAnchor = null;
+    } else if (window.location.hash.length > 1 && document.getElementById(window.location.hash.slice(1))) {
+      /* wejście z hashem albo natywny skok sprzed inicjalizacji:
+         jedno bezzwłoczne wyrównanie do finalnego układu */
+      performScroll(window.location.hash.slice(1), { hash: false, instant: true });
+    }
+  }, { once: true });
   window.RADOSC_SCROLL = scrollToSection;
 
   /* pasek skrótów Bistro — gaszenie gradientu po dojechaniu do końca */
@@ -245,12 +235,19 @@
         else sheetHideTimer = window.setTimeout(finishClose, 300);
       }
     };
+    /* jedna wspólna ścieżka zamknięcia dla X / Escape / backdropu / wyboru pozycji */
+    var closeSheet = function (reason) { setSheet(false); };
     sheetBtn.addEventListener('click', function () { setSheet(!sheetOpen); });
-    sheetClose.addEventListener('click', function () { setSheet(false); });
-    sheetBackdrop.addEventListener('click', function () { setSheet(false); });
+    sheetClose.addEventListener('click', function () { closeSheet('close-button'); });
+    sheetBackdrop.addEventListener('click', function (e) {
+      /* klik w tło nie może przejść do elementów pod spodem */
+      e.preventDefault();
+      e.stopPropagation();
+      closeSheet('backdrop');
+    });
     document.addEventListener('keydown', function (e) {
       if (!sheetOpen) return;
-      if (e.key === 'Escape') { setSheet(false); return; }
+      if (e.key === 'Escape') { closeSheet('escape'); return; }
       /* focus trap wewnątrz panelu */
       if (e.key === 'Tab') {
         var focusables = sheet.querySelectorAll('.sheet-list a, .sheet-close');
@@ -267,7 +264,7 @@
       var href = link.getAttribute('href');
       var page = href.split('#')[0];
       var here = window.location.pathname.split('/').pop() || 'index.html';
-      setSheet(false);
+      closeSheet('item');
       if (href.indexOf('#') > -1 && page === here) {
         e.preventDefault();
         scrollToSection(href.split('#')[1]);
@@ -293,6 +290,14 @@
       });
     });
   });
+
+  /* kliknięcia w hamburger / przycisk Menu oddane zanim ten plik się wykonał
+     (mikro-kolejka z <head>) — odtwórz teraz, gdy handlery są podpięte */
+  if (window.__earlyNav && window.__earlyNav.drain) {
+    window.__earlyNav.drain().forEach(function (el) {
+      if (el && el.click) el.click();
+    });
+  }
 })();
 
 /* ============================================================
@@ -458,9 +463,16 @@
       intro.textContent = INTRO_TEXTS[val] || DEFAULT_INTRO;
       intro.hidden = false;
     }
-    /* deterministyczne przewinięcie do formularza — sama zmiana hash nie
-       przewija, gdy #zapytanie już jest w adresie (drugie kliknięcie karty) */
-    if (window.RADOSC_SCROLL) return window.RADOSC_SCROLL('zapytanie');
+    /* bezpośrednie przewinięcie do formularza (bez zmiany hasha) + fokus
+       na nagłówku sekcji — czytelne także dla czytników ekranu */
+    if (window.RADOSC_SCROLL && window.RADOSC_SCROLL('zapytanie', { hash: false })) {
+      var zh = document.querySelector('#zapytanie h2');
+      if (zh) {
+        if (!zh.hasAttribute('tabindex')) zh.setAttribute('tabindex', '-1');
+        zh.focus({ preventScroll: true });
+      }
+      return true;
+    }
     return false;
   }
   inquiryCards.forEach(function (card) {
@@ -476,3 +488,6 @@
     });
   });
 })();
+
+/* treści menu wyrenderowane — nawigacja kotwic może celować w finalny układ */
+document.dispatchEvent(new CustomEvent('app:content-ready'));
