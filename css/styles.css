@@ -1176,3 +1176,76 @@ body.lb-open{overflow:hidden}
   .sl-cta{flex-direction:column;align-items:stretch}
   .sl-cta .btn{justify-content:center}
 }
+
+/* ============================================================
+   ETAP 6.2 — Signature living images
+   Jeden „żywy kadr" na podstronę. Wyłącznie transform/opacity/mask,
+   dekoracje aria-hidden + pointer-events:none, animacje pauzowane
+   poza viewportem (klasa .sig-play od IntersectionObserver).
+   ============================================================ */
+
+/* --- wspólny wrapper dekoracji --- */
+.sig-overlay{position:absolute;pointer-events:none;z-index:2;contain:layout style}
+
+/* --- A. Dzień ↔ Wieczór (łuk hero na stronie głównej) --- */
+[data-signature="day-night"] .sig-day{position:absolute;inset:0}
+[data-signature="day-night"] .sig-day img{object-position:50% 74%}
+[data-signature="day-night"] .sig-night{position:absolute;inset:0}
+[data-signature="day-night"].sig-ready .sig-night{
+  -webkit-mask-image:linear-gradient(102deg,transparent calc(var(--sig-split,0%) - 9%),#000 calc(var(--sig-split,0%) + 9%));
+  mask-image:linear-gradient(102deg,transparent calc(var(--sig-split,0%) - 9%),#000 calc(var(--sig-split,0%) + 9%))}
+
+/* --- B. Para nad szklanką (bistro, Kawa) --- */
+.sig-steam i{position:absolute;bottom:0;border-radius:50%;opacity:0;
+  background:linear-gradient(to top,rgba(246,241,229,0),rgba(246,241,229,.24) 45%,rgba(246,241,229,0));
+  filter:blur(6px);will-change:transform,opacity;
+  animation:sigSteam 7s ease-in-out infinite;animation-play-state:paused}
+.sig-steam .s1{left:16%;width:16%;height:66%;animation-duration:6.4s}
+.sig-steam .s2{left:42%;width:14%;height:78%;animation-duration:7.8s;animation-delay:2.2s}
+.sig-steam .s3{left:64%;width:15%;height:58%;animation-duration:8.6s;animation-delay:4.3s}
+.sig-play .sig-steam i{animation-play-state:running}
+@keyframes sigSteam{
+  0%{opacity:0;transform:translate(0,16%) rotate(0deg)}
+  16%{opacity:.40}
+  52%{opacity:.24;transform:translate(9%,-30%) rotate(5deg)}
+  82%{opacity:.08}
+  100%{opacity:0;transform:translate(-5%,-56%) rotate(-4deg)}
+}
+
+/* --- C. Gorące powietrze nad pizzą (pizza, „Prosto z pieca") --- */
+.sig-heat i{position:absolute;bottom:0;border-radius:50%;opacity:0;
+  background:linear-gradient(to top,rgba(255,240,222,0),rgba(255,236,212,.15) 50%,rgba(255,240,222,0));
+  filter:blur(11px);will-change:transform,opacity;
+  animation:sigHeat 7s ease-in-out infinite;animation-play-state:paused}
+.sig-heat .h1{left:6%;width:30%;height:88%;animation-duration:6.2s}
+.sig-heat .h2{left:38%;width:26%;height:96%;animation-duration:7.6s;animation-delay:2.4s}
+.sig-heat .h3{left:66%;width:28%;height:80%;animation-duration:8.8s;animation-delay:4.6s}
+.sig-play .sig-heat i{animation-play-state:running}
+@keyframes sigHeat{
+  0%{opacity:0;transform:translateY(10%) skewX(0deg)}
+  20%{opacity:.55}
+  45%{transform:translateY(-12%) skewX(5deg)}
+  70%{opacity:.30;transform:translateY(-26%) skewX(-4deg)}
+  100%{opacity:0;transform:translateY(-40%) skewX(2deg)}
+}
+.g-item[data-signature="pizza-heat"] img{transition:transform 1.1s cubic-bezier(.22,.61,.36,1)}
+.g-item[data-signature="pizza-heat"]:hover img{transform:scale(1.015)}
+
+/* --- D. Migotanie realnych świateł gali (realizacje) --- */
+.sig-gala i{position:absolute;aspect-ratio:1;border-radius:50%;opacity:0;
+  transform:translate(-50%,-50%) scale(.92);mix-blend-mode:screen;
+  background:radial-gradient(circle,rgba(255,215,150,.34) 0%,rgba(255,215,150,.10) 45%,rgba(255,215,150,0) 70%);
+  will-change:transform,opacity;
+  animation:sigGlint var(--d,9s) ease-in-out var(--dl,0s) infinite;animation-play-state:paused}
+.sig-play .sig-gala i{animation-play-state:running}
+@keyframes sigGlint{
+  0%,100%{opacity:0;transform:translate(-50%,-50%) scale(.92)}
+  50%{opacity:.4;transform:translate(-50%,-50%) scale(1.05)}
+}
+
+/* --- reduced motion: brak dekoracji, hero = kompletne zdjęcie wieczoru --- */
+@media (prefers-reduced-motion:reduce){
+  [data-signature="day-night"] .sig-day{display:none}
+  [data-signature="day-night"] .sig-night{-webkit-mask-image:none;mask-image:none}
+  .sig-overlay{display:none}
+}
