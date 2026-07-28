@@ -1548,3 +1548,10 @@ body.is-evening .site-header:not(.scrolled) .burger span{background:var(--cream)
 .audio-card .au-meta small{color:rgba(21,50,31,.55);font-size:12px}
 .audio-card .au-bar{height:3px;background:rgba(21,50,31,.15);border-radius:2px;margin-top:8px;overflow:hidden}
 .audio-card .au-bar i{display:block;height:100%;width:0;background:var(--gold);transition:width .2s linear}
+
+/* ===== ETAP 9: newsletter (zapis na menu tygodnia) ===== */
+.newsletter-form{margin-top:34px}
+.newsletter-form .nl-row{display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap}
+.newsletter-form .nl-row label{flex:1;min-width:230px;margin:0}
+.newsletter-form .nl-row .btn{flex:none;min-height:48px}
+@media (max-width:560px){.newsletter-form .nl-row .btn{width:100%}}

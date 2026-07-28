@@ -224,7 +224,9 @@ console.info('[RADOSC] main.js loaded', {
           }
           status.textContent = form.dataset.formType === 'rezerwacja'
             ? t('okReservation', 'Rezerwacja demonstracyjna przyjęta.')
-            : t('okContact', 'Dziękujemy! Zgłoszenie demonstracyjne dotarło.');
+            : form.dataset.formType === 'newsletter'
+              ? t('okNewsletter', 'Dziękujemy! Zapis demonstracyjny przyjęty.')
+              : t('okContact', 'Dziękujemy! Zgłoszenie demonstracyjne dotarło.');
           form.reset();
           form.querySelectorAll('.field-error').forEach(clearFieldError);
           /* P4/P11: pełny reset stanów pomocniczych po udanej demonstracji */
