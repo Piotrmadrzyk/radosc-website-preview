@@ -492,6 +492,7 @@ h2 em{font-style:italic;font-weight:500;color:var(--gold)}
 .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
 .chip{font:inherit;font-size:13.5px;font-weight:500;color:var(--ink);background:rgba(255,255,255,.55);
   border:1px solid rgba(21,50,31,.28);border-radius:999px;padding:10px 18px;cursor:pointer;
+  min-height:44px;display:inline-flex;align-items:center; /* P12: cel dotykowy min. 44 px */
   transition:background .25s ease,color .25s ease,border-color .25s ease,transform .25s ease}
 .chip:hover{border-color:var(--gold-dark);color:var(--gold-dark);transform:translateY(-1px)}
 .chip.active{background:var(--ink);color:var(--cream);border-color:var(--ink)}
@@ -1476,3 +1477,74 @@ body.is-evening .site-header:not(.scrolled) .burger span{background:var(--cream)
 .sec-bistro .form-status.is-error{color:#A63A24}
 .sec-bistro label .req{color:var(--gold-dark)}
 .sec-bistro .field-msg{color:#A63A24}
+
+/* ============================================================
+   ETAP 8 — audyt 10/10: formularze, plan sali, chipy, czat
+   ============================================================ */
+
+/* P5: jednoznacznie widoczny aktywny chip tematu */
+.chip[data-topic].active{background:var(--gold);border-color:var(--gold-dark);color:#fff;font-weight:600}
+.chip[data-topic].active::before{content:"✓ ";font-weight:700}
+.chip[data-topic]:focus-visible{outline:2px solid var(--gold-light);outline-offset:3px}
+
+/* P18: błąd = kolor + ikona + komunikat pod polem */
+.field-msg::before{content:"⚠ ";font-weight:700}
+.field-error{border-color:#A63A24 !important}
+
+/* P9: stoliki o zbyt małej pojemności */
+.floor-plan .tbl.too-small{cursor:not-allowed}
+.floor-plan .tbl.too-small rect,.floor-plan .tbl.too-small circle{fill:#E7E2D6;stroke:rgba(21,50,31,.18);stroke-dasharray:4 3}
+.floor-plan .tbl.too-small text{fill:rgba(21,50,31,.35)}
+/* P8: grupa > 12 osób — plan wyłączony, widoczna informacja */
+.floor-wrap .floor-group-note{display:none;font-size:14px;line-height:1.6;color:var(--ink);
+  background:rgba(169,129,47,.12);border-left:3px solid var(--gold);padding:12px 16px;margin:10px 0}
+.floor-wrap.floor-group .floor-group-note{display:block}
+.floor-wrap.floor-group .floor-plan{opacity:.35;pointer-events:none}
+.floor-clear{margin-top:8px;background:none;border:1px solid rgba(21,50,31,.35);color:var(--ink);
+  font:inherit;font-size:12px;font-weight:600;letter-spacing:.08em;padding:7px 14px;border-radius:999px;cursor:pointer}
+.floor-clear:hover{border-color:var(--gold-dark);color:var(--gold-dark)}
+/* P12: na wąskich ekranach plan przewija się w bok — stoliki mają pełny rozmiar dotykowy */
+@media (max-width:520px){
+  .floor-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .floor-plan{min-width:560px}
+}
+
+/* P3: notka demonstracyjna przy formularzach */
+.demo-note{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;line-height:1.55;
+  color:rgba(21,50,31,.65);margin:6px 0 16px}
+.sec-kontakt .demo-note,.sec-catering-form .demo-note{color:rgba(246,241,229,.62)}
+#zapytanie .demo-note{color:rgba(246,241,229,.62)}
+.demo-note::before{content:"ⓘ";flex:none;font-weight:600}
+
+/* P29: demonstracyjny adres e-mail (bez aktywnej skrzynki) */
+.mail-demo{border-bottom:1px dashed currentColor;cursor:help}
+.mail-demo small{opacity:.7;font-size:.82em}
+
+/* P24/25: przycisk czatu nie zasłania pól ani stopki */
+.vm-root.vm-dodge .vm-fab,.vm-root.vm-away .vm-fab{opacity:0;pointer-events:none;transform:translateY(8px)}
+.vm-fab{transition:transform .25s ease,background .25s ease,opacity .25s ease}
+
+/* P31: niższe hero podstron na małych telefonach */
+@media (max-width:400px){
+  .sub-hero{min-height:340px;height:52svh;max-height:430px}
+  .sub-hero .sub-hero-frame h1{font-size:30px}
+}
+
+/* mapa demonstracyjna */
+.map-demo{position:relative;border:1px solid rgba(21,50,31,.16);border-radius:10px;overflow:hidden;background:#fff}
+.map-demo svg{display:block;width:100%;height:auto}
+.map-demo .map-badge{position:absolute;top:12px;left:12px;background:rgba(21,50,31,.85);color:var(--cream);
+  font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:6px 12px;border-radius:999px}
+
+/* audio-wizytówka */
+.audio-card{display:flex;align-items:center;gap:16px;margin-top:26px;padding:16px 20px;
+  background:rgba(255,255,255,.6);border:1px solid rgba(169,129,47,.35);border-radius:12px;max-width:520px}
+.audio-card button{flex:none;width:52px;height:52px;border-radius:50%;border:0;background:var(--gold);
+  color:#fff;cursor:pointer;display:grid;place-items:center;transition:background .2s ease}
+.audio-card button:hover{background:var(--gold-dark)}
+.audio-card button svg{width:20px;height:20px}
+.audio-card .au-meta{flex:1;min-width:0}
+.audio-card .au-meta b{display:block;font-size:14px;color:var(--ink)}
+.audio-card .au-meta small{color:rgba(21,50,31,.55);font-size:12px}
+.audio-card .au-bar{height:3px;background:rgba(21,50,31,.15);border-radius:2px;margin-top:8px;overflow:hidden}
+.audio-card .au-bar i{display:block;height:100%;width:0;background:var(--gold);transition:width .2s linear}

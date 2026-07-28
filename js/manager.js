@@ -252,6 +252,24 @@
     if (b) ask(b.getAttribute('data-q'));
   });
 
+  /* ---------- P24/25: przycisk nie zasłania pól formularzy ani stopki ---------- */
+  document.addEventListener('focusin', function (e) {
+    if (root.contains(e.target)) return;
+    if (panel.hidden && window.matchMedia('(max-width: 860px)').matches &&
+        e.target.matches && e.target.matches('input, textarea, select')) {
+      root.classList.add('vm-dodge');
+    }
+  });
+  document.addEventListener('focusout', function (e) {
+    if (!root.contains(e.target)) root.classList.remove('vm-dodge');
+  });
+  var siteFooter = document.querySelector('.site-footer');
+  if (siteFooter && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      root.classList.toggle('vm-away', entries[0].isIntersecting && panel.hidden);
+    }, { rootMargin: '0px 0px -30px 0px' }).observe(siteFooter);
+  }
+
   /* ---------- mikrofon: pytanie głosem (Web Speech API) ---------- */
   var micBtn = root.querySelector('.vm-mic');
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition;

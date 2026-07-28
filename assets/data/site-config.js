@@ -1,0 +1,110 @@
+/* ============================================================
+   JEDNO ŹRÓDŁO DANYCH RESTAURACJI (demo)
+   Godziny, kontakt, parking, limity rezerwacji i komunikaty
+   formularzy PL/EN. Z tego pliku korzystają: formularze,
+   plan sali, linia pory dnia, sekcja dojazdu i (treściowo) FAQ.
+   Zmiana godzin: edytuj TYLKO tutaj.
+   ============================================================ */
+window.ZP_CONFIG = {
+  nazwa: "Restauracja Zielona Pergola",
+  adres: "ul. Cyprysowa 12, 00-000 Zielony Gaj (k. Lipowa)",
+  adresCatering: "ul. Cyprysowa 14, 00-000 Zielony Gaj",
+  telefon: "795 870 359",
+  telefonHref: "+48795870359",
+  telefonOpis: { pl: "Telefon główny — restauracja, rezerwacje i catering", en: "Main phone — restaurant, reservations and catering" },
+  email: "kontakt@zielonapergola.pl", // adres demonstracyjny (bez aktywnej skrzynki)
+  emailDemo: true,
+
+  /* godziny otwarcia wg dnia tygodnia (0 = niedziela) */
+  godziny: {
+    0: { open: "11:00", close: "20:00" },
+    1: { open: "08:00", close: "21:00" },
+    2: { open: "08:00", close: "21:00" },
+    3: { open: "08:00", close: "21:00" },
+    4: { open: "08:00", close: "21:00" },
+    5: { open: "08:00", close: "21:00" },
+    6: { open: "11:00", close: "22:00" }
+  },
+  /* rezerwacje: start i ostatnie przyjęcie (1h przed zamknięciem) */
+  rezerwacje: {
+    from: "11:00",
+    lastBeforeCloseMin: 60,   /* ostatnia rezerwacja: 60 min przed zamknięciem */
+    minLeadMin: 60,           /* minimalne wyprzedzenie dzisiaj */
+    maxMonths: 12,            /* maksymalne wyprzedzenie */
+    maxGuests: 12,            /* powyżej — rezerwacja grupowa przez catering */
+    slotMin: 30
+  },
+
+  parking: {
+    pl: "Bezpłatny parking dla gości (ok. 20 miejsc) znajduje się bezpośrednio przy restauracji, wjazd od ul. Cyprysowej. Wejście główne od strony ogrodu, bez progów — lokal i toaleta są dostosowane dla osób z ograniczoną mobilnością.",
+    en: "Free guest parking (approx. 20 spaces) is right next to the restaurant, entered from Cyprysowa Street. The main entrance is on the garden side, step-free — the venue and restroom are accessible for guests with limited mobility."
+  },
+
+  /* komunikaty formularzy — jedno źródło dla PL i EN */
+  t: {
+    pl: {
+      reqName: "Podaj imię i nazwisko.",
+      reqEmail: "Podaj adres e-mail.",
+      badEmail: "Podaj poprawny adres e-mail.",
+      reqPhone: "Podaj numer telefonu.",
+      badPhone: "Podaj prawidłowy numer telefonu zawierający od 9 do 15 cyfr.",
+      reqMsg: "Napisz krótką wiadomość.",
+      reqSelect: "Wybierz typ zapytania.",
+      reqTime: "Wybierz godzinę rezerwacji.",
+      reqDate: "Wybierz datę rezerwacji.",
+      badDatePast: "Wybierz przyszłą datę.",
+      badDateFar: "Rezerwacji można dokonać maksymalnie z 12-miesięcznym wyprzedzeniem.",
+      reqGuests: "Podaj liczbę osób.",
+      badGuests: "Podaj liczbę osób od 1 wzwyż (bez ułamków).",
+      bigGroup: "Grupy powyżej 12 osób obsługujemy jako rezerwacje grupowe — zadzwoń: 795 870 359 albo skorzystaj z formularza cateringowego.",
+      consent: "Zaznacz zgodę na kontakt.",
+      fillField: "Uzupełnij to pole.",
+      fixForm: "Uzupełnij poprawnie zaznaczone pola, aby wysłać zapytanie.",
+      checking: "Sprawdzanie formularza…",
+      sending: "Wysyłanie…",
+      okContact: "Dziękujemy! To wersja demonstracyjna — zgłoszenie trafiło do autora projektu (nie do prawdziwej restauracji), a na podany adres wysłaliśmy przykładową odpowiedź.",
+      okReservation: "Rezerwacja demonstracyjna przyjęta — wpis trafił do kalendarza demo, a na Twój e-mail wysłaliśmy przykładowe potwierdzenie.",
+      sendError: "Nie udało się wysłać formularza. Spróbuj ponownie albo zadzwoń: 795 870 359.",
+      noTimesToday: "Na dzisiaj nie ma już dostępnych godzin. Wybierz inny dzień.",
+      pickTime: "— wybierz godzinę —",
+      tableTooSmall: "Ten stolik ma za mało miejsc dla podanej liczby osób.",
+      tableCleared: "Wybrany stolik był za mały dla nowej liczby osób — wybierz inny.",
+      tableSelected: "Wybrany stolik: ",
+      tableClear: "Wyczyść wybór",
+      seats: "miejsc",
+      demoNote: "Wersja demonstracyjna — zgłoszenie trafia do autora projektu i służy wyłącznie prezentacji działania strony."
+    },
+    en: {
+      reqName: "Enter your full name.",
+      reqEmail: "Enter your e-mail address.",
+      badEmail: "Enter a valid e-mail address.",
+      reqPhone: "Enter your phone number.",
+      badPhone: "Enter a valid phone number containing 9 to 15 digits.",
+      reqMsg: "Write a short message.",
+      reqSelect: "Select an enquiry type.",
+      reqTime: "Select a reservation time.",
+      reqDate: "Select a reservation date.",
+      badDatePast: "Select a future date.",
+      badDateFar: "Reservations can be made up to 12 months in advance.",
+      reqGuests: "Enter the number of guests.",
+      badGuests: "Enter a whole number of guests, 1 or more.",
+      bigGroup: "Groups larger than 12 are handled as group bookings — call 795 870 359 or use the catering enquiry form.",
+      consent: "Please tick the contact consent box.",
+      fillField: "Fill in this field.",
+      fixForm: "Correct the highlighted fields to send your enquiry.",
+      checking: "Checking the form…",
+      sending: "Sending…",
+      okContact: "Thank you! This is a demonstration — your enquiry went to the project author (not a real restaurant), and a sample reply was sent to your address.",
+      okReservation: "Demo reservation confirmed — the entry landed in the demo calendar and a sample confirmation was emailed to you.",
+      sendError: "The form could not be sent. Try again or call 795 870 359.",
+      noTimesToday: "There are no more available times today. Select another date.",
+      pickTime: "— select a time —",
+      tableTooSmall: "This table does not have enough seats for your party size.",
+      tableCleared: "The selected table was too small for the new party size — please pick another.",
+      tableSelected: "Selected table: ",
+      tableClear: "Clear selection",
+      seats: "seats",
+      demoNote: "Demonstration version — submissions go to the project author and exist purely to showcase the website."
+    }
+  }
+};
