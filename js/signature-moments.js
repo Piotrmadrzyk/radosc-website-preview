@@ -158,7 +158,7 @@
     var fig = document.querySelector('[data-signature="coffee-steam"]');
     if (!fig) return;
     addOverlay(fig, 'sig-steam', '<i class="s1"></i><i class="s2"></i><i class="s3"></i>',
-      { fx: 0.24, fy: 0.10, fw: 0.34, fh: 0.40 }); // dół ramki = krawędź szklanki (y≈0.50)
+      { fx: 0.37, fy: 0.20, fw: 0.34, fh: 0.40 }); // dół ramki = krawędź szklanki (y≈0.60)
   })();
 
   /* ================= C. GORĄCE POWIETRZE (pizza, „Prosto z pieca") =============
@@ -168,7 +168,7 @@
     var fig = document.querySelector('[data-signature="pizza-heat"]');
     if (!fig) return;
     addOverlay(fig, 'sig-heat', '<i class="h1"></i><i class="h2"></i><i class="h3"></i>',
-      { fx: 0.12, fy: 0.10, fw: 0.74, fh: 0.36 }); // strefa nad frontową pizzą
+      { fx: 0.12, fy: 0.16, fw: 0.74, fh: 0.36 }); // strefa nad frontową pizzą (górna krawędź pizzy y≈0.52)
   })();
 
   /* ================= D. ŚWIATŁA GALI (realizacje, „Gala na setki gości") =======
@@ -179,12 +179,12 @@
     if (!fig) return;
     // pozycje (ułamki zdjęcia) = realne podświetlone stoły
     var pts = [
-      { x: 0.155, y: 0.375, s: 0.070, d: 8.5, dl: 0.0 },
-      { x: 0.420, y: 0.372, s: 0.062, d: 11.0, dl: 3.2 },
-      { x: 0.735, y: 0.350, s: 0.058, d: 7.4, dl: 5.6 },
-      { x: 0.105, y: 0.545, s: 0.078, d: 9.8, dl: 2.1 },
-      { x: 0.475, y: 0.545, s: 0.072, d: 12.0, dl: 6.9 },
-      { x: 0.300, y: 0.705, s: 0.086, d: 8.0, dl: 4.4 }
+      { x: 0.520, y: 0.430, s: 0.090, d: 8.5, dl: 0.0 },
+      { x: 0.150, y: 0.730, s: 0.060, d: 11.0, dl: 3.2 },
+      { x: 0.780, y: 0.720, s: 0.060, d: 7.4, dl: 5.6 },
+      { x: 0.600, y: 0.660, s: 0.055, d: 9.8, dl: 2.1 },
+      { x: 0.300, y: 0.860, s: 0.065, d: 12.0, dl: 6.9 },
+      { x: 0.500, y: 0.820, s: 0.075, d: 8.0, dl: 4.4 }
     ];
     var html = pts.map(function (p) {
       return '<i style="left:' + (p.x * 100) + '%;top:' + (p.y * 100) + '%;' +
