@@ -1,0 +1,27 @@
+name: Fetch generated assets
+on:
+  push:
+    branches: [tmp/artlist-drop]
+    paths: ['urls.json']
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download assets
+        run: |
+          mkdir -p drop
+          jq -r '.[] | [.name, .url] | @tsv' urls.json | while IFS=$'\t' read -r name url; do
+            echo "fetching $name"
+            curl -sSL --retry 3 --retry-delay 2 -o "drop/${name}.png" "$url"
+          done
+          ls -la drop/
+      - name: Commit results
+        run: |
+          git config user.name "assets-bot"
+          git config user.email "assets-bot@users.noreply.github.com"
+          git add -A drop
+          git commit -m "assets drop" || exit 0
+          git push
