@@ -100,6 +100,7 @@
     <a class="brand" href="index.html" aria-label="Zielona Pergola — home page">
       <span class="lg-top">RESTAURACJ<span class="lg-ltr">A</span></span><small>Zielona Pergola</small>
     </a>
+    <div class="header-right">
     <nav class="nav-links" aria-label="Main navigation">
       <a href="bistro.html">Restaurant</a>
       <a href="pizza.html" aria-current="page">Pizza</a>
@@ -108,6 +109,11 @@
       <a href="kontakt.html">Contact</a>
       <a class="lang-switch" href="../pizza.html" hreflang="pl" lang="pl" aria-label="Wersja polska">PL</a>
     </nav>
+    <button type="button" class="cart-trigger" id="cart-trigger" hidden aria-haspopup="dialog" aria-expanded="false" aria-label="Order basket (empty)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1.4"/><circle cx="19" cy="21" r="1.4"/><path d="M1 1h3l2.4 13.2a2 2 0 0 0 2 1.8h9.2a2 2 0 0 0 2-1.6L21.6 6H5.2"/></svg>
+      <span class="cart-badge" id="cart-badge" hidden>0</span>
+    </button>
+    </div>
     <button class="burger" id="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
       <span></span><span></span><span></span>
     </button>
@@ -226,8 +232,7 @@
     <p class="body-text reveal">Add items from the menu above with the “+ Add to order” buttons, choose pickup or delivery and a time — we’ll email a confirmation with your order number.</p>
     <form class="demo-form reveal" method="post" novalidate style="margin-top:26px"
       data-endpoint="https://pmresearch.app.n8n.cloud/webhook/zielona-pergola-zamowienie" data-form-type="zamowienie">
-      <div class="order-list" id="order-list" aria-live="polite"></div>
-      <p id="order-empty">Your basket is empty — add something from the menu above.</p>
+      <div class="cart-summary" id="cart-summary" aria-live="polite"></div>
       <input type="hidden" name="order" value="">
       <div class="row">
         <label>Full name <span class="req">*</span>
@@ -458,7 +463,19 @@
 <script src="../assets/data/site-config.js?v=__RADOSC_BUILD_HASH__"></script>
 <script src="../js/main.js?v=__RADOSC_BUILD_HASH__"></script>
 <script src="../js/manager.js?v=__RADOSC_BUILD_HASH__" defer></script>
-<button type="button" class="cart-fab" id="cart-fab" hidden aria-label="Go to your order"></button>
+<div class="cart-drawer" id="cart-drawer" hidden>
+  <div class="cart-drawer-backdrop" id="cart-drawer-backdrop"></div>
+  <aside class="cart-drawer-panel" role="dialog" aria-modal="true" aria-label="Your order">
+    <div class="cart-drawer-head">
+      <h2>Your order</h2>
+      <button type="button" class="cart-drawer-close" id="cart-drawer-close" aria-label="Close basket">&times;</button>
+    </div>
+    <div class="cart-drawer-body" id="cart-drawer-body" aria-live="polite"></div>
+    <div class="cart-drawer-foot">
+      <button type="button" class="btn btn-fill" id="cart-drawer-cta" disabled>Go to checkout <span aria-hidden="true">→</span></button>
+    </div>
+  </aside>
+</div>
 <script src="../js/order.js?v=__RADOSC_BUILD_HASH__" defer></script>
 </body>
 </html>

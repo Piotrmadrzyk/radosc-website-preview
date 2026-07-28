@@ -1,9 +1,12 @@
 /* ============================================================
-   ETAP 9 — zamawianie pizzy i burgerów online (demo)
-   Koszyk przy kartach menu + sekcja „Zamów online”.
+   ETAP 9 / 9.4 — zamawianie pizzy i burgerów online (demo)
+   Koszyk stale widoczny w nagłówku (ikona + licznik), edycja
+   w wysuwanym panelu — wzorzec znany z każdego sklepu online,
+   zamiast koszyka ukrytego dopiero przy formularzu zamówienia.
    Wysyłką i walidacją pól osobowych zajmuje się js/main.js
    (formularz .demo-form z data-form-type="zamowienie");
-   ten moduł prowadzi koszyk, godziny odbioru i pole adresu.
+   ten moduł prowadzi koszyk, panel koszyka, godziny odbioru
+   i pole adresu.
    ============================================================ */
 (function () {
   'use strict';
@@ -19,24 +22,74 @@
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
     });
   }
+  function plural(n, one, few, many) {
+    if (n === 1) return one;
+    var mod10 = n % 10, mod100 = n % 100;
+    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return few;
+    return many;
+  }
 
   var OPEN_MIN = 11 * 60;        /* zamówienia online: codziennie 11:00–21:00 */
   var CLOSE_MIN = 21 * 60;
   var LEAD_MIN = 40;             /* minimalne wyprzedzenie na wybraną godzinę */
 
-  var listBox = document.getElementById('order-list');
   var hiddenItems = form.querySelector('input[name="order"]');
   var timeField = form.querySelector('select[name="otime"]');
   var deliveryField = form.querySelector('select[name="delivery"]');
   var addressLabel = document.getElementById('order-address');
   var addressField = form.querySelector('input[name="address"]');
   var submitBtn = form.querySelector('button[type="submit"]');
-  var emptyNote = document.getElementById('order-empty');
-  var fab = document.getElementById('cart-fab');
+  var cartSummary = document.getElementById('cart-summary');
+
+  /* ---- koszyk w nagłówku: zawsze widoczna ikona + panel wysuwany ---- */
+  var cartTrigger = document.getElementById('cart-trigger');
+  var cartBadge = document.getElementById('cart-badge');
+  var drawer = document.getElementById('cart-drawer');
+  var drawerBody = document.getElementById('cart-drawer-body');
+  var drawerBackdrop = document.getElementById('cart-drawer-backdrop');
+  var drawerClose = document.getElementById('cart-drawer-close');
+  var drawerCta = document.getElementById('cart-drawer-cta');
+
+  function openDrawer() {
+    if (!drawer) return;
+    drawer.hidden = false;
+    requestAnimationFrame(function () { drawer.classList.add('is-open'); });
+    document.body.classList.add('cart-drawer-lock');
+    if (cartTrigger) cartTrigger.setAttribute('aria-expanded', 'true');
+    var closeBtn = drawerClose;
+    if (closeBtn) closeBtn.focus();
+  }
+  function closeDrawer() {
+    if (!drawer || drawer.hidden) return;
+    drawer.classList.remove('is-open');
+    document.body.classList.remove('cart-drawer-lock');
+    if (cartTrigger) { cartTrigger.setAttribute('aria-expanded', 'false'); cartTrigger.focus(); }
+    setTimeout(function () { drawer.hidden = true; }, 260);
+  }
+  if (cartTrigger) cartTrigger.addEventListener('click', openDrawer);
+  if (drawerClose) drawerClose.addEventListener('click', closeDrawer);
+  if (drawerBackdrop) drawerBackdrop.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && drawer && !drawer.hidden) closeDrawer();
+  });
+  if (drawerCta) {
+    drawerCta.addEventListener('click', function () {
+      closeDrawer();
+      var sec = document.getElementById('zamowienie');
+      if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setTimeout(function () {
+        var nameField = form.querySelector('input[name="name"]');
+        if (nameField) nameField.focus({ preventScroll: true });
+      }, 420);
+    });
+  }
 
   /* ---- koszyk (przetrwa nawigację między podstronami w tej karcie) ---- */
   var cart = [];
   try { cart = JSON.parse(sessionStorage.getItem('zp-order') || '[]') || []; } catch (e) { cart = []; }
+  cart.forEach(function (it) { if (typeof it.note !== 'string') it.note = ''; });
+  var seenDrawer = false;
+  try { seenDrawer = sessionStorage.getItem('zp-order-seen') === '1'; } catch (e) {}
 
   function saveCart() {
     try { sessionStorage.setItem('zp-order', JSON.stringify(cart)); } catch (e) { /* tryb prywatny */ }
@@ -50,9 +103,16 @@
   function addItem(name, price, cat) {
     var found = cart.filter(function (it) { return it.name === name; })[0];
     if (found) { found.qty = Math.min(20, found.qty + 1); }
-    else { cart.push({ name: name, price: price, cat: cat, qty: 1 }); }
+    else { cart.push({ name: name, price: price, cat: cat, qty: 1, note: '' }); }
     saveCart();
-    renderCart();
+    renderCart({ bump: true });
+    /* P: pierwsze dodanie w tej wizycie — pokaż panel koszyka raz, żeby
+       gość od razu skojarzył przycisk z koszykiem w nagłówku */
+    if (!seenDrawer) {
+      seenDrawer = true;
+      try { sessionStorage.setItem('zp-order-seen', '1'); } catch (e) {}
+      openDrawer();
+    }
   }
   function changeQty(name, delta) {
     var it = cart.filter(function (x) { return x.name === name; })[0];
@@ -63,49 +123,90 @@
     renderCart();
   }
 
-  function renderCart() {
+  function rowsHtml() {
+    var h = '';
+    cart.forEach(function (it) {
+      h += '<div class="order-row" data-name="' + esc(it.name) + '">' +
+        '<div class="o-row-main">' +
+        '<span class="o-name">' + esc(it.name) + '</span>' +
+        '<span class="o-qty">' +
+          '<button type="button" class="o-less" aria-label="' + esc(t('orderLess', 'Zmniejsz ilość')) + ' — ' + esc(it.name) + '">−</button>' +
+          '<b>' + it.qty + '</b>' +
+          '<button type="button" class="o-more" aria-label="' + esc(t('orderMore', 'Zwiększ ilość')) + ' — ' + esc(it.name) + '">+</button>' +
+        '</span>' +
+        '<span class="o-price">' + (it.price * it.qty) + ' zł</span>' +
+        '</div>' +
+        '<input type="text" class="o-note" data-name="' + esc(it.name) + '" maxlength="140" ' +
+          'placeholder="' + esc(t('orderNotePlaceholder', 'Uwaga do pozycji — np. mniej ostra, bez cebuli…')) + '" ' +
+          'aria-label="' + esc(t('orderNoteAria', 'Uwaga do pozycji')) + ': ' + esc(it.name) + '" ' +
+          'value="' + esc(it.note || '') + '">' +
+        '</div>';
+    });
+    if (cart.length) {
+      h += '<div class="order-row order-sum"><span class="o-name">' + esc(t('orderTotal', 'Razem')) + '</span><span></span><span class="o-price">' + cartTotal() + ' zł</span></div>';
+    }
+    return h;
+  }
+
+  function renderCart(opts) {
     var has = cart.length > 0;
-    if (emptyNote) emptyNote.hidden = has;
+    var count = cartCount();
     if (submitBtn) submitBtn.disabled = !has;
     if (hiddenItems) hiddenItems.value = has ? JSON.stringify(cart.map(function (it) {
-      return { nazwa: it.name, cena: it.price, ilosc: it.qty };
+      return { nazwa: it.name, cena: it.price, ilosc: it.qty, uwaga: it.note || '' };
     })) : '';
-    if (listBox) {
-      var h = '';
-      cart.forEach(function (it) {
-        h += '<div class="order-row" data-name="' + esc(it.name) + '">' +
-          '<span class="o-name">' + esc(it.name) + '</span>' +
-          '<span class="o-qty">' +
-            '<button type="button" class="o-less" aria-label="' + esc(t('orderLess', 'Zmniejsz ilość')) + ' — ' + esc(it.name) + '">−</button>' +
-            '<b>' + it.qty + '</b>' +
-            '<button type="button" class="o-more" aria-label="' + esc(t('orderMore', 'Zwiększ ilość')) + ' — ' + esc(it.name) + '">+</button>' +
-          '</span>' +
-          '<span class="o-price">' + (it.price * it.qty) + ' zł</span>' +
-          '</div>';
-      });
-      if (has) {
-        h += '<div class="order-row order-sum"><span class="o-name">' + esc(t('orderTotal', 'Razem')) + '</span><span></span><span class="o-price">' + cartTotal() + ' zł</span></div>';
-      }
-      listBox.innerHTML = h;
+
+    /* ikona koszyka w nagłówku — widoczna od pierwszego wejścia na stronę,
+       żeby zamawianie było widoczne zanim ktokolwiek cokolwiek doda */
+    if (cartTrigger) {
+      cartTrigger.hidden = false;
+      cartTrigger.setAttribute('aria-label', has
+        ? t('cartAriaFilled', 'Koszyk zamówienia') + ': ' + count + ' · ' + cartTotal() + ' zł'
+        : t('cartAriaEmpty', 'Koszyk zamówienia (pusty)'));
     }
-    if (fab) {
-      fab.hidden = !has;
-      if (has) fab.innerHTML = '🛒 <b>' + cartCount() + '</b> · ' + cartTotal() + ' zł';
+    if (cartBadge) {
+      cartBadge.hidden = !has;
+      cartBadge.textContent = String(count);
+      if (opts && opts.bump) {
+        cartBadge.classList.remove('bump'); void cartBadge.offsetWidth; cartBadge.classList.add('bump');
+      }
+    }
+
+    if (drawerBody) drawerBody.innerHTML = has ? rowsHtml() :
+      '<p class="cart-empty">' + esc(t('orderEmpty', 'Koszyk jest pusty — dodaj coś z karty poniżej.')) + '</p>';
+    if (drawerCta) drawerCta.disabled = !has;
+
+    if (cartSummary) {
+      cartSummary.innerHTML = has
+        ? '<p class="cart-summary-line"><b>' + count + '</b> ' +
+          esc(plural(count, t('orderItemOne', 'pozycja'), t('orderItemFew', 'pozycje'), t('orderItemMany', 'pozycji'))) +
+          ' &middot; <b>' + cartTotal() + ' zł</b></p>' +
+          '<button type="button" class="cart-edit-link" id="cart-edit-link">' + esc(t('orderEdit', 'Edytuj koszyk')) + '</button>'
+        : '<p class="cart-summary-line cart-summary-empty">' + esc(t('orderEmpty', 'Koszyk jest pusty — dodaj coś z karty powyżej.')) + '</p>';
+      var editLink = document.getElementById('cart-edit-link');
+      if (editLink) editLink.addEventListener('click', openDrawer);
     }
   }
 
-  if (listBox) {
-    listBox.addEventListener('click', function (e) {
+  if (drawerBody) {
+    drawerBody.addEventListener('click', function (e) {
       var row = e.target.closest('.order-row');
       if (!row) return;
       if (e.target.closest('.o-more')) changeQty(row.getAttribute('data-name'), 1);
       else if (e.target.closest('.o-less')) changeQty(row.getAttribute('data-name'), -1);
     });
-  }
-  if (fab) {
-    fab.addEventListener('click', function () {
-      var sec = document.getElementById('zamowienie');
-      if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    /* uwaga do pozycji — zapisujemy na bieżąco, bez przerenderowania listy
+       (inaczej pole straciłoby fokus przy każdym wpisywanym znaku) */
+    drawerBody.addEventListener('input', function (e) {
+      var input = e.target.closest('.o-note');
+      if (!input) return;
+      var it = cart.filter(function (x) { return x.name === input.getAttribute('data-name'); })[0];
+      if (!it) return;
+      it.note = input.value;
+      saveCart();
+      if (hiddenItems) hiddenItems.value = JSON.stringify(cart.map(function (x) {
+        return { nazwa: x.name, cena: x.price, ilosc: x.qty, uwaga: x.note || '' };
+      }));
     });
   }
 
