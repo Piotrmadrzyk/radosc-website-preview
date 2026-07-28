@@ -1597,3 +1597,17 @@ body.is-evening .site-header:not(.scrolled) .burger span{background:var(--cream)
 .faq-q:focus-visible{outline:2px solid var(--gold);outline-offset:4px;border-radius:6px}
 .faq-acc .faq-item dd[hidden]{display:none}
 @media (max-width:480px){.faq-q{font-size:17px}}
+
+/* ===== ETAP 9.2: komunikat o prywatności ===== */
+.cookie-note{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:950;
+  display:flex;align-items:center;gap:16px;width:min(760px,calc(100vw - 24px));
+  padding:14px 18px;border-radius:14px;background:rgba(16,38,24,.97);color:var(--cream);
+  border:1px solid rgba(216,178,106,.4);box-shadow:0 10px 32px rgba(21,50,31,.4);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.cookie-note p{margin:0;font-size:13px;line-height:1.55;flex:1;min-width:0}
+.cookie-note a{color:var(--gold-light);text-decoration:underline}
+.cookie-note button{flex:none;min-height:44px;padding:10px 22px;border:0;border-radius:999px;
+  background:var(--gold);color:#fff;font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
+.cookie-note button:hover{background:var(--gold-dark)}
+@media (max-width:860px){.cookie-note{bottom:74px}}
+@media (max-width:560px){.cookie-note{flex-direction:column;align-items:stretch;text-align:center;gap:10px}}

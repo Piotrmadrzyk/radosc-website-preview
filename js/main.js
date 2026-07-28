@@ -945,3 +945,27 @@ document.dispatchEvent(new CustomEvent('app:content-ready'));
     });
   });
 })();
+
+/* ETAP 9.2 — komunikat o prywatności (cookies/pamięć przeglądarki).
+   Strona nie ma ciasteczek śledzących, więc wystarczy uczciwa informacja
+   z jednym przyciskiem; decyzję zapamiętujemy w localStorage. */
+(function () {
+  var KEY = 'zp-cookie-ok';
+  try { if (localStorage.getItem(KEY)) return; } catch (e) { /* tryb prywatny — pokaż */ }
+  var en = document.documentElement.lang === 'en';
+  var bar = document.createElement('div');
+  bar.className = 'cookie-note';
+  bar.setAttribute('role', 'region');
+  bar.setAttribute('aria-label', en ? 'Privacy notice' : 'Informacja o prywatności');
+  bar.innerHTML =
+    '<p>' + (en
+      ? 'This demo site uses <b>no tracking cookies or analytics</b> — only essential browser storage (order basket, PWA app mode). Details in the '
+      : 'Ta strona demonstracyjna <b>nie używa ciasteczek śledzących ani analityki</b> — tylko niezbędnej pamięci przeglądarki (koszyk zamówienia, tryb aplikacji PWA). Szczegóły w ') +
+      '<a href="polityka-prywatnosci.html" target="_blank" rel="noopener">' + (en ? 'privacy policy' : 'polityce prywatności') + '</a>.</p>' +
+    '<button type="button">' + (en ? 'Got it' : 'Rozumiem') + '</button>';
+  bar.querySelector('button').addEventListener('click', function () {
+    try { localStorage.setItem(KEY, '1'); } catch (e) { /* bez zapisu — zniknie do odświeżenia */ }
+    bar.remove();
+  });
+  document.body.appendChild(bar);
+})();
