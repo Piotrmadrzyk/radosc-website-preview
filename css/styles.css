@@ -417,7 +417,9 @@ h2 em{font-style:italic;font-weight:500;color:var(--gold)}
 .sub-hero .eyebrow{margin-bottom:22px}
 .sub-hero h1{font-family:"Fraunces",serif;font-weight:600;letter-spacing:-.012em;line-height:1.06;
   font-size:clamp(36px,4.6vw,62px);color:var(--ink);max-width:21ch}
-.sub-hero h1 em{font-style:italic;font-weight:500;color:var(--gold)}
+.sub-hero h1 em{font-style:italic;font-weight:500;color:var(--gold-dark);
+  /* kremowa poświata odcina kursywę od gęstszych partii zdjęcia (mobile) */
+  text-shadow:0 1px 0 rgba(246,241,229,.6),0 2px 16px rgba(246,241,229,.85),0 0 34px rgba(246,241,229,.65)}
 .sub-hero .desc{margin-top:20px;font-size:17px;max-width:52ch}
 .sub-hero .cta{margin-top:28px}
 
@@ -1611,3 +1613,11 @@ body.is-evening .site-header:not(.scrolled) .burger span{background:var(--cream)
 .cookie-note button:hover{background:var(--gold-dark)}
 @media (max-width:860px){.cookie-note{bottom:74px}}
 @media (max-width:560px){.cookie-note{flex-direction:column;align-items:stretch;text-align:center;gap:10px}}
+
+/* ===== ETAP 9.3: czytelność hero na wąskich ekranach =====
+   Na mobile tekst przechodzi nad gęstszą częścią zdjęcia —
+   mocniejszy woal wyrównuje kontrast z desktopem. */
+@media (max-width:560px){
+  .sub-hero .veil{background:
+    linear-gradient(180deg,rgba(246,241,229,.96) 0%,rgba(246,241,229,.87) 34%,rgba(246,241,229,.74) 62%,rgba(246,241,229,.92) 100%)}
+}
