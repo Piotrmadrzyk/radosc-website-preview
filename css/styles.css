@@ -1,5 +1,5 @@
 /* ============================================================
-   RADOŚĆ — strona główna (podgląd) · na bazie makiety 3D.1
+   ZIELONA PERGOLA — strona główna (podgląd) · na bazie makiety 3D.1
    „świetlista oranżeria” — desktop 1440×900 / mobile 390×844
    ============================================================ */
 
@@ -213,7 +213,7 @@ h2 em{font-style:italic;font-weight:500;color:var(--gold)}
 .body-text{font-size:16.5px;line-height:1.7;color:var(--ink-soft);max-width:58ch;margin-bottom:26px}
 .body-text.center{margin:34px auto 0;text-align:center}
 
-/* kafle „Poznaj Radość po swojemu” */
+/* kafle „Poznaj Zielona Pergola po swojemu” */
 .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:44px}
 .tile{background:rgba(255,255,255,.55);border:1px solid rgba(21,50,31,.12);
   padding:28px 24px 24px;display:flex;flex-direction:column;gap:10px;min-height:200px;
@@ -320,7 +320,7 @@ h2 em{font-style:italic;font-weight:500;color:var(--gold)}
   .content{left:var(--pad-x);right:var(--pad-x);top:clamp(96px,14svh,126px);max-width:none}
   .eyebrow{gap:11px;margin-bottom:20px;font-size:11px;letter-spacing:.28em}
   .eyebrow::before{width:30px}
-  .jasionka{display:none}
+  .loc-tag{display:none}
 
   h1{letter-spacing:-.01em;line-height:1.04}
   h1 .l1{font-size:clamp(38px,12vw,48px)}
@@ -644,7 +644,7 @@ label .req{color:var(--gold-light)}
 .info-strip .item{display:flex;align-items:center;gap:10px}
 .info-strip .item::before{content:"";width:18px;height:1.5px;background:var(--gold);flex:none}
 
-/* karty „Co dziś w Radości?” */
+/* karty „Co dziś w Zielonej Pergoli?” */
 .today-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px}
 .today-card{background:rgba(255,255,255,.55);border:1px solid rgba(21,50,31,.12);
   display:flex;flex-direction:column;overflow:hidden;
@@ -741,7 +741,7 @@ label .req{color:var(--gold-light)}
    ETAP 5.3 — logo z buźką, menu weekendowe, aktywne karty
    ============================================================ */
 
-/* logo „BISTRO PEŁNE RADOŚCI” — O jako buźka (SVG, currentColor) */
+/* logo „BISTRO ZIELONA PERGOLA” — O jako buźka (SVG, currentColor) */
 .brand{line-height:1}
 .brand .lg-top{display:flex;align-items:center;font-family:"Inter",sans-serif;
   font-weight:500;font-size:21px;letter-spacing:.24em;color:var(--ink)}
@@ -826,7 +826,7 @@ a.chip{display:inline-block}
 .site-footer .social-cta a:hover{color:var(--gold-light);border-color:var(--gold-light)}
 
 /* ============================================================
-   ETAP 5.5 — kafle „Poznaj Radość” z kadrami, lazy placeholder
+   ETAP 5.5 — kafle „Poznaj Zielona Pergola” z kadrami, lazy placeholder
    ============================================================ */
 
 /* kafle 01–04 z małym kadrem fotograficznym */
@@ -1249,3 +1249,15 @@ body.lb-open{overflow:hidden}
   [data-signature="day-night"] .sig-night{-webkit-mask-image:none;mask-image:none}
   .sig-overlay{display:none}
 }
+
+/* ============================================================
+   PROJEKT PORTFOLIO — znacznik demonstracyjny (AI / fikcja)
+   ============================================================ */
+.demo-badge{display:inline-flex;align-items:center;gap:10px;max-width:660px;margin-bottom:24px;
+  padding:10px 16px;border:1px solid rgba(169,129,47,.55);border-radius:999px;
+  background:rgba(246,241,229,.78);
+  font-size:12.5px;line-height:1.45;letter-spacing:.01em;color:var(--ink);font-weight:500}
+.demo-badge .demo-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex:none}
+.demo-badge b{font-weight:700}
+@media (max-width:600px){.demo-badge{font-size:11.5px;padding:9px 14px;gap:8px}}
+.demo-foot{margin:6px 0 0;font-size:11.5px;line-height:1.5;opacity:.72}

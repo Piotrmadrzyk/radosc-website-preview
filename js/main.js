@@ -1,4 +1,4 @@
-/* RADOŚĆ — interakcje (wspólne dla wszystkich podstron) */
+/* ZIELONA PERGOLA — interakcje (wspólne dla wszystkich podstron) */
 window.__MAIN_JS_EXECUTIONS__ = (window.__MAIN_JS_EXECUTIONS__ || 0) + 1;
 console.info('[RADOSC] main.js loaded', {
   build: window.__RADOSC_BUILD__,
@@ -321,11 +321,11 @@ console.info('[RADOSC] main.js loaded', {
 
   renderMenu(window.RADOSC_PIZZA, 'pizza-menu', {
     title: 'Aktualne menu pizzy potwierdzisz telefonicznie.',
-    text: 'Pełną kartę pizzy przygotowujemy do publikacji. Zadzwoń — powiemy, co dziś pieczemy: <a class="tel-link" href="tel:+48723800801">723 800 801</a>.'
+    text: 'Pełną kartę pizzy przygotowujemy do publikacji. Zadzwoń — powiemy, co dziś pieczemy: <a class="tel-link" href="tel:+48100200300">100 200 300</a>.'
   });
   renderMenu(window.RADOSC_BURGERY, 'burger-menu', {
     title: 'Menu burgerów potwierdzisz telefonicznie.',
-    text: 'Kartę burgerów przygotowujemy do publikacji. Zamówienia i pytania: <a class="tel-link" href="tel:+48723800801">723 800 801</a>.'
+    text: 'Kartę burgerów przygotowujemy do publikacji. Zamówienia i pytania: <a class="tel-link" href="tel:+48100200300">100 200 300</a>.'
   });
   renderMenu(window.RADOSC_SNIADANIA, 'sniadania-menu', {
     title: 'Śniadania', text: ''

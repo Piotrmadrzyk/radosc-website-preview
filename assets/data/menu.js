@@ -1,77 +1,76 @@
 /* ============================================================
    MENU KARTY — pizza, burgery, antipasti, makarony, śniadania
    ------------------------------------------------------------
+   PROJEKT DEMONSTRACYJNY (portfolio). Dania i ceny są fikcyjne,
+   przygotowane wyłącznie na potrzeby przykładowej strony.
    JEDYNE miejsce edycji tych kart. Format pozycji:
    { name: "Nazwa", desc: "składniki po przecinku", price: 32, veg: true }
-   `price` w złotych (sama liczba); `price` może być stringiem,
-   np. "27 / 31" przy dwóch wariantach. `veg` dodaje listek.
-   Dane przepisane 1:1 z przekazanych grafik menu.
+   `price` w złotych (sama liczba) lub string, np. "27 / 31".
    ============================================================ */
 
 /* START MENU PIZZA */
 window.RADOSC_PIZZA = {
-  sizeNote: "Wszystkie pizze — średnica 38 cm.",
-  note: "Dwa sosy gratis: pomidorowy i czosnkowy.",
+  sizeNote: "Wszystkie pizze — średnica 40 cm.",
+  note: "Sos czosnkowy lub ziołowy w cenie.",
   items: [
-    { name: "Margherita", desc: "sos pomidorowy, fior di latte, bazylia", price: 30, veg: true },
-    { name: "Capricciosa", desc: "sos pomidorowy, fior di latte, szynka cotto, pieczarki", price: 37 },
-    { name: "Pepperoni", desc: "sos pomidorowy, fior di latte, pepperoni, czerwona cebula", price: 39 },
-    { name: "BBQ", desc: "sos BBQ, fior di latte, kurczak, kukurydza, czerwona cebula, czosnek", price: 42 },
-    { name: "Bianco", desc: "sos śmietanowy, fior di latte, gruszka, gorgonzola, orzechy włoskie, miód, rukola", price: 40, veg: true },
-    { name: "Parma", desc: "sos pomidorowy, fior di latte, pomidorki, szynka parmeńska, rukola, parmezan", price: 43 },
-    { name: "Funghi", desc: "masło czosnkowe, fior di latte, pieczarki, szynka cotto, karmelizowana cebula, sól morska", price: 41 },
-    { name: "Wiejska", desc: "sos pomidorowy, fior di latte, kiełbasa, cebula, ogórek kiszony", price: 41 },
-    { name: "Góralska", desc: "sos pomidorowy, fior di latte, boczek, oscypek, konfitura z żurawiny, rukola", price: 44 }
+    { name: "Ogrodowa", desc: "sos pomidorowy, mozzarella, świeża bazylia, oliwa", price: 32, veg: true },
+    { name: "Pergola Classic", desc: "sos pomidorowy, mozzarella, szynka, pieczarki", price: 38 },
+    { name: "Ostra Nuta", desc: "sos pomidorowy, mozzarella, salami pikantne, papryka, czerwona cebula", price: 41 },
+    { name: "Zagroda", desc: "sos BBQ, mozzarella, kurczak, kukurydza, cebula, kolendra", price: 43 },
+    { name: "Słodko-Słona", desc: "sos śmietanowy, mozzarella, gruszka, ser pleśniowy, orzechy, miód, rukola", price: 42, veg: true },
+    { name: "Alpejska", desc: "sos pomidorowy, mozzarella, pomidorki, szynka dojrzewająca, rukola, płatki sera", price: 45 },
+    { name: "Leśna", desc: "masło ziołowe, mozzarella, mieszanka grzybów, cebula karmelizowana, tymianek", price: 42, veg: true },
+    { name: "Swojska", desc: "sos pomidorowy, mozzarella, kiełbasa swojska, cebula, ogórek kiszony", price: 42 },
+    { name: "Górska", desc: "sos pomidorowy, mozzarella, boczek, ser wędzony, konfitura żurawinowa, rukola", price: 46 }
   ]
 };
 /* KONIEC MENU PIZZA */
 
 /* START MENU BURGERY */
 window.RADOSC_BURGERY = {
-  sizeNote: "Burgery — 180 g mięsa, w zestawie frytki.",
+  sizeNote: "Burgery — 190 g mięsa, w zestawie frytki.",
   items: [
-    { name: "Kurczak Burger", desc: "bułka własnego wypieku, chrupiący kurczak marynowany w papryce, sałata, pomidor, piklowana cebula, ogórek konserwowy, cheddar, sos autorski, frytki", price: 41 },
-    { name: "Bekon Burger", desc: "bułka własnego wypieku, wołowina, wędzony boczek, wędzony ser, sałata, pomidor, karmelizowana cebula, ogórek konserwowy, mayo-ketchup, frytki", price: 43 },
-    { name: "Vege Burak", desc: "kotlet z buraka, sałata, czerwona cebula, grillowany bakłażan, ogórek konserwowy, sos autorski, frytki", price: 42, veg: true },
-    { name: "Dodatkowa porcja frytek", price: 12 }
+    { name: "Drobiowy Chrupiący", desc: "bułka maślana, panierowany kurczak, sałata, pomidor, piklowana cebula, ogórek, cheddar, sos ziołowy, frytki", price: 42 },
+    { name: "Wołowy z Boczkiem", desc: "bułka maślana, wołowina, chrupiący boczek, ser wędzony, sałata, pomidor, cebula karmelizowana, sos BBQ, frytki", price: 45 },
+    { name: "Warzywny z Ciecierzycy", desc: "kotlet z ciecierzycy, sałata, czerwona cebula, grillowana cukinia, ogórek, sos jogurtowy, frytki", price: 43, veg: true },
+    { name: "Dodatkowa porcja frytek", price: 13 }
   ]
 };
 /* KONIEC MENU BURGERY */
 
 /* START MENU ANTIPASTI */
 window.RADOSC_ANTIPASTI = {
-  sizeNote: "Anti pasti — bruschetta na cieście do pizzy.",
+  sizeNote: "Przystawki — na cieście pizzowym.",
   items: [
-    { name: "Bruschetta tricolore", desc: "pesto bazyliowe, cebula czerwona, pomidorki koktajlowe, rukola", price: 15 },
-    { name: "Bruschetta Mario", desc: "karmelizowana czerwona cebula, ser kozi, miód", price: 15 }
+    { name: "Bruschetta Ogrodowa", desc: "pomidory, czerwona cebula, bazylia, oliwa, rukola", price: 16, veg: true },
+    { name: "Bruschetta z Kozim Serem", desc: "cebula karmelizowana, ser kozi, miód", price: 17, veg: true }
   ]
 };
 /* KONIEC MENU ANTIPASTI */
 
 /* START MENU MAKARONY */
 window.RADOSC_MAKARONY = {
-  sizeNote: "Makaron rzemieślniczy, zapiekany.",
-  note: "Każdy makaron dostępny jest również w wersji bezglutenowej.",
+  sizeNote: "Makaron świeży, przygotowywany na miejscu.",
+  note: "Każdy makaron dostępny również w wersji bezglutenowej.",
   items: [
-    { name: "Tagliatelle PPF", desc: "sos bechamel, szynka cotto, pieczarki, fior di latte", price: 35 },
-    { name: "Pappardelle", desc: "sos bechamel, wędzony boczek, cebula, fior di latte", price: 35 },
-    { name: "Vege Genovese", desc: "sos pesto, pomidorki koktajlowe, cukinia, orzeszki pini, fior di latte", price: 35, veg: true }
+    { name: "Tagliatelle z Kurczakiem", desc: "sos śmietanowy, kurczak, pieczarki, parmezan", price: 36 },
+    { name: "Pappardelle z Boczkiem", desc: "sos śmietanowy, boczek, cebula, natka", price: 36 },
+    { name: "Penne Warzywne", desc: "pesto, pomidorki, cukinia, orzechy, parmezan", price: 35, veg: true }
   ]
 };
 /* KONIEC MENU MAKARONY */
 
-/* START MENU ŚNIADANIA
-   Przepisane 1:1 z kart śniadaniowych z archiwum zdjęć (7 pozycji). */
+/* START MENU ŚNIADANIA */
 window.RADOSC_SNIADANIA = {
-  note: "Do każdego śniadania — kawa gratis!",
+  note: "Do każdego śniadania — kawa w cenie.",
   items: [
-    { name: "English breakfast", desc: "2 jajka sadzone, 2 frankfurterki, 2 plastry boczku, grillowany pomidor, fasolka w sosie pomidorowym, pajda chleba", price: 31 },
-    { name: "Jajecznica z bekonem i serem", desc: "jajecznica z 3 jajek, bekon, cebula, szczypiorek, tarty ser, pajda chleba na zakwasie", price: 26 },
-    { name: "Chałka na słodko", desc: "chałka maślana w jajku, konfitura porzeczkowa, twaróg waniliowy, kruszonka migdałowa, miód tymiankowy", price: 26 },
-    { name: "Twaróg wędzony, z jajkami", desc: "pianka z twarogu wędzonego, jajko poche, karmelizowana brukselka w miodzie, oliwa chili, pajda chleba na zakwasie", price: 25 },
-    { name: "Tost cotto", desc: "chlebek shokupan, ser mimolette, prosciutto cotto, suszone pomidory, rukola, sos majonezowy, młode liście", price: 25 },
-    { name: "Jajko po turecku", desc: "labneh, palone masło z chili, dwa jajka poche, pomidorki koktajlowe, młode liście, pajda chleba na zakwasie", price: 24 },
-    { name: "Pajda z owczym serem", desc: "ser owczy, chutney figowy, orzeszki pini, rukola, oliwa, chili", price: 24 }
+    { name: "Śniadanie Angielskie", desc: "2 jajka sadzone, kiełbaski, boczek, grillowany pomidor, fasolka w sosie, pieczywo", price: 32 },
+    { name: "Jajecznica z Boczkiem", desc: "jajecznica z 3 jajek, boczek, cebula, szczypiorek, tarty ser, pieczywo na zakwasie", price: 27 },
+    { name: "Chałka na Słodko", desc: "chałka maślana w jajku, konfitura, twaróg waniliowy, kruszonka, miód", price: 27, veg: true },
+    { name: "Twaróg ze Szczypiorkiem", desc: "twaróg, rzodkiewka, szczypiorek, oliwa, pieczywo na zakwasie", price: 24, veg: true },
+    { name: "Tost z Szynką i Serem", desc: "pieczywo tostowe, ser, szynka, suszone pomidory, rukola, sos, młode liście", price: 26 },
+    { name: "Jajka po Benedyktyńsku", desc: "dwa jajka w koszulce, sos holenderski, szpinak, pieczywo na zakwasie", price: 26, veg: true },
+    { name: "Owsianka Owocowa", desc: "owsianka na mleku lub roślinnym, sezonowe owoce, orzechy, miód", price: 22, veg: true }
   ]
 };
 /* KONIEC MENU ŚNIADANIA */

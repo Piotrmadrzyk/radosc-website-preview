@@ -1,91 +1,88 @@
 /* ============================================================
    START MENU WEEKENDOWE
    ------------------------------------------------------------
-   JEDYNE miejsce edycji menu weekendowego (start od września).
-   Przepisane 1:1 z przekazanych grafik. Format jak w menu.js;
-   `grams` — gramatura/objętość z karty.
+   PROJEKT DEMONSTRACYJNY (portfolio) — dania, napoje i ceny
+   fikcyjne; nazwy produktów celowo generyczne (bez marek).
+   JEDYNE miejsce edycji menu weekendowego. Format jak w menu.js;
+   `grams` — gramatura/objętość pozycji.
    ============================================================ */
 window.RADOSC_WEEKEND = {
   startNote: "Od września zapraszamy również na weekendowe menu Bistro.",
-  hoursNote: "Godziny otwarcia weekendowego podamy pod koniec sierpnia. Obserwuj nas na Facebooku i Instagramie.",
+  hoursNote: "Godziny otwarcia weekendowego podamy pod koniec sierpnia.",
   categories: [
     {
       title: "Przystawki",
       items: [
-        { name: "Focaccia", desc: "fior di latte, masło czosnkowe, sól morska", grams: "380 g", price: 17, veg: true },
-        { name: "Kaszanka na chlebku", desc: "chlebek shokupan, majonez szczypiorkowy, piklowana cebulka, karmelizowana szalotka, prażone jabłko", grams: "300 g", price: 26 },
-        { name: "Frytki z batata", desc: "sos sweet chili", grams: "170 g", price: 19, veg: true }
+        { name: "Focaccia ziołowa", desc: "mozzarella, masło czosnkowe, sól morska", grams: "380 g", price: 18, veg: true },
+        { name: "Grzanki z pastą", desc: "pieczywo na zakwasie, pasta z pieczonej papryki, oliwa", grams: "300 g", price: 22, veg: true },
+        { name: "Frytki z batata", desc: "sos słodko-pikantny", grams: "170 g", price: 20, veg: true }
       ]
     },
     {
       title: "Zupy",
       items: [
-        { name: "Domowy rosół", desc: "szpecle, natka pietruszki, oliwa lubczykowa", grams: "280 ml", price: 20 },
-        { name: "Zupa tajska", desc: "makaron konjac; z kurczakiem lub z krewetką (danie pikantne)", grams: "300 ml", price: "27 / 31" }
+        { name: "Domowy rosół", desc: "makaron, natka, oliwa ziołowa", grams: "280 ml", price: 21 },
+        { name: "Zupa orientalna", desc: "makaron ryżowy; z kurczakiem lub warzywna (pikantna)", grams: "300 ml", price: "26 / 30" }
       ]
     },
     {
       title: "Dania główne",
       items: [
-        { name: "Kotlet schabowy", desc: "purée ziemniaczane, créme fraîche", grams: "440 g", price: 43 },
-        { name: "Grillowana pierś z kurczaka", desc: "pierś z kurczaka marynowana w whisky, salsa mango, chlebek naan, mix sałat z orzechowym vinaigrette", grams: "420 g", price: 42 },
-        { name: "Łosoś teriyaki", desc: "makaron warzywny, prażony sezam", grams: "380 g", price: 51 },
-        { name: "Pappardelle", desc: "pesto bazyliowe, burrata, pistacje", grams: "340 g", price: 39, veg: true },
-        { name: "Pierogi galicyjskie", desc: "masło, prażona cebulka", grams: "10 szt.", price: 30, veg: true },
-        { name: "Sałatka z kurczakiem", desc: "grillowany kurczak, świeży szpinak, suszone pomidory, żurawina, ser pleśniowy, dip musztardowo-miodowy, paluch włoski", grams: "350 g", price: 38 },
-        { name: "Classic brioche burger", desc: "wołowina 200 g, cheddar, czerwona cebula, pomidor, ogórek kiszony, sałata rzymska, ketchup, majonez, frytki; dostępny również w wersji vege — kotlet Beyond", price: 43 },
-        { name: "Pinsa", desc: "'nduja, burrata, miód", grams: "480 g", price: 39 }
+        { name: "Kotlet schabowy", desc: "purée ziemniaczane, surówka", grams: "440 g", price: 44 },
+        { name: "Pierś z kurczaka z grilla", desc: "salsa owocowa, pieczywo płaskie, mix sałat z winegretem", grams: "420 g", price: 43 },
+        { name: "Łosoś pieczony", desc: "warzywa julienne, prażony sezam", grams: "380 g", price: 52 },
+        { name: "Pappardelle z pesto", desc: "pesto, mozzarella śmietankowa, orzechy", grams: "340 g", price: 40, veg: true },
+        { name: "Pierogi domowe", desc: "masło, prażona cebulka", grams: "10 szt.", price: 31, veg: true },
+        { name: "Sałatka z kurczakiem", desc: "grillowany kurczak, szpinak, suszone pomidory, żurawina, ser pleśniowy, dressing miodowo-musztardowy", grams: "350 g", price: 39 },
+        { name: "Burger klasyczny", desc: "wołowina 200 g, cheddar, czerwona cebula, pomidor, ogórek kiszony, sałata, sosy, frytki; opcja wege na życzenie", grams: "—", price: 44 },
+        { name: "Pinsa rzymska", desc: "salami pikantne, mozzarella śmietankowa, miód", grams: "480 g", price: 40 }
       ]
     },
     {
       title: "Desery",
       items: [
-        { name: "Pucharek lodowy", desc: "bita śmietana, sos karmelowy", grams: "350 g", price: 20 },
-        { name: "Cannoli", desc: "krem ricotta, pistacje", grams: "270 g", price: 22 },
-        { name: "Sernik baskijski", price: 16 }
+        { name: "Puchar lodowy", desc: "bita śmietana, sos karmelowy", grams: "350 g", price: 21 },
+        { name: "Rurki z kremem", desc: "krem waniliowy, orzechy", grams: "270 g", price: 23, veg: true },
+        { name: "Sernik pieczony", price: 17, veg: true }
       ]
     },
     {
       title: "Kawa",
       items: [
         { name: "Espresso", price: 9 },
-        { name: "Doppio", price: 11 },
+        { name: "Espresso podwójne", price: 11 },
         { name: "Americano", price: 12 },
         { name: "Cappuccino", price: 15 },
         { name: "Flat White", price: 16 },
-        { name: "Latte Macchiato", price: 16 },
+        { name: "Latte", price: 16 },
         { name: "Kawa mrożona", price: 17 },
-        { name: "Espresso Tonic", price: 17 },
-        { name: "Espresso Orange", price: 20 },
         { name: "Mleko roślinne", price: "+ 2" },
-        { name: "Syrop do kawy", price: "+ 3" }
+        { name: "Syrop smakowy", price: "+ 3" }
       ]
     },
     {
       title: "Herbata i matcha",
       items: [
-        { name: "Herbata Richmont", desc: "do wyboru: Ceylon Gold, Earl Grey Blue, Gunpowder Green, Forest Fruits, Rum Cherry", price: 13 },
-        { name: "Matcha Latte", price: 18 },
-        { name: "Matcha Iced Latte", desc: "mango lub truskawka — 20 zł", price: 18 },
-        { name: "Matcha Iced Orange", price: 20 }
+        { name: "Herbata liściasta", desc: "5 rodzajów do wyboru", price: 13, veg: true },
+        { name: "Matcha Latte", price: 18, veg: true },
+        { name: "Matcha mrożona", desc: "mango lub truskawka", price: 19, veg: true }
       ]
     },
     {
       title: "Napoje",
       items: [
-        { name: "Woda Kropla Beskidu 0,33 l", desc: "niegazowana lub gazowana", price: 8 },
-        { name: "Cola, Cola Zero, Fanta, Sprite, Fuze Tea 0,25 l", price: 12 },
-        { name: "Sok Cappy 0,25 l", desc: "pomarańczowy, jabłkowy, multiwitamina", price: 10 },
-        { name: "Sok tłoczony 0,25 l", desc: "Bracia Sadownicy: jabłko, jabłko z marchewką", price: 12 },
-        { name: "Kombucha 0,33 l", desc: "klasyczna, malina-rozmaryn, mango-marakuja", price: 14 },
-        { name: "Domowa lemoniada 0,4 l", desc: "cytrynowa, lawendowa, marakuja, truskawka", price: 15 }
+        { name: "Woda źródlana 0,33 l", desc: "niegazowana lub gazowana", price: 8, veg: true },
+        { name: "Napoje gazowane 0,25 l", price: 12, veg: true },
+        { name: "Sok owocowy 0,25 l", desc: "pomarańczowy, jabłkowy, multiwitamina", price: 10, veg: true },
+        { name: "Sok tłoczony 0,25 l", desc: "jabłko, jabłko z marchewką", price: 12, veg: true },
+        { name: "Domowa lemoniada 0,4 l", desc: "cytrynowa, lawendowa, truskawkowa", price: 15, veg: true }
       ]
     },
     {
       title: "Piwo",
       items: [
-        { name: "Żywiec 0% 0,5 l", desc: "maliniaż, miętaż, lipa&pigwa, bez&jabłko", price: 13 },
-        { name: "Heineken 0,5 l", price: 15 }
+        { name: "Piwo bezalkoholowe 0,5 l", desc: "różne smaki", price: 13 },
+        { name: "Piwo z beczki 0,5 l", price: 15 }
       ]
     }
   ]

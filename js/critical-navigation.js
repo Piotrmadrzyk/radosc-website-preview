@@ -1,4 +1,4 @@
-/* RADOŚĆ — krytyczna nawigacja: hamburger + dolny panel Menu (ETAP 5.6.3).
+/* ZIELONA PERGOLA — krytyczna nawigacja: hamburger + dolny panel Menu (ETAP 5.6.3).
    Ładowany SYNCHRONICZNIE w <head> (plik jest mały). Handlery są delegowane
    na document, więc pierwszy rzeczywisty klik działa nawet wtedy, gdy
    main.js i dane menu wciąż się pobierają. main.js NIE dubluje tej logiki. */
