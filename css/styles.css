@@ -1359,11 +1359,15 @@ body.lb-open{overflow:hidden}
 .vm-input button:hover{background:var(--gold-dark)}
 .vm-input button svg{width:17px;height:17px}
 .vm-note{margin:0;padding:8px 16px 12px;font-size:10.5px;color:rgba(21,50,31,.5);background:#fff}
-@media (max-width:600px){
-  .vm-root{right:14px;bottom:82px;left:14px} /* nad mobilnym paskiem akcji */
+@media (max-width:860px){
+  /* dopóki widoczny jest dolny pasek akcji (≤860px), widżet zwija się
+     do ikony i unosi ponad pasek — kapsuła z tekstem nachodziła na CATERING */
+  .vm-root{right:14px;bottom:82px;left:14px}
   .vm-fab{margin-left:auto}
   .vm-fab-label{display:none}
   .vm-fab{padding:16px}
+}
+@media (max-width:600px){
   .vm-panel{width:auto;left:0}
   .vm-msgs{height:46svh}
 }
