@@ -116,18 +116,34 @@ console.info('[RADOSC] main.js loaded', {
         e.preventDefault();
         var btn = form.querySelector('button[type="submit"]');
         var fd = new FormData(form);
-        var temat = fd.get('topic') ||
-          [fd.get('event'), fd.get('date'), fd.get('guests') ? fd.get('guests') + ' gości' : '', fd.get('place')]
-            .filter(Boolean).join(' · ');
-        var payload = {
-          typ: form.dataset.formType || 'kontakt',
-          imie: fd.get('name') || '',
-          email: fd.get('email') || '',
-          telefon: fd.get('phone') || '',
-          temat: temat || '',
-          wiadomosc: fd.get('message') || '',
-          strona: location.pathname.split('/').pop() || 'index.html'
-        };
+        var payload;
+        if (form.dataset.formType === 'rezerwacja') {
+          payload = {
+            imie: fd.get('name') || '',
+            telefon: fd.get('phone') || '',
+            email: fd.get('email') || '',
+            data: fd.get('rdate') || '',
+            godzina: fd.get('rtime') || '',
+            osoby: fd.get('guests') || '',
+            uwagi: fd.get('message') || '',
+            strona: location.pathname.split('/').pop() || 'index.html',
+            lang: document.documentElement.lang || 'pl'
+          };
+        } else {
+          var temat = fd.get('topic') ||
+            [fd.get('event'), fd.get('date'), fd.get('guests') ? fd.get('guests') + ' gości' : '', fd.get('place')]
+              .filter(Boolean).join(' · ');
+          payload = {
+            typ: form.dataset.formType || 'kontakt',
+            imie: fd.get('name') || '',
+            email: fd.get('email') || '',
+            telefon: fd.get('phone') || '',
+            temat: temat || '',
+            wiadomosc: fd.get('message') || '',
+            strona: location.pathname.split('/').pop() || 'index.html',
+            lang: document.documentElement.lang || 'pl'
+          };
+        }
         status.classList.remove('is-error');
         status.textContent = 'Wysyłanie…';
         if (btn) btn.disabled = true;
@@ -137,7 +153,15 @@ console.info('[RADOSC] main.js loaded', {
           body: JSON.stringify(payload)
         }).then(function (r) {
           if (!r.ok) throw new Error('HTTP ' + r.status);
-          status.textContent = 'Dziękujemy! Zapytanie dotarło do nas — odpowiemy najszybciej, jak to możliwe.';
+          return r.json().catch(function () { return {}; });
+        }).then(function (d) {
+          if (d && d.ok === false) {
+            status.classList.add('is-error');
+            status.textContent = d.message || 'Nie udało się przyjąć zgłoszenia — sprawdź dane i spróbuj ponownie.';
+            return;
+          }
+          status.textContent = (d && d.message) ||
+            'Dziękujemy! Zapytanie dotarło do nas — odpowiemy najszybciej, jak to możliwe.';
           form.reset();
           form.querySelectorAll('.field-error').forEach(clearFieldError);
         }).catch(function () {
@@ -432,9 +456,17 @@ console.info('[RADOSC] main.js loaded', {
     'Spotkanie biznesowe': 'Organizujesz spotkanie, szkolenie, konferencję albo chcesz zamawiać lunche dla zespołu? Napisz kilka zdań. Przygotujemy niezobowiązującą propozycję dopasowaną do liczby osób, miejsca i charakteru wydarzenia.',
     'Przyjęcie rodzinne': 'Planujesz komunię, chrzciny, urodziny, rocznicę lub inne rodzinne spotkanie? Opowiedz nam o terminie i liczbie gości. Skontaktujemy się, aby poznać szczegóły i przygotować indywidualną propozycję.',
     'Komunia lub chrzciny': 'Planujesz komunię, chrzciny, urodziny, rocznicę lub inne rodzinne spotkanie? Opowiedz nam o terminie i liczbie gości. Skontaktujemy się, aby poznać szczegóły i przygotować indywidualną propozycję.',
-    'Wesele lub uroczystość': 'Planujesz wesele lub większą uroczystość? Podaj termin, miejsce i orientacyjną liczbę gości. Wspólnie omówimy menu, zakres obsługi i charakter wydarzenia.'
+    'Wesele lub uroczystość': 'Planujesz wesele lub większą uroczystość? Podaj termin, miejsce i orientacyjną liczbę gości. Wspólnie omówimy menu, zakres obsługi i charakter wydarzenia.',
+    'Corporate catering': 'Planning a meeting, training day, conference or regular team lunches? Tell us a few details — we will prepare a no-obligation proposal tailored to the number of guests, venue and character of your event.',
+    'Conference catering': 'Planning a meeting, training day, conference or regular team lunches? Tell us a few details — we will prepare a no-obligation proposal tailored to the number of guests, venue and character of your event.',
+    'Business meeting': 'Planning a meeting, training day, conference or regular team lunches? Tell us a few details — we will prepare a no-obligation proposal tailored to the number of guests, venue and character of your event.',
+    'Family celebration': 'Planning a First Communion, christening, birthday or another family gathering? Tell us about the date and number of guests — we will get in touch to prepare an individual proposal.',
+    'First Communion or christening': 'Planning a First Communion, christening, birthday or another family gathering? Tell us about the date and number of guests — we will get in touch to prepare an individual proposal.',
+    'Wedding or celebration': 'Planning a wedding or a larger celebration? Share the date, venue and approximate number of guests — together we will discuss the menu, scope of service and character of the event.',
   };
-  var DEFAULT_INTRO = 'Opowiedz nam o wydarzeniu — przygotujemy niezobowiązującą propozycję dopasowaną do terminu, miejsca i liczby gości.';
+  var DEFAULT_INTRO = document.documentElement.lang === 'en'
+    ? 'Tell us about your event — we will prepare a no-obligation proposal tailored to the date, venue and number of guests.'
+    : 'Opowiedz nam o wydarzeniu — przygotujemy niezobowiązującą propozycję dopasowaną do terminu, miejsca i liczby gości.';
   var inquiryCards = document.querySelectorAll('[data-inquiry]');
   function activateInquiry(card) {
     var val = card.getAttribute('data-inquiry');
@@ -499,7 +531,23 @@ console.info('[RADOSC] main.js loaded', {
      Godziny: pn–pt śniadania 8–11, lunch/bemary 11–17, karta 15–21;
      pizza i burgery codziennie 11–21; sob. karta 11–22, ndz. 11–20. */
   var daypart = document.getElementById('daypart');
-  if (daypart) {
+  if (daypart && document.documentElement.lang === 'en') {
+    var nowEn = new Date(); var hEn = nowEn.getHours(); var dEn = nowEn.getDay();
+    var t = '';
+    if (dEn >= 1 && dEn <= 5) {
+      if (hEn < 8) t = 'We open at 8:00 — start your day with breakfast and coffee.';
+      else if (hEn < 11) t = 'Breakfast time (until 11:00) — coffee on the house with every breakfast.';
+      else if (hEn < 15) t = 'Lunch is on — daily specials until 17:00.';
+      else if (hEn < 17) t = 'Lunch until 17:00, the dinner menu is already open.';
+      else if (hEn < 21) t = 'Evening at Pergola — dinner menu and wood-fired pizza until 21:00.';
+      else t = 'Closed for today — pizza and burgers daily 11:00–21:00.';
+    } else if (dEn === 6) {
+      t = hEn < 11 ? 'We open at 11:00 — weekend menu until 22:00.' : hEn < 22 ? 'Weekend at Pergola — full menu until 22:00.' : 'Closed for today — Sundays from 11:00.';
+    } else {
+      t = hEn < 11 ? 'We open at 11:00 — weekend menu until 20:00.' : hEn < 20 ? 'Sunday at Pergola — full menu until 20:00.' : 'Closed for today — weekdays from 8:00.';
+    }
+    daypart.innerHTML = '<b>Today:</b> ' + t;
+  } else if (daypart) {
     var now = new Date();
     var h = now.getHours();
     var dow = now.getDay(); /* 0 = niedziela, 6 = sobota */

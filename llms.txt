@@ -1,0 +1,23 @@
+# Zielona Pergola — Restauracja, Pizza i Catering (strona demonstracyjna / portfolio)
+
+> Fikcyjna restauracja „Zielona Pergola" w Zielonym Gaju koło Lipowa. Strona pokazowa
+> zbudowana z pomocą AI (treści, zdjęcia i dane są poglądowe). Wersje językowe: polska (/) i angielska (/en/).
+
+## Najważniejsze informacje
+- Godziny: pon.–pt. 8:00–21:00 (śniadania 8:00–11:00, lunch i bemary 11:00–17:00, karta restauracyjna 15:00–21:00);
+  pizza z pieca i burgery codziennie 11:00–21:00; sobota 11:00–22:00; niedziela 11:00–20:00 (weekendy bez lunchu, pełna karta).
+- Adres: ul. Cyprysowa 12, Zielony Gaj (restauracja) · ul. Cyprysowa 14 (Pergola Catering).
+- Telefon: 795 870 359 · e-mail: piotr.aparat@gmail.com.
+- Rezerwacja stolika online: /kontakt.html#rezerwacja (zapis do kalendarza + potwierdzenie e-mail).
+- Na stronie działa „Wirtualny Manager" — asystent AI odpowiadający na pytania o menu, godziny i catering.
+
+## Strony
+- [Strona główna](/index.html): oferta, sekcja „Za kulisami" (jak powstała strona).
+- [Restauracja](/bistro.html): menu lunchowe tygodnia, bufet, śniadania, menu weekendowe.
+- [Pizza](/pizza.html): pizza z pieca, burgery, antipasti, jak zamówić.
+- [Catering](/catering.html): wesela, imprezy rodzinne i firmowe, formularz zapytania.
+- [Realizacje](/realizacje.html): galeria wydarzeń i kadrów.
+- [Kontakt](/kontakt.html): dane, formularz, rezerwacje, mapa, FAQ.
+
+## Uwaga
+Projekt portfolio — dane kontaktowe prowadzą do autora demo, a treści o restauracji są fikcyjne.
