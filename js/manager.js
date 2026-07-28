@@ -86,6 +86,7 @@
       '</div>' +
       '<form class="vm-input">' +
         '<label class="visually-hidden" for="vm-q">' + T.inputLabel + '</label>' +
+        '<button type="button" class="vm-mic" aria-label="' + (EN ? 'Ask by voice' : 'Zapytaj głosem') + '" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg></button>' +
         '<input id="vm-q" type="text" maxlength="500" placeholder="' + T.placeholder + '" autocomplete="off">' +
         '<button type="submit" aria-label="' + T.send + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/></svg></button>' +
       '</form>' +
@@ -110,26 +111,70 @@
   /* markdown-lite: tylko **pogrubienie** po wcześniejszym escapowaniu */
   function render(s) { return esc(s).replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>'); }
 
-  /* ---------- odczyt na głos (3a) ---------- */
-  var ttsOk = 'speechSynthesis' in window;
-  function speak(text, btn) {
-    if (!ttsOk) return;
-    var synth = window.speechSynthesis;
-    if (synth.speaking) { synth.cancel(); root.querySelectorAll('.vm-say.on').forEach(function (b) { b.classList.remove('on'); }); return; }
-    var u = new SpeechSynthesisUtterance(text.replace(/\*\*/g, ''));
+  /* ---------- odczyt na głos ----------
+     Głos generuje serwer (n8n → nowoczesne TTS, męski, naturalna prosodia);
+     syntezator przeglądarki zostaje wyłącznie jako awaryjny fallback. */
+  var TTS_ENDPOINT = 'https://pmresearch.app.n8n.cloud/webhook/zielona-pergola-glos';
+  var ttsOk = true;
+  var audioCache = {}; /* tekst → object URL mp3 */
+  var currentAudio = null;
+
+  function stopAudio() {
+    if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+    root.querySelectorAll('.vm-say.on').forEach(function (b) { b.classList.remove('on'); });
+  }
+
+  function speakFallback(text, btn) {
+    if (!('speechSynthesis' in window)) { if (btn) btn.classList.remove('on'); return; }
+    var u = new SpeechSynthesisUtterance(text);
     u.lang = EN ? 'en-GB' : 'pl-PL';
     u.rate = 1.02;
-    var voices = synth.getVoices();
-    var v = voices.find(function (x) { return x.lang && x.lang.toLowerCase().indexOf(EN ? 'en' : 'pl') === 0; });
-    if (v) u.voice = v;
-    if (btn) {
-      btn.classList.add('on');
-      u.onend = u.onerror = function () { btn.classList.remove('on'); };
+    var voices = window.speechSynthesis.getVoices();
+    /* preferuj głosy neuralne/online — brzmią o klasę lepiej niż systemowe */
+    var pref = ['natural', 'online', 'neural', 'google'];
+    var lang = EN ? 'en' : 'pl';
+    var pool = voices.filter(function (x) { return x.lang && x.lang.toLowerCase().indexOf(lang) === 0; });
+    var v = null;
+    for (var i = 0; i < pref.length && !v; i++) {
+      v = pool.find(function (x) { return x.name.toLowerCase().indexOf(pref[i]) !== -1; });
     }
-    synth.speak(u);
+    u.voice = v || pool[0] || null;
+    if (btn) u.onend = u.onerror = function () { btn.classList.remove('on'); };
+    window.speechSynthesis.speak(u);
   }
-  if (ttsOk && window.speechSynthesis.getVoices().length === 0) {
-    window.speechSynthesis.onvoiceschanged = function () {};
+
+  function speak(text, btn) {
+    var playing = currentAudio || ('speechSynthesis' in window && window.speechSynthesis.speaking);
+    stopAudio();
+    if (playing && btn && btn.__wasOn) { btn.__wasOn = false; return; }
+    root.querySelectorAll('.vm-say').forEach(function (b) { b.__wasOn = false; });
+    if (btn) { btn.classList.add('on'); btn.__wasOn = true; }
+    var clean = text.replace(/\*\*/g, '');
+    function play(url) {
+      currentAudio = new Audio(url);
+      currentAudio.onended = currentAudio.onerror = function () {
+        if (btn) { btn.classList.remove('on'); btn.__wasOn = false; }
+        currentAudio = null;
+      };
+      currentAudio.play().catch(function () { if (btn) btn.classList.remove('on'); });
+    }
+    if (audioCache[clean]) return play(audioCache[clean]);
+    fetch(TTS_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: clean, lang: EN ? 'en' : 'pl' })
+    }).then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.blob();
+    }).then(function (blob) {
+      if (!blob.type || blob.size < 500) throw new Error('bad audio');
+      var url = URL.createObjectURL(blob);
+      audioCache[clean] = url;
+      if (btn && btn.__wasOn) play(url); /* graj tylko, jeśli nikt nie przerwał */
+    }).catch(function () {
+      if (btn && btn.__wasOn) speakFallback(clean, btn);
+    });
   }
 
   function addMsg(kind, html, plain) {
@@ -206,4 +251,35 @@
     var b = e.target.closest('[data-q]');
     if (b) ask(b.getAttribute('data-q'));
   });
+
+  /* ---------- mikrofon: pytanie głosem (Web Speech API) ---------- */
+  var micBtn = root.querySelector('.vm-mic');
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (micBtn && SR) {
+    micBtn.hidden = false;
+    var rec = null;
+    micBtn.addEventListener('click', function () {
+      if (rec) { rec.stop(); return; }
+      stopAudio();
+      rec = new SR();
+      rec.lang = EN ? 'en-GB' : 'pl-PL';
+      rec.interimResults = true;
+      rec.maxAlternatives = 1;
+      micBtn.classList.add('rec');
+      var finalText = '';
+      rec.onresult = function (e) {
+        var txt = '';
+        for (var i = 0; i < e.results.length; i++) txt += e.results[i][0].transcript;
+        input.value = txt;
+        if (e.results[e.results.length - 1].isFinal) finalText = txt;
+      };
+      rec.onerror = function () { micBtn.classList.remove('rec'); rec = null; };
+      rec.onend = function () {
+        micBtn.classList.remove('rec');
+        rec = null;
+        if (finalText.trim()) ask(finalText);
+      };
+      rec.start();
+    });
+  }
 })();

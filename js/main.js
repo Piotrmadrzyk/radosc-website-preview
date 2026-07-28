@@ -125,6 +125,7 @@ console.info('[RADOSC] main.js loaded', {
             data: fd.get('rdate') || '',
             godzina: fd.get('rtime') || '',
             osoby: fd.get('guests') || '',
+            stolik: fd.get('table') || '',
             uwagi: fd.get('message') || '',
             strona: location.pathname.split('/').pop() || 'index.html',
             lang: document.documentElement.lang || 'pl'
@@ -571,6 +572,42 @@ console.info('[RADOSC] main.js loaded', {
     daypart.innerHTML = '<b>Dziś:</b> ' + txt;
   }
 
+  /* ===== ETAP 7.3: tryb wieczorny hero =====
+     Po 18:00 (i przed 6:00) strona główna przechodzi w wieczorny nastrój:
+     wieczorny kadr oranżerii + ciemna, ciepła zasłona. Do prezentacji
+     można wymusić tryb parametrem ?pora=wieczor albo ?pora=dzien. */
+  var heroEl = document.querySelector('.hero');
+  var isEvening = false;
+  if (heroEl) {
+    var poraParam = new URLSearchParams(location.search).get('pora');
+    var hNow = new Date().getHours();
+    isEvening = poraParam === 'wieczor' || (poraParam !== 'dzien' && (hNow >= 18 || hNow < 6));
+    if (isEvening) { heroEl.classList.add('is-evening'); document.body.classList.add('is-evening'); }
+  }
+
+  /* ===== ETAP 7.3: plan sali przy rezerwacji ===== */
+  var floorPlan = document.querySelector('.floor-plan');
+  if (floorPlan) {
+    var floorSel = document.querySelector('.floor-sel');
+    var tableInput = document.querySelector('input[name="table"]');
+    var floorEn = document.documentElement.lang === 'en';
+    floorPlan.addEventListener('click', function (e) {
+      var t = e.target.closest('.tbl');
+      if (!t) return;
+      floorPlan.querySelectorAll('.tbl.sel').forEach(function (x) { x.classList.remove('sel'); });
+      t.classList.add('sel');
+      var label = t.getAttribute('data-table');
+      if (tableInput) tableInput.value = label;
+      if (floorSel) floorSel.innerHTML = (floorEn ? 'Selected table: ' : 'Wybrany stolik: ') + '<b>' + label + '</b>';
+    });
+    floorPlan.addEventListener('keydown', function (e) {
+      if ((e.key === 'Enter' || e.key === ' ') && e.target.closest('.tbl')) {
+        e.preventDefault();
+        e.target.closest('.tbl').dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      }
+    });
+  }
+
   /* ===== ETAP 7: żywe tło hero (cinemagraph) =====
      Wideo dogrywamy dopiero po pełnym załadowaniu strony, wyłącznie na
      desktopie, bez prefers-reduced-motion i bez trybu oszczędzania danych.
@@ -580,7 +617,7 @@ console.info('[RADOSC] main.js loaded', {
     var wideOk = window.matchMedia('(min-width: 861px)').matches;
     var motionOk = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var conn = navigator.connection || {};
-    if (wideOk && motionOk && !conn.saveData) {
+    if (wideOk && motionOk && !conn.saveData && !isEvening) { /* wieczorem statyczny wieczorny kadr */
       var startHeroVideo = function () {
         heroVideo.src = heroVideo.getAttribute('data-src');
         heroVideo.addEventListener('playing', function () {

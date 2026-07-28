@@ -265,6 +265,32 @@
     </p>
     <form class="demo-form reveal" method="post" novalidate style="margin-top:30px"
       data-endpoint="https://pmresearch.app.n8n.cloud/webhook/zielona-pergola-rezerwacja" data-form-type="rezerwacja">
+      <div class="floor-wrap">
+        <p class="floor-note">Wybierz stolik na planie sali (opcjonalnie) — zaznaczymy go w rezerwacji.</p>
+        <svg class="floor-plan" viewBox="0 0 720 400" role="group" aria-label="Plan sali — wybór stolika">
+          <line class="deco" x1="20" y1="34" x2="700" y2="34"/>
+          <text class="zone-label" x="24" y="24">Okna na ogród</text>
+          <text class="zone-label" x="24" y="392">Wejście i bar</text>
+          <text class="zone-label" x="560" y="120">Ogród zimowy</text>
+          <text class="zone-label" x="250" y="205">Pod pergolą</text>
+          <path class="deco" d="M540 60 v320"/>
+          <g class="tbl" tabindex="0" role="button" data-table="1 · przy oknie (2 os.)" aria-label="Stolik 1, przy oknie, 2 osoby"><rect x="50" y="56" width="52" height="40" rx="8"/><text x="76" y="76">1</text></g>
+          <g class="tbl" tabindex="0" role="button" data-table="2 · przy oknie (2 os.)" aria-label="Stolik 2, przy oknie, 2 osoby"><rect x="160" y="56" width="52" height="40" rx="8"/><text x="186" y="76">2</text></g>
+          <g class="tbl" tabindex="0" role="button" data-table="3 · przy oknie (4 os.)" aria-label="Stolik 3, przy oknie, 4 osoby"><rect x="270" y="56" width="70" height="40" rx="8"/><text x="305" y="76">3</text></g>
+          <g class="tbl" tabindex="0" role="button" data-table="4 · przy oknie (4 os.)" aria-label="Stolik 4, przy oknie, 4 osoby"><rect x="400" y="56" width="70" height="40" rx="8"/><text x="435" y="76">4</text></g>
+          <g class="tbl" tabindex="0" role="button" data-table="5 · pod pergolą (4 os.)" aria-label="Stolik 5, pod pergolą, 4 osoby"><circle cx="120" cy="250" r="30"/><text x="120" y="250">5</text></g>
+          <g class="tbl" tabindex="0" role="button" data-table="6 · pod pergolą (4 os.)" aria-label="Stolik 6, pod pergolą, 4 osoby"><circle cx="250" cy="270" r="30"/><text x="250" y="270">6</text></g>
+          <g class="tbl" tabindex="0" role="button" data-table="7 · pod pergolą (6 os.)" aria-label="Stolik 7, pod pergolą, 6 osób"><circle cx="390" cy="250" r="36"/><text x="390" y="250">7</text></g>
+          <g class="tbl" tabindex="0" role="button" data-table="8 · pod pergolą (4 os.)" aria-label="Stolik 8, pod pergolą, 4 osoby"><circle cx="310" cy="150" r="30"/><text x="310" y="150">8</text></g>
+          <g class="tbl" tabindex="0" role="button" data-table="9 · ogród zimowy (4 os.)" aria-label="Stolik 9, ogród zimowy, 4 osoby"><rect x="570" y="150" width="60" height="46" rx="10"/><text x="600" y="173">9</text></g>
+          <g class="tbl" tabindex="0" role="button" data-table="10 · ogród zimowy (6 os.)" aria-label="Stolik 10, ogród zimowy, 6 osób"><rect x="570" y="230" width="80" height="46" rx="10"/><text x="610" y="253">10</text></g>
+          <g class="tbl" tabindex="0" role="button" data-table="11 · ogród zimowy (8 os.)" aria-label="Stolik 11, ogród zimowy, 8 osób"><rect x="570" y="310" width="100" height="46" rx="10"/><text x="620" y="333">11</text></g>
+          <g class="tbl" tabindex="0" role="button" data-table="12 · przy barze (2 os.)" aria-label="Stolik 12, przy barze, 2 osoby"><rect x="120" y="340" width="52" height="36" rx="8"/><text x="146" y="358">12</text></g>
+        </svg>
+        <p class="floor-sel" aria-live="polite"></p>
+        <input type="hidden" name="table" value="">
+      </div>
+
       <div class="row">
         <label>Imię i nazwisko <span class="req">*</span>
           <input type="text" name="name" autocomplete="name" placeholder="Na kogo rezerwujemy?" required>

@@ -265,6 +265,32 @@
     </p>
     <form class="demo-form reveal" method="post" novalidate style="margin-top:30px"
       data-endpoint="https://pmresearch.app.n8n.cloud/webhook/zielona-pergola-rezerwacja" data-form-type="rezerwacja">
+      <div class="floor-wrap">
+        <p class="floor-note">Pick a table on the floor plan (optional) — we will note it in your reservation.</p>
+        <svg class="floor-plan" viewBox="0 0 720 400" role="group" aria-label="Floor plan — table selection">
+          <line class="deco" x1="20" y1="34" x2="700" y2="34"/>
+          <text class="zone-label" x="24" y="24">Garden windows</text>
+          <text class="zone-label" x="24" y="392">Entrance & bar</text>
+          <text class="zone-label" x="560" y="120">Winter garden</text>
+          <text class="zone-label" x="250" y="205">Under the pergola</text>
+          <path class="deco" d="M540 60 v320"/>
+          <g class="tbl" tabindex="0" role="button" data-table="1 · by the window (2 pers.)" aria-label="Table 1, by the window, 2 persons"><rect x="50" y="56" width="52" height="40" rx="8"/><text x="76" y="76">1</text></g>
+          <g class="tbl" tabindex="0" role="button" data-table="2 · by the window (2 pers.)" aria-label="Table 2, by the window, 2 persons"><rect x="160" y="56" width="52" height="40" rx="8"/><text x="186" y="76">2</text></g>
+          <g class="tbl" tabindex="0" role="button" data-table="3 · by the window (4 pers.)" aria-label="Table 3, by the window, 4 persons"><rect x="270" y="56" width="70" height="40" rx="8"/><text x="305" y="76">3</text></g>
+          <g class="tbl" tabindex="0" role="button" data-table="4 · by the window (4 pers.)" aria-label="Table 4, by the window, 4 persons"><rect x="400" y="56" width="70" height="40" rx="8"/><text x="435" y="76">4</text></g>
+          <g class="tbl" tabindex="0" role="button" data-table="5 · under the pergola (4 pers.)" aria-label="Table 5, under the pergola, 4 persons"><circle cx="120" cy="250" r="30"/><text x="120" y="250">5</text></g>
+          <g class="tbl" tabindex="0" role="button" data-table="6 · under the pergola (4 pers.)" aria-label="Table 6, under the pergola, 4 persons"><circle cx="250" cy="270" r="30"/><text x="250" y="270">6</text></g>
+          <g class="tbl" tabindex="0" role="button" data-table="7 · under the pergola (6 pers.)" aria-label="Table 7, under the pergola, 6 persons"><circle cx="390" cy="250" r="36"/><text x="390" y="250">7</text></g>
+          <g class="tbl" tabindex="0" role="button" data-table="8 · under the pergola (4 pers.)" aria-label="Table 8, under the pergola, 4 persons"><circle cx="310" cy="150" r="30"/><text x="310" y="150">8</text></g>
+          <g class="tbl" tabindex="0" role="button" data-table="9 · winter garden (4 pers.)" aria-label="Table 9, winter garden, 4 persons"><rect x="570" y="150" width="60" height="46" rx="10"/><text x="600" y="173">9</text></g>
+          <g class="tbl" tabindex="0" role="button" data-table="10 · winter garden (6 pers.)" aria-label="Table 10, winter garden, 6 persons"><rect x="570" y="230" width="80" height="46" rx="10"/><text x="610" y="253">10</text></g>
+          <g class="tbl" tabindex="0" role="button" data-table="11 · winter garden (8 pers.)" aria-label="Table 11, winter garden, 8 persons"><rect x="570" y="310" width="100" height="46" rx="10"/><text x="620" y="333">11</text></g>
+          <g class="tbl" tabindex="0" role="button" data-table="12 · by the bar (2 pers.)" aria-label="Table 12, by the bar, 2 persons"><rect x="120" y="340" width="52" height="36" rx="8"/><text x="146" y="358">12</text></g>
+        </svg>
+        <p class="floor-sel" aria-live="polite"></p>
+        <input type="hidden" name="table" value="">
+      </div>
+
       <div class="row">
         <label>Full name <span class="req">*</span>
           <input type="text" name="name" autocomplete="name" placeholder="Who is the booking for?" required>

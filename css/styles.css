@@ -1387,3 +1387,61 @@ body.lb-open{overflow:hidden}
 .site-header.scrolled .nav-links .lang-switch,.nav-links .lang-switch{line-height:1}
 .mobile-menu .lang-switch b{color:var(--gold)}
 @media (prefers-reduced-motion: reduce){.vm-say.on svg{animation:none}}
+
+/* ============================================================
+   ETAP 7.3 — tryb wieczorny, plan sali, mikrofon
+   ============================================================ */
+
+/* wieczorna scena hero: podmiana tła + cieplejsza zasłona */
+.hero.is-evening .scene{background-image:url("../assets/img/hero-wieczor.jpg")}
+.hero.is-evening .scene-video{display:none !important}
+.hero.is-evening .veil{background:
+  linear-gradient(90deg,rgba(24,28,22,.82) 0%,rgba(24,28,22,.66) 34%,rgba(24,28,22,.28) 58%,rgba(24,28,22,.05) 78%,rgba(24,28,22,0) 100%)}
+.hero.is-evening .glow{opacity:.5}
+.hero.is-evening h1,.hero.is-evening .desc,.hero.is-evening .micro,
+.hero.is-evening .eyebrow{color:var(--cream)}
+.hero.is-evening .l1,.hero.is-evening .l2{color:var(--cream)}
+.hero.is-evening .amp{color:var(--gold-light,#d9b25f)}
+.hero.is-evening .micro b{color:var(--gold-light,#d9b25f)}
+.hero.is-evening .btn-ghost{color:var(--cream);border-color:rgba(246,241,229,.55)}
+.hero.is-evening .link,.hero.is-evening .pizza-link{color:var(--cream)}
+.hero.is-evening .index .item,.hero.is-evening .day-tag{color:var(--cream)}
+.hero.is-evening .demo-badge{background:rgba(24,28,22,.72);color:var(--cream);border-color:rgba(246,241,229,.25)}
+@media (max-width:860px){
+  .hero.is-evening .scene{filter:brightness(1.02) saturate(1.02)}
+}
+
+/* plan sali przy rezerwacji */
+.floor-wrap{margin:26px 0 6px}
+.floor-note{font-size:13.5px;color:var(--ink-soft);margin-bottom:10px}
+.floor-plan{width:100%;height:auto;display:block;border:1px solid rgba(21,50,31,.16);
+  border-radius:10px;background:#fff}
+.floor-plan .tbl{cursor:pointer}
+.floor-plan .tbl rect,.floor-plan .tbl circle{fill:#EDE6D4;stroke:rgba(21,50,31,.45);stroke-width:1.6;
+  transition:fill .2s ease,stroke .2s ease}
+.floor-plan .tbl text{font-family:"Inter",sans-serif;font-size:11px;font-weight:600;fill:var(--ink);
+  text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.floor-plan .tbl:hover rect,.floor-plan .tbl:hover circle{stroke:var(--gold-dark);fill:#F3E9CD}
+.floor-plan .tbl.sel rect,.floor-plan .tbl.sel circle{fill:var(--gold);stroke:var(--gold-dark)}
+.floor-plan .tbl.sel text{fill:#fff}
+.floor-plan .zone-label{font-family:"Inter",sans-serif;font-size:10.5px;letter-spacing:.14em;
+  fill:rgba(21,50,31,.45);text-transform:uppercase}
+.floor-plan .deco{fill:none;stroke:rgba(21,50,31,.18);stroke-width:1.2}
+.floor-sel{font-size:14px;color:var(--ink);margin-top:10px;min-height:20px}
+.floor-sel b{color:var(--gold-dark)}
+
+/* mikrofon w czacie */
+.vm-mic{border:0;background:none;color:rgba(21,50,31,.5);cursor:pointer;width:34px;height:34px;
+  display:grid;place-items:center;border-radius:50%;transition:color .2s ease,background .2s ease}
+.vm-mic:hover{color:var(--gold-dark)}
+.vm-mic.rec{color:#fff;background:#c0392b;animation:vm-rec 1.2s infinite}
+.vm-mic svg{width:17px;height:17px}
+@keyframes vm-rec{50%{opacity:.7}}
+@media (prefers-reduced-motion: reduce){.vm-mic.rec{animation:none}}
+
+/* wieczorem: jasny nagłówek dopóki nie pojawi się tło po przewinięciu */
+body.is-evening .site-header:not(.scrolled) .lg-top,
+body.is-evening .site-header:not(.scrolled) .brand small{color:var(--cream)}
+body.is-evening .site-header:not(.scrolled) .nav-links a{color:var(--cream)}
+body.is-evening .site-header:not(.scrolled) .nav-links .lang-switch{border-color:rgba(246,241,229,.5)}
+body.is-evening .site-header:not(.scrolled) .burger span{background:var(--cream)}
