@@ -111,6 +111,41 @@ console.info('[RADOSC] main.js loaded', {
         invalid[0].focus();
         return;
       }
+      if (form.dataset.endpoint) {
+        /* produkcja: wysyłka JSON do webhooka (n8n) bez opuszczania strony */
+        e.preventDefault();
+        var btn = form.querySelector('button[type="submit"]');
+        var fd = new FormData(form);
+        var temat = fd.get('topic') ||
+          [fd.get('event'), fd.get('date'), fd.get('guests') ? fd.get('guests') + ' gości' : '', fd.get('place')]
+            .filter(Boolean).join(' · ');
+        var payload = {
+          typ: form.dataset.formType || 'kontakt',
+          imie: fd.get('name') || '',
+          email: fd.get('email') || '',
+          telefon: fd.get('phone') || '',
+          temat: temat || '',
+          wiadomosc: fd.get('message') || '',
+          strona: location.pathname.split('/').pop() || 'index.html'
+        };
+        status.classList.remove('is-error');
+        status.textContent = 'Wysyłanie…';
+        if (btn) btn.disabled = true;
+        fetch(form.dataset.endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).then(function (r) {
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          status.textContent = 'Dziękujemy! Zapytanie dotarło do nas — odpowiemy najszybciej, jak to możliwe.';
+          form.reset();
+          form.querySelectorAll('.field-error').forEach(clearFieldError);
+        }).catch(function () {
+          status.classList.add('is-error');
+          status.textContent = 'Nie udało się wysłać formularza. Spróbuj ponownie albo zadzwoń: 795 870 359.';
+        }).finally(function () { if (btn) btn.disabled = false; });
+        return;
+      }
       if (form.getAttribute('action')) { status.classList.remove('is-error'); return; } // produkcja: natywna wysyłka do usługi
       e.preventDefault();
       status.classList.remove('is-error');
@@ -321,11 +356,11 @@ console.info('[RADOSC] main.js loaded', {
 
   renderMenu(window.RADOSC_PIZZA, 'pizza-menu', {
     title: 'Aktualne menu pizzy potwierdzisz telefonicznie.',
-    text: 'Pełną kartę pizzy przygotowujemy do publikacji. Zadzwoń — powiemy, co dziś pieczemy: <a class="tel-link" href="tel:+48100200300">100 200 300</a>.'
+    text: 'Pełną kartę pizzy przygotowujemy do publikacji. Zadzwoń — powiemy, co dziś pieczemy: <a class="tel-link" href="tel:+48795870359">795 870 359</a>.'
   });
   renderMenu(window.RADOSC_BURGERY, 'burger-menu', {
     title: 'Menu burgerów potwierdzisz telefonicznie.',
-    text: 'Kartę burgerów przygotowujemy do publikacji. Zamówienia i pytania: <a class="tel-link" href="tel:+48100200300">100 200 300</a>.'
+    text: 'Kartę burgerów przygotowujemy do publikacji. Zamówienia i pytania: <a class="tel-link" href="tel:+48795870359">795 870 359</a>.'
   });
   renderMenu(window.RADOSC_SNIADANIA, 'sniadania-menu', {
     title: 'Śniadania', text: ''
@@ -450,6 +485,67 @@ console.info('[RADOSC] main.js loaded', {
       }
     });
   });
+
+  /* ===== ETAP 7: suwaki przed/po (sekcja „Za kulisami") ===== */
+  document.querySelectorAll('[data-ba]').forEach(function (fig) {
+    var range = fig.querySelector('.ba-range');
+    if (!range) return;
+    range.addEventListener('input', function () {
+      fig.style.setProperty('--pos', range.value + '%');
+    });
+  });
+
+  /* ===== ETAP 7: linia pory dnia w hero (rytm dnia Pergoli) =====
+     Godziny: pn–pt śniadania 8–11, lunch/bemary 11–17, karta 15–21;
+     pizza i burgery codziennie 11–21; sob. karta 11–22, ndz. 11–20. */
+  var daypart = document.getElementById('daypart');
+  if (daypart) {
+    var now = new Date();
+    var h = now.getHours();
+    var dow = now.getDay(); /* 0 = niedziela, 6 = sobota */
+    var txt = '';
+    if (dow >= 1 && dow <= 5) {
+      if (h < 8) txt = 'Otwieramy o 8:00 — na początek śniadanie i kawa.';
+      else if (h < 11) txt = 'Pora śniadań (do 11:00) — kawa do śniadania gratis.';
+      else if (h < 15) txt = 'Trwa lunch — bemary i menu dnia do 17:00.';
+      else if (h < 17) txt = 'Lunch jeszcze do 17:00, karta restauracyjna już działa.';
+      else if (h < 21) txt = 'Wieczór w Pergoli — karta restauracyjna i pizza z pieca do 21:00.';
+      else txt = 'Dziś już zamknięte — zapraszamy jutro. Pizza i burgery codziennie 11:00–21:00.';
+    } else if (dow === 6) {
+      if (h < 11) txt = 'Otwieramy o 11:00 — weekendowa karta bez lunchy, do 22:00.';
+      else if (h < 22) txt = 'Weekend w Pergoli — pełna karta do 22:00, pizza i burgery do 21:00.';
+      else txt = 'Dziś już zamknięte — w niedzielę zapraszamy od 11:00.';
+    } else {
+      if (h < 11) txt = 'Otwieramy o 11:00 — weekendowa karta bez lunchy, do 20:00.';
+      else if (h < 20) txt = 'Niedziela w Pergoli — pełna karta do 20:00.';
+      else txt = 'Dziś już zamknięte — w tygodniu zapraszamy od 8:00.';
+    }
+    daypart.innerHTML = '<b>Dziś:</b> ' + txt;
+  }
+
+  /* ===== ETAP 7: żywe tło hero (cinemagraph) =====
+     Wideo dogrywamy dopiero po pełnym załadowaniu strony, wyłącznie na
+     desktopie, bez prefers-reduced-motion i bez trybu oszczędzania danych.
+     Do czasu odtworzenia widoczna jest statyczna .scene — zero skoku. */
+  var heroVideo = document.querySelector('.scene-video');
+  if (heroVideo) {
+    var wideOk = window.matchMedia('(min-width: 861px)').matches;
+    var motionOk = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var conn = navigator.connection || {};
+    if (wideOk && motionOk && !conn.saveData) {
+      var startHeroVideo = function () {
+        heroVideo.src = heroVideo.getAttribute('data-src');
+        heroVideo.addEventListener('playing', function () {
+          var hero = heroVideo.closest('.hero');
+          if (hero) hero.classList.add('has-video');
+        }, { once: true });
+        var p = heroVideo.play();
+        if (p && p.catch) p.catch(function () { /* autoplay zablokowany — zostaje statyczny kadr */ });
+      };
+      if (document.readyState === 'complete') startHeroVideo();
+      else window.addEventListener('load', startHeroVideo, { once: true });
+    }
+  }
 })();
 
 /* treści menu wyrenderowane — nawigacja kotwic może celować w finalny układ */

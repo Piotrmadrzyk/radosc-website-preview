@@ -745,8 +745,7 @@ label .req{color:var(--gold-light)}
 .brand{line-height:1}
 .brand .lg-top{display:flex;align-items:center;font-family:"Inter",sans-serif;
   font-weight:500;font-size:21px;letter-spacing:.24em;color:var(--ink)}
-.brand .lg-o{width:.98em;height:.82em;margin-left:.07em;margin-top:.05em;flex:none;color:var(--gold);
-  display:inline-block}
+.brand .lg-ltr{color:var(--gold);margin-left:.02em}
 .brand small{display:block;font-family:"Inter",sans-serif;font-weight:500;font-size:9px;
   letter-spacing:.42em;text-transform:uppercase;color:var(--ink-soft);margin-top:5px}
 .site-footer .brand .lg-top{color:var(--cream)}
@@ -1261,3 +1260,56 @@ body.lb-open{overflow:hidden}
 .demo-badge b{font-weight:700}
 @media (max-width:600px){.demo-badge{font-size:11.5px;padding:9px 14px;gap:8px}}
 .demo-foot{margin:6px 0 0;font-size:11.5px;line-height:1.5;opacity:.72}
+
+/* ============================================================
+   ETAP 7 — za kulisami (przed/po), pora dnia, żywe tło hero
+   ============================================================ */
+
+/* wideo-cinemagraph w tle hero: dokładnie w miejscu .scene */
+.scene-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  object-position:50% 49%;display:none}
+.hero.has-video .scene-video{display:block}
+@media (max-width:860px){
+  .scene-video{inset:auto 0 -20svh 0;top:0;height:auto;min-height:100%;object-position:40% 0%}
+}
+@media (prefers-reduced-motion: reduce){
+  .hero.has-video .scene-video{display:none}
+}
+
+/* suwaki przed/po */
+.ba-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:34px}
+.ba-slider{position:relative;margin:0;overflow:hidden;border-radius:2px;
+  box-shadow:0 18px 44px rgba(21,50,31,.16)}
+.ba-slider picture,.ba-slider img{display:block;width:100%;height:auto}
+.ba-top{position:absolute;inset:0;clip-path:inset(0 calc(100% - var(--pos,50%)) 0 0)}
+.ba-top::after{content:"";position:absolute;top:0;bottom:0;left:var(--pos,50%);
+  width:2px;margin-left:-1px;background:rgba(246,241,229,.95);
+  box-shadow:0 0 0 1px rgba(21,50,31,.25)}
+.ba-tag{position:absolute;top:12px;font-family:"Inter",sans-serif;font-size:10.5px;
+  font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--cream);
+  background:rgba(21,50,31,.72);padding:5px 10px;border-radius:999px;pointer-events:none}
+.ba-tag-l{left:12px}.ba-tag-r{right:12px}
+.ba-range{position:absolute;left:0;right:0;bottom:34px;width:calc(100% - 28px);
+  margin:0 14px;appearance:none;-webkit-appearance:none;height:26px;background:transparent;
+  cursor:ew-resize;touch-action:none}
+.ba-range::-webkit-slider-runnable-track{height:3px;background:rgba(246,241,229,.65);border-radius:2px}
+.ba-range::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;margin-top:-9.5px;
+  border-radius:50%;background:var(--cream);border:2px solid var(--gold);
+  box-shadow:0 2px 8px rgba(21,50,31,.4)}
+.ba-range::-moz-range-track{height:3px;background:rgba(246,241,229,.65);border-radius:2px}
+.ba-range::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--cream);
+  border:2px solid var(--gold);box-shadow:0 2px 8px rgba(21,50,31,.4)}
+.ba-range:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
+.ba-slider figcaption{position:absolute;left:0;right:0;bottom:0;padding:10px 14px;
+  font-family:"Inter",sans-serif;font-size:12px;letter-spacing:.06em;color:var(--cream);
+  background:linear-gradient(180deg,rgba(21,50,31,0) 0%,rgba(21,50,31,.72) 100%);
+  pointer-events:none}
+.proces-steps{margin:38px 0 0;padding:0 0 0 20px;display:grid;
+  grid-template-columns:repeat(2,1fr);gap:16px 40px;font-size:15.5px;line-height:1.65;
+  color:var(--ink-soft)}
+.proces-steps b{color:var(--ink)}
+@media (max-width:1000px){.ba-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:700px){
+  .ba-grid{grid-template-columns:1fr;gap:20px}
+  .proces-steps{grid-template-columns:1fr}
+}
