@@ -1,5 +1,5 @@
 /* ============================================================
-   ETAP 5.8 — grupowy lightbox zdjęć Bistro
+   ETAP 5.8 — grupowy lightbox zdjęć Restauracji
    ETAP 6.1 — rozszerzenie na galerię Realizacji (ten sam komponent):
    - lista zdjęć liczona przy każdym otwarciu wyłącznie z elementów
      aktualnie widocznych (filtry Realizacji są respektowane),
@@ -43,7 +43,7 @@
       fig.classList.add('lb-zoomable');
       fig.setAttribute('tabindex', '0');
       fig.setAttribute('role', 'button');
-      fig.setAttribute('aria-label', 'Powiększ zdjęcie: ' + (img.getAttribute('alt') || 'fotografia Bistro'));
+      fig.setAttribute('aria-label', 'Powiększ zdjęcie: ' + (img.getAttribute('alt') || 'fotografia Restauracji'));
       fig.setAttribute('aria-haspopup', 'dialog');
       // dyskretna ikonka lupki (desktop hover; aria-hidden — czysto wizualna)
       var ico = document.createElement('span');
@@ -177,7 +177,7 @@
       cntEl.textContent = '';
       navBox.setAttribute('hidden', '');
     }
-    overlay.setAttribute('aria-label', 'Powiększone zdjęcie: ' + (item.caption || item.alt || 'fotografia Bistro'));
+    overlay.setAttribute('aria-label', 'Powiększone zdjęcie: ' + (item.caption || item.alt || 'fotografia Restauracji'));
     // preload sąsiadów w grupie
     if (list.length > 1) {
       [state.index - 1, state.index + 1].forEach(function (i) {

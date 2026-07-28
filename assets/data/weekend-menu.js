@@ -7,7 +7,7 @@
    `grams` — gramatura/objętość pozycji.
    ============================================================ */
 window.RADOSC_WEEKEND = {
-  startNote: "W weekendy zapraszamy na pełną kartę Bistro — bez menu lunchowego.",
+  startNote: "W weekendy zapraszamy na pełną kartę Restauracji — bez menu lunchowego.",
   hoursNote: "Sobota 11:00–22:00 · niedziela 11:00–20:00.",
   categories: [
     {

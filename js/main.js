@@ -231,7 +231,7 @@ console.info('[RADOSC] main.js loaded', {
   }, { once: true });
   window.RADOSC_SCROLL = scrollToSection;
 
-  /* pasek skrótów Bistro — gaszenie gradientu po dojechaniu do końca */
+  /* pasek skrótów Restauracji — gaszenie gradientu po dojechaniu do końca */
   var jumpbar = document.querySelector('.jumpbar');
   var jumptrack = document.querySelector('.jumpbar-track');
   /* wszystkie kotwice tej samej strony (jumpbar, hero, treść) przewijają
@@ -298,7 +298,7 @@ console.info('[RADOSC] main.js loaded', {
   }
   var LEAF = ' <span class="veg-leaf" role="img" aria-label="opcja wegetariańska" title="opcja wegetariańska">🌱</span>';
 
-  /* menu lunchowe (strona Bistro) */
+  /* menu lunchowe (strona Restauracji) */
   var lunchBox = document.getElementById('lunch-menu');
   if (lunchBox && window.RADOSC_LUNCH) {
     var L = window.RADOSC_LUNCH;
@@ -407,7 +407,7 @@ console.info('[RADOSC] main.js loaded', {
   renderExtra(window.RADOSC_ANTIPASTI, 'antipasti-menu');
   renderExtra(window.RADOSC_MAKARONY, 'makarony-menu');
 
-  /* menu weekendowe (strona Bistro); id kategorii = kotwica dla paska skrótów */
+  /* menu weekendowe (strona Restauracji); id kategorii = kotwica dla paska skrótów */
   function slug(s) {
     var MAP = { 'ą':'a','ć':'c','ę':'e','ł':'l','ń':'n','ó':'o','ś':'s','ź':'z','ż':'z' };
     return String(s).toLowerCase().replace(/[ąćęłńóśźż]/g, function (c) { return MAP[c]; })

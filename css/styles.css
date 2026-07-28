@@ -1313,3 +1313,60 @@ body.lb-open{overflow:hidden}
   .ba-grid{grid-template-columns:1fr;gap:20px}
   .proces-steps{grid-template-columns:1fr}
 }
+
+/* ============================================================
+   ETAP 7.1 — Wirtualny Manager (czat AI)
+   ============================================================ */
+.vm-root{position:fixed;right:22px;bottom:22px;z-index:900;font-family:"Inter",sans-serif}
+.vm-fab{display:flex;align-items:center;gap:10px;border:0;cursor:pointer;
+  background:var(--ink);color:var(--cream);padding:14px 20px;border-radius:999px;
+  box-shadow:0 12px 32px rgba(21,50,31,.35);font:inherit;font-size:13px;font-weight:600;
+  letter-spacing:.06em;transition:transform .25s ease,background .25s ease}
+.vm-fab:hover{transform:translateY(-2px);background:#0e2415}
+.vm-fab svg{width:19px;height:19px;flex:none}
+.vm-fab:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.vm-panel[hidden]{display:none}
+.vm-panel{position:absolute;right:0;bottom:calc(100% + 14px);width:372px;max-width:calc(100vw - 44px);
+  background:var(--cream);border:1px solid rgba(21,50,31,.18);border-radius:14px;overflow:hidden;
+  box-shadow:0 26px 70px rgba(21,50,31,.30);display:flex;flex-direction:column}
+.vm-head{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  background:var(--ink);color:var(--cream);padding:14px 18px}
+.vm-head b{font-size:14.5px;letter-spacing:.04em}
+.vm-head small{display:block;font-size:11px;color:rgba(246,241,229,.65);margin-top:2px}
+.vm-close{border:0;background:none;color:var(--cream);font-size:26px;line-height:1;cursor:pointer;padding:2px 6px}
+.vm-close:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.vm-msgs{height:320px;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;
+  background:linear-gradient(180deg,rgba(21,50,31,.045),rgba(21,50,31,0) 90px)}
+.vm-msg{max-width:86%;padding:10px 14px;border-radius:14px;font-size:13.5px;line-height:1.55}
+.vm-bot{background:#fff;border:1px solid rgba(21,50,31,.12);color:var(--ink);
+  align-self:flex-start;border-bottom-left-radius:4px}
+.vm-user{background:var(--ink);color:var(--cream);align-self:flex-end;border-bottom-right-radius:4px}
+.vm-typing i{display:inline-block;width:6px;height:6px;margin:0 2px;border-radius:50%;
+  background:rgba(21,50,31,.45);animation:vm-b 1.1s infinite}
+.vm-typing i:nth-child(2){animation-delay:.18s}
+.vm-typing i:nth-child(3){animation-delay:.36s}
+@keyframes vm-b{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-4px);opacity:1}}
+.vm-chips{display:flex;flex-wrap:wrap;gap:8px;padding:0 16px 10px}
+.vm-chips button{border:1px solid rgba(21,50,31,.28);background:none;color:var(--ink);
+  font:inherit;font-size:11.5px;font-weight:600;letter-spacing:.04em;padding:7px 13px;
+  border-radius:999px;cursor:pointer;transition:border-color .2s ease,color .2s ease}
+.vm-chips button:hover{border-color:var(--gold-dark);color:var(--gold-dark)}
+.vm-input{display:flex;gap:8px;padding:10px 14px;border-top:1px solid rgba(21,50,31,.12);background:#fff}
+.vm-input input{flex:1;border:0;background:none;font:inherit;font-size:14px;color:var(--ink);outline:none}
+.vm-input button{border:0;background:var(--gold);color:#fff;width:38px;height:38px;border-radius:50%;
+  cursor:pointer;display:grid;place-items:center;transition:background .2s ease}
+.vm-input button:hover{background:var(--gold-dark)}
+.vm-input button svg{width:17px;height:17px}
+.vm-note{margin:0;padding:8px 16px 12px;font-size:10.5px;color:rgba(21,50,31,.5);background:#fff}
+@media (max-width:600px){
+  .vm-root{right:14px;bottom:82px;left:14px} /* nad mobilnym paskiem akcji */
+  .vm-fab{margin-left:auto}
+  .vm-fab-label{display:none}
+  .vm-fab{padding:16px}
+  .vm-panel{width:auto;left:0}
+  .vm-msgs{height:46svh}
+}
+@media (prefers-reduced-motion: reduce){
+  .vm-fab{transition:none}
+  .vm-typing i{animation:none}
+}
