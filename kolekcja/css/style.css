@@ -234,8 +234,17 @@ h1,h2,h3{
   font-size:22px; line-height:1; cursor:pointer;
 }
 .lightbox-close:hover{border-color:var(--brass); color:var(--brass)}
+.lightbox-flip{
+  position:absolute; left:50%; bottom:28px; transform:translateX(-50%); z-index:2;
+  font-family:"Space Mono", monospace; font-size:13px; letter-spacing:.04em;
+  background:rgba(13,21,18,.85); color:var(--ink); border:1px solid var(--brass-dim);
+  padding:10px 20px; border-radius:999px; cursor:pointer;
+}
+.lightbox-flip[hidden]{display:none}
+.lightbox-flip:hover{border-color:var(--brass); color:var(--brass)}
 body.lightbox-open{overflow:hidden}
 @media (max-width:640px){
   .lightbox{padding:14px}
   .lightbox-close{top:10px; right:10px; width:38px; height:38px}
+  .lightbox-flip{bottom:16px; font-size:12px; padding:9px 16px}
 }
