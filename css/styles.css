@@ -1445,3 +1445,34 @@ body.is-evening .site-header:not(.scrolled) .brand small{color:var(--cream)}
 body.is-evening .site-header:not(.scrolled) .nav-links a{color:var(--cream)}
 body.is-evening .site-header:not(.scrolled) .nav-links .lang-switch{border-color:rgba(246,241,229,.5)}
 body.is-evening .site-header:not(.scrolled) .burger span{background:var(--cream)}
+
+/* ============================================================
+   ETAP 7.4 — poprawki mobilne
+   ============================================================ */
+
+/* kafle: kolumny gridu muszą móc się kurczyć poniżej szerokości treści */
+.tiles > *{min-width:0}
+.tile h3{overflow-wrap:break-word;hyphens:auto}
+@media (max-width:700px){
+  .tile h3{font-size:19px}
+  .tile p{font-size:14px}
+}
+@media (max-width:480px){
+  .tile h3{font-size:17px;letter-spacing:0}
+}
+
+/* jasny wariant formularza — sekcja rezerwacji na jasnym tle */
+.sec-bistro .demo-form label{color:rgba(21,50,31,.82)}
+.sec-bistro .demo-form input,
+.sec-bistro .demo-form textarea,
+.sec-bistro .demo-form select{background:#fff;border:1px solid rgba(21,50,31,.30);color:var(--ink)}
+.sec-bistro .demo-form input::placeholder,
+.sec-bistro .demo-form textarea::placeholder{color:rgba(21,50,31,.42)}
+.sec-bistro .demo-form input:focus,
+.sec-bistro .demo-form textarea:focus,
+.sec-bistro .demo-form select:focus{border-color:var(--gold-dark);background:#fff}
+.sec-bistro .demo-form .btn-fill{box-shadow:0 10px 24px rgba(21,50,31,.18)}
+.sec-bistro .form-status{color:var(--gold-dark)}
+.sec-bistro .form-status.is-error{color:#A63A24}
+.sec-bistro label .req{color:var(--gold-dark)}
+.sec-bistro .field-msg{color:#A63A24}
