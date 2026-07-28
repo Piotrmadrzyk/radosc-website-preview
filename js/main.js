@@ -909,3 +909,39 @@ document.dispatchEvent(new CustomEvent('app:content-ready'));
     });
   });
 })();
+
+/* ETAP 9.1 — dynamiczny rok w stopce + akordeon FAQ */
+(function () {
+  document.querySelectorAll('.js-year').forEach(function (el) {
+    el.textContent = String(new Date().getFullYear());
+  });
+
+  var faqSeq = 0;
+  document.querySelectorAll('.faq-list').forEach(function (list) {
+    list.classList.add('faq-acc');
+    list.querySelectorAll('.faq-item').forEach(function (item, i) {
+      var dt = item.querySelector('dt');
+      var dd = item.querySelector('dd');
+      if (!dt || !dd) return;
+      var open = i === 0; /* pierwsze pytanie otwarte — reszta zwinięta */
+      dd.id = dd.id || 'faq-a-' + (++faqSeq);
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'faq-q';
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      btn.setAttribute('aria-controls', dd.id);
+      btn.innerHTML = '<span>' + dt.textContent + '</span>' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>';
+      dt.textContent = '';
+      dt.appendChild(btn);
+      item.classList.toggle('faq-open', open);
+      dd.hidden = !open;
+      btn.addEventListener('click', function () {
+        var willOpen = dd.hidden;
+        dd.hidden = !willOpen;
+        item.classList.toggle('faq-open', willOpen);
+        btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+      });
+    });
+  });
+})();

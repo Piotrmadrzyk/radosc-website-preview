@@ -1586,3 +1586,14 @@ body.is-evening .site-header:not(.scrolled) .burger span{background:var(--cream)
 .cart-fab:hover{background:var(--gold-dark)}
 .cart-fab[hidden]{display:none}
 @media (max-width:860px){.cart-fab{bottom:76px;left:12px}}
+
+/* ===== ETAP 9.1: akordeon FAQ ===== */
+.faq-acc .faq-item dt{margin:0}
+.faq-q{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;
+  padding:2px 0;min-height:44px;border:0;background:transparent;cursor:pointer;text-align:left;
+  font-family:"Fraunces",serif;font-weight:600;font-size:19px;color:var(--ink)}
+.faq-q svg{flex:none;width:19px;height:19px;color:var(--gold-dark);transition:transform .25s ease}
+.faq-open .faq-q svg{transform:rotate(180deg)}
+.faq-q:focus-visible{outline:2px solid var(--gold);outline-offset:4px;border-radius:6px}
+.faq-acc .faq-item dd[hidden]{display:none}
+@media (max-width:480px){.faq-q{font-size:17px}}
