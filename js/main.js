@@ -104,7 +104,9 @@ console.info('[RADOSC] main.js loaded', {
     if (field.name === 'name') return t('reqName', 'Podaj imię i nazwisko.');
     if (field.tagName === 'TEXTAREA') return t('reqMsg', 'Napisz krótką wiadomość.');
     if (field.tagName === 'SELECT') {
-      return field.name === 'rtime' ? t('reqTime', 'Wybierz godzinę rezerwacji.') : t('reqSelect', 'Wybierz typ zapytania.');
+      if (field.name === 'rtime') return t('reqTime', 'Wybierz godzinę rezerwacji.');
+      if (field.name === 'otime') return t('reqTimeOrder', 'Wybierz godzinę zamówienia.');
+      return t('reqSelect', 'Wybierz typ zapytania.');
     }
     return t('fillField', 'Uzupełnij to pole.');
   }
@@ -190,6 +192,19 @@ console.info('[RADOSC] main.js loaded', {
             strona: location.pathname.split('/').pop() || 'index.html',
             lang: document.documentElement.lang || 'pl'
           };
+        } else if (form.dataset.formType === 'zamowienie') {
+          payload = {
+            imie: fd.get('name') || '',
+            telefon: fd.get('phone') || '',
+            email: fd.get('email') || '',
+            odbior: fd.get('delivery') || 'odbior',
+            adres: fd.get('address') || '',
+            godzina: fd.get('otime') || '',
+            pozycje: fd.get('order') || '',
+            uwagi: fd.get('message') || '',
+            strona: location.pathname.split('/').pop() || 'index.html',
+            lang: document.documentElement.lang || 'pl'
+          };
         } else {
           var temat = fd.get('topic') ||
             [fd.get('event'), fd.get('date'), fd.get('guests') ? fd.get('guests') + ' gości' : '', fd.get('place')]
@@ -226,7 +241,9 @@ console.info('[RADOSC] main.js loaded', {
             ? t('okReservation', 'Rezerwacja demonstracyjna przyjęta.')
             : form.dataset.formType === 'newsletter'
               ? t('okNewsletter', 'Dziękujemy! Zapis demonstracyjny przyjęty.')
-              : t('okContact', 'Dziękujemy! Zgłoszenie demonstracyjne dotarło.');
+              : form.dataset.formType === 'zamowienie'
+                ? ((d && d.message) || t('okOrder', 'Zamówienie demonstracyjne przyjęte.'))
+                : t('okContact', 'Dziękujemy! Zgłoszenie demonstracyjne dotarło.');
           form.reset();
           form.querySelectorAll('.field-error').forEach(clearFieldError);
           /* P4/P11: pełny reset stanów pomocniczych po udanej demonstracji */

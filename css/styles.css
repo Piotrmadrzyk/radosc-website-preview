@@ -1555,3 +1555,30 @@ body.is-evening .site-header:not(.scrolled) .burger span{background:var(--cream)
 .newsletter-form .nl-row label{flex:1;min-width:230px;margin:0}
 .newsletter-form .nl-row .btn{flex:none;min-height:48px}
 @media (max-width:560px){.newsletter-form .nl-row .btn{width:100%}}
+
+/* ===== ETAP 9: zamawianie online (pizza/burgery) ===== */
+.order-add{display:inline-flex;align-items:center;margin-top:8px;padding:8px 16px;min-height:38px;
+  font:inherit;font-size:12.5px;font-weight:600;letter-spacing:.04em;cursor:pointer;
+  color:var(--gold-dark);background:transparent;border:1px solid rgba(169,129,47,.45);border-radius:999px;
+  transition:background .2s ease,color .2s ease,border-color .2s ease}
+.order-add:hover{background:var(--gold);border-color:var(--gold);color:#fff}
+.order-add.added{background:var(--pine, #15321F);border-color:var(--pine, #15321F);color:#fff}
+.order-list{margin:26px 0 6px}
+.order-row{display:flex;align-items:center;gap:14px;padding:11px 0;border-bottom:1px dashed rgba(21,50,31,.18)}
+.order-row .o-name{flex:1;min-width:0;font-weight:500;color:var(--ink)}
+.order-row .o-qty{display:flex;align-items:center;gap:4px}
+.order-row .o-qty b{min-width:26px;text-align:center;color:var(--ink)}
+.order-row .o-qty button{width:34px;height:34px;border-radius:50%;border:1px solid rgba(21,50,31,.3);
+  background:transparent;color:var(--ink);font-size:17px;line-height:1;cursor:pointer}
+.order-row .o-qty button:hover{background:var(--gold);border-color:var(--gold);color:#fff}
+.order-row .o-price{min-width:74px;text-align:right;font-weight:600;color:var(--ink)}
+.order-row.order-sum{border-bottom:0;border-top:2px solid rgba(21,50,31,.4);margin-top:4px;font-size:17px}
+#order-empty{color:rgba(21,50,31,.62);font-style:italic;margin:18px 0 4px}
+#order-hours-note{display:block;margin-top:8px}
+.order-closed .row,.order-closed label{opacity:.55}
+.cart-fab{position:fixed;left:18px;bottom:18px;z-index:60;padding:12px 18px;min-height:48px;
+  border:0;border-radius:999px;background:var(--gold);color:#fff;font:inherit;font-size:14.5px;font-weight:600;
+  box-shadow:0 8px 24px rgba(21,50,31,.35);cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.cart-fab:hover{background:var(--gold-dark)}
+.cart-fab[hidden]{display:none}
+@media (max-width:860px){.cart-fab{bottom:76px;left:12px}}
