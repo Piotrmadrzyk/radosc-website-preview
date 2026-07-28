@@ -63,7 +63,7 @@ window.RADOSC_WEEKEND = {
     {
       title: "Herbata i matcha",
       items: [
-        { name: "Herbata liściasta", desc: "5 rodzajów do wyboru", price: 13, veg: true },
+        { name: "Herbata Richmont", desc: "do wyboru: Ceylon Gold, Earl Grey, Green, Forest Fruits", price: 13, veg: true },
         { name: "Matcha Latte", price: 18, veg: true },
         { name: "Matcha mrożona", desc: "mango lub truskawka", price: 19, veg: true }
       ]
@@ -71,18 +71,18 @@ window.RADOSC_WEEKEND = {
     {
       title: "Napoje",
       items: [
-        { name: "Woda źródlana 0,33 l", desc: "niegazowana lub gazowana", price: 8, veg: true },
-        { name: "Napoje gazowane 0,25 l", price: 12, veg: true },
-        { name: "Sok owocowy 0,25 l", desc: "pomarańczowy, jabłkowy, multiwitamina", price: 10, veg: true },
-        { name: "Sok tłoczony 0,25 l", desc: "jabłko, jabłko z marchewką", price: 12, veg: true },
+        { name: "Woda Kropla Beskidu 0,33 l", desc: "niegazowana lub gazowana", price: 8, veg: true },
+        { name: "Coca-Cola, Cola Zero, Fanta, Sprite, Fuze Tea 0,25 l", price: 12, veg: true },
+        { name: "Sok Cappy 0,25 l", desc: "pomarańczowy, jabłkowy, multiwitamina", price: 10, veg: true },
+        { name: "Sok tłoczony Bracia Sadownicy 0,25 l", desc: "jabłko, jabłko z marchewką", price: 12, veg: true },
         { name: "Domowa lemoniada 0,4 l", desc: "cytrynowa, lawendowa, truskawkowa", price: 15, veg: true }
       ]
     },
     {
       title: "Piwo",
       items: [
-        { name: "Piwo bezalkoholowe 0,5 l", desc: "różne smaki", price: 13 },
-        { name: "Piwo z beczki 0,5 l", price: 15 }
+        { name: "Żywiec 0% 0,5 l", desc: "różne smaki", price: 13 },
+        { name: "Heineken 0,5 l", price: 15 }
       ]
     }
   ]
