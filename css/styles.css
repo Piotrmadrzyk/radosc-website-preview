@@ -587,6 +587,9 @@ label .req{color:var(--gold-light)}
   .sub-hero-frame{padding:130px var(--pad-x) 44px}
   .two-col{grid-template-columns:1fr;gap:34px}
   .two-col .col-img{order:-1}
+  .post-card{grid-template-columns:1fr;gap:22px}
+  .post-card.reverse .post-img{order:-1}
+  .post-card .post-img{order:-1}
   .arch-photo{max-width:320px}
   .contact-cards{grid-template-columns:1fr}
   .steps,.steps.cols3{grid-template-columns:1fr 1fr}
@@ -611,6 +614,20 @@ label .req{color:var(--gold-light)}
   background-position:50% 42%}
 .sub-hero--gala .veil{background:
   linear-gradient(180deg,rgba(246,241,229,.90) 0%,rgba(246,241,229,.70) 36%,rgba(246,241,229,.50) 64%,rgba(246,241,229,.90) 100%)}
+.sub-hero--aktualnosci .scene{background-image:url("../assets/img/lunch-dnia.jpg");
+  background-position:50% 38%}
+.sub-hero--aktualnosci .veil{background:
+  linear-gradient(180deg,rgba(246,241,229,.90) 0%,rgba(246,241,229,.68) 40%,rgba(246,241,229,.50) 66%,rgba(246,241,229,.90) 100%)}
+
+/* Aktualności / blog */
+.post-list{display:flex;flex-direction:column;gap:68px;margin-top:44px}
+.post-card{display:grid;grid-template-columns:1.05fr 1.3fr;gap:clamp(28px,4vw,56px);align-items:center}
+.post-card.reverse .post-img{order:2}
+.post-img{position:relative;border-radius:18px;overflow:hidden;aspect-ratio:4/3;background:var(--cream-deep)}
+.post-img img{width:100%;height:100%;object-fit:cover}
+.post-date{font-size:10.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-dark)}
+.post-card h2{margin:10px 0 14px}
+.post-card p{font-size:15.5px;line-height:1.7;color:var(--ink-soft);margin-bottom:14px}
 
 /* kolaż galeryjny */
 .gallery{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:200px;gap:14px;margin-top:44px;grid-auto-flow:dense}
