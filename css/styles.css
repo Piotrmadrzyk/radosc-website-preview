@@ -1590,9 +1590,12 @@ body.is-evening .site-header:not(.scrolled) .burger span{background:var(--cream)
 .vm-root.vm-dodge .vm-fab,.vm-root.vm-away .vm-fab{opacity:0;pointer-events:none;transform:translateY(8px)}
 .vm-fab{transition:transform .25s ease,background .25s ease,opacity .25s ease}
 
-/* P31: niższe hero podstron na małych telefonach */
+/* P31: niższe hero podstron na małych telefonach.
+   Uwaga: tylko min-height (jak w bazowej regule .sub-hero) — sztywne
+   height+max-height wypychały dłuższą treść (np. bistro.html) ponad
+   górną krawędź hero, pod przezroczysty stały nagłówek. */
 @media (max-width:400px){
-  .sub-hero{min-height:340px;height:52svh;max-height:430px}
+  .sub-hero{min-height:340px}
   .sub-hero .sub-hero-frame h1{font-size:30px}
 }
 
