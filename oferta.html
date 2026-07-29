@@ -132,6 +132,11 @@ button:focus-visible, a:focus-visible{outline:2px solid var(--focus); outline-of
   background-color:var(--cream-deep);
 }
 .framecard img{display:block; width:100%; height:auto}
+.icon-card{aspect-ratio:4/3; background:var(--cream-deep)}
+.icon-card-inner{display:flex; align-items:center; justify-content:center; height:100%}
+.icon-card svg{color:var(--gold-dark)}
+@media (prefers-color-scheme: dark){ .icon-card svg{color:var(--gold-light)} }
+:root[data-theme="dark"] .icon-card svg{color:var(--gold-light)}
 
 /* ---------- meta (dodatki): nakład pracy ---------- */
 .meta-row{display:flex; gap:40px; margin:22px 0 8px; flex-wrap:wrap}
@@ -292,7 +297,12 @@ button:focus-visible, a:focus-visible{outline:2px solid var(--focus); outline-of
 @media (max-width:900px){
   body{overflow-y:auto; height:auto}
   .deck{height:auto; overflow:visible}
-  .slide{position:relative; min-height:100svh; padding:88px 22px 140px; transform:none}
+  /* Na telefonie slajdy stoją jedne pod drugimi w normalnym przepływie strony
+     (position:relative), więc — inaczej niż na desktopie — wszystkie muszą być
+     naprawdę widoczne: samo przełączanie .is-active nie przewija do właściwego
+     miejsca, tylko zmienia który fragment długiej strony jest "aktywny". */
+  .slide{position:relative; min-height:100svh; padding:88px 22px 140px; transform:none;
+    opacity:1; visibility:visible; pointer-events:auto}
   .slide-grid{grid-template-columns:1fr; gap:30px}
   .slide-media{order:-1}
   .framecard{max-width:420px}
@@ -645,8 +655,8 @@ button:focus-visible, a:focus-visible{outline:2px solid var(--focus); outline-of
   </div>
 </section>
 <section class="slide slide-content slide-addition" data-section="addition" id="slide-a01-qr">
-      <div class="slide-grid slide-grid-single">
-        <div class="slide-text slide-text-wide">
+      <div class="slide-grid">
+        <div class="slide-text">
           <p class="eyebrow">SPRZEDAŻ I KONWERSJA &middot; 01 / 22</p>
           <h2>Kod QR na stoliku → zamawianie z miejsca</h2>
           <p class="body">Gość skanuje kod leżący na stole, widzi menu i zamawia od razu — kelner tylko wydaje, nie przyjmuje zamówień.</p>
@@ -659,11 +669,14 @@ button:focus-visible, a:focus-visible{outline:2px solid var(--focus); outline-of
           </div>
           <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a01-qr"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
         </div>
+        <div class="slide-media">
+          <div class="framecard icon-card"><div class="icon-card-inner"><svg width="104" height="104" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v3M14 20h3M20 20v.01"/></svg></div></div>
+        </div>
       </div>
     </section>
 <section class="slide slide-content slide-addition" data-section="addition" id="slide-a02-platnosc">
-      <div class="slide-grid slide-grid-single">
-        <div class="slide-text slide-text-wide">
+      <div class="slide-grid">
+        <div class="slide-text">
           <p class="eyebrow">SPRZEDAŻ I KONWERSJA &middot; 02 / 22</p>
           <h2>Prawdziwa płatność online</h2>
           <p class="body">Przelewy24 albo Stripe zamiast symulowanego „zapłać przy odbiorze” — realna transakcja kartą lub BLIK-iem.</p>
@@ -676,11 +689,14 @@ button:focus-visible, a:focus-visible{outline:2px solid var(--focus); outline-of
           </div>
           <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a02-platnosc"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
         </div>
+        <div class="slide-media">
+          <div class="framecard icon-card"><div class="icon-card-inner"><svg width="104" height="104" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2.2"/><path d="M2.5 10h19"/><path d="M6 15h4"/></svg></div></div>
+        </div>
       </div>
     </section>
 <section class="slide slide-content slide-addition" data-section="addition" id="slide-a03-status">
-      <div class="slide-grid slide-grid-single">
-        <div class="slide-text slide-text-wide">
+      <div class="slide-grid">
+        <div class="slide-text">
           <p class="eyebrow">SPRZEDAŻ I KONWERSJA &middot; 03 / 22</p>
           <h2>Status zamówienia na żywo</h2>
           <p class="body">Przyjęte → w przygotowaniu → gotowe do odbioru — jak w aplikacji kurierskiej, z linkiem wysłanym w potwierdzeniu.</p>
@@ -693,11 +709,14 @@ button:focus-visible, a:focus-visible{outline:2px solid var(--focus); outline-of
           </div>
           <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a03-status"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
         </div>
+        <div class="slide-media">
+          <div class="framecard icon-card"><div class="icon-card-inner"><svg width="104" height="104" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l2-3 3 6 2-3h7"/><circle cx="19" cy="12" r="2.2"/></svg></div></div>
+        </div>
       </div>
     </section>
 <section class="slide slide-content slide-addition" data-section="addition" id="slide-a04-vouchery">
-      <div class="slide-grid slide-grid-single">
-        <div class="slide-text slide-text-wide">
+      <div class="slide-grid">
+        <div class="slide-text">
           <p class="eyebrow">SPRZEDAŻ I KONWERSJA &middot; 04 / 22</p>
           <h2>Vouchery i karty podarunkowe</h2>
           <p class="body">Gość kupuje bon online, dostaje e-mailem kod QR do zrealizowania w lokalu — gotowy prezent bez wychodzenia z domu.</p>
@@ -710,11 +729,14 @@ button:focus-visible, a:focus-visible{outline:2px solid var(--focus); outline-of
           </div>
           <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a04-vouchery"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
         </div>
+        <div class="slide-media">
+          <div class="framecard icon-card"><div class="icon-card-inner"><svg width="104" height="104" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z"/><path d="M12 6v12" stroke-dasharray="2.3 2.3"/></svg></div></div>
+        </div>
       </div>
     </section>
 <section class="slide slide-content slide-addition" data-section="addition" id="slide-a05-lojalnosc">
-      <div class="slide-grid slide-grid-single">
-        <div class="slide-text slide-text-wide">
+      <div class="slide-grid">
+        <div class="slide-text">
           <p class="eyebrow">SPRZEDAŻ I KONWERSJA &middot; 05 / 22</p>
           <h2>Program lojalnościowy</h2>
           <p class="body">Cyfrowa karta stemplowa — dziesiąta kawa gratis, wszystko na koncie gościa, bez plastikowych kartoników.</p>
@@ -727,11 +749,14 @@ button:focus-visible, a:focus-visible{outline:2px solid var(--focus); outline-of
           </div>
           <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a05-lojalnosc"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
         </div>
+        <div class="slide-media">
+          <div class="framecard icon-card"><div class="icon-card-inner"><svg width="104" height="104" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2.2"/><path d="M12 8.6l1.1 2.3 2.5.4-1.8 1.8.4 2.5-2.2-1.2-2.2 1.2.4-2.5-1.8-1.8 2.5-.4z"/></svg></div></div>
+        </div>
       </div>
     </section>
 <section class="slide slide-content slide-addition" data-section="addition" id="slide-a06-upsell">
-      <div class="slide-grid slide-grid-single">
-        <div class="slide-text slide-text-wide">
+      <div class="slide-grid">
+        <div class="slide-text">
           <p class="eyebrow">SPRZEDAŻ I KONWERSJA &middot; 06 / 22</p>
           <h2>Podpowiedzi w koszyku</h2>
           <p class="body">Sos, deser, dodatkowa porcja frytek — system sam podpowiada, zanim gość kliknie „zamawiam”, podnosząc wartość koszyka.</p>
@@ -744,11 +769,14 @@ button:focus-visible, a:focus-visible{outline:2px solid var(--focus); outline-of
           </div>
           <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a06-upsell"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
         </div>
+        <div class="slide-media">
+          <div class="framecard icon-card"><div class="icon-card-inner"><svg width="104" height="104" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h2l2.4 11.2a2 2 0 0 0 2 1.6h7.4a2 2 0 0 0 2-1.6L21 9H6.5"/><circle cx="10" cy="20.5" r="1"/><circle cx="17" cy="20.5" r="1"/><path d="M17 3v5M14.5 5.5h5"/></svg></div></div>
+        </div>
       </div>
     </section>
 <section class="slide slide-content slide-addition" data-section="addition" id="slide-a07-voicebot">
-      <div class="slide-grid slide-grid-single">
-        <div class="slide-text slide-text-wide">
+      <div class="slide-grid">
+        <div class="slide-text">
           <p class="eyebrow">AI &middot; 07 / 22</p>
           <h2>Voicebot telefoniczny</h2>
           <p class="body">AI odbiera telefon i przyjmuje rezerwację głosem — nawet gdy w lokalu nikt nie może akurat podejść do słuchawki.</p>
@@ -761,11 +789,14 @@ button:focus-visible, a:focus-visible{outline:2px solid var(--focus); outline-of
           </div>
           <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a07-voicebot"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
         </div>
+        <div class="slide-media">
+          <div class="framecard icon-card"><div class="icon-card-inner"><svg width="104" height="104" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.5 3.5a5 5 0 0 1 0 10"/><path d="M15.5 6.7a1.8 1.8 0 0 1 0 3.6"/><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.13.96.36 1.9.7 2.8a2 2 0 0 1-.45 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.27a2 2 0 0 1 2.1-.45c.9.34 1.84.57 2.8.7a2 2 0 0 1 1.7 2z"/></svg></div></div>
+        </div>
       </div>
     </section>
 <section class="slide slide-content slide-addition" data-section="addition" id="slide-a08-messenger">
-      <div class="slide-grid slide-grid-single">
-        <div class="slide-text slide-text-wide">
+      <div class="slide-grid">
+        <div class="slide-text">
           <p class="eyebrow">AI &middot; 08 / 22</p>
           <h2>Bot na Messengerze i WhatsAppie</h2>
           <p class="body">Ta sama wiedza co Wirtualny Manager, tylko dokładnie tam, gdzie gość już do Was pisze.</p>
@@ -778,11 +809,14 @@ button:focus-visible, a:focus-visible{outline:2px solid var(--focus); outline-of
           </div>
           <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a08-messenger"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
         </div>
+        <div class="slide-media">
+          <div class="framecard icon-card"><div class="icon-card-inner"><svg width="104" height="104" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><path d="M8 12h.01M12 12h.01M16 12h.01"/></svg></div></div>
+        </div>
       </div>
     </section>
 <section class="slide slide-content slide-addition" data-section="addition" id="slide-a09-social">
-      <div class="slide-grid slide-grid-single">
-        <div class="slide-text slide-text-wide">
+      <div class="slide-grid">
+        <div class="slide-text">
           <p class="eyebrow">AI &middot; 09 / 22</p>
           <h2>Generator postów na social media</h2>
           <p class="body">Co poniedziałek gotowy pakiet pięciu postów z menu tygodnia — gotowe do wklejenia, bez zatrudniania grafika.</p>
@@ -795,11 +829,14 @@ button:focus-visible, a:focus-visible{outline:2px solid var(--focus); outline-of
           </div>
           <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a09-social"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
         </div>
+        <div class="slide-media">
+          <div class="framecard icon-card"><div class="icon-card-inner"><svg width="104" height="104" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="14" height="14" rx="2"/><circle cx="8" cy="9" r="1.4"/><path d="M4 15l3.5-3.5a1.5 1.5 0 0 1 2 0L13 15"/><path d="M18 8v9M14.5 13.5L18 17l3.5-3.5"/></svg></div></div>
+        </div>
       </div>
     </section>
 <section class="slide slide-content slide-addition" data-section="addition" id="slide-a10-opinie">
-      <div class="slide-grid slide-grid-single">
-        <div class="slide-text slide-text-wide">
+      <div class="slide-grid">
+        <div class="slide-text">
           <p class="eyebrow">AI &middot; 10 / 22</p>
           <h2>Opinie gości z automatyczną odpowiedzią AI</h2>
           <p class="body">Formularz opinii, AI odpowiada uprzejmie i na temat, a najlepsze recenzje trafiają prosto na stronę.</p>
@@ -812,11 +849,14 @@ button:focus-visible, a:focus-visible{outline:2px solid var(--focus); outline-of
           </div>
           <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a10-opinie"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
         </div>
+        <div class="slide-media">
+          <div class="framecard icon-card"><div class="icon-card-inner"><svg width="104" height="104" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.5 3.2l1.9 3.9 4.3.6-3.1 3 .7 4.3-3.8-2-3.8 2 .7-4.3-3.1-3 4.3-.6z"/><path d="M17 15.5a4 4 0 1 0-1.6 3.2L18 20l-.6-2.2a4 4 0 0 0-.4-2.3z" transform="translate(0 .3)"/></svg></div></div>
+        </div>
       </div>
     </section>
 <section class="slide slide-content slide-addition" data-section="addition" id="slide-a11-zdjecia">
-      <div class="slide-grid slide-grid-single">
-        <div class="slide-text slide-text-wide">
+      <div class="slide-grid">
+        <div class="slide-text">
           <p class="eyebrow">AI &middot; 11 / 22</p>
           <h2>Generator zdjęć dań na żądanie</h2>
           <p class="body">Restaurator wpisuje nazwę nowego dania, dostaje fotorealistyczne zdjęcie — bez umawiania sesji zdjęciowej.</p>
@@ -829,11 +869,14 @@ button:focus-visible, a:focus-visible{outline:2px solid var(--focus); outline-of
           </div>
           <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a11-zdjecia"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
         </div>
+        <div class="slide-media">
+          <div class="framecard icon-card"><div class="icon-card-inner"><svg width="104" height="104" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8a2 2 0 0 1 2-2h1.2l1-1.6h7.6l1 1.6H18a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.4"/></svg></div></div>
+        </div>
       </div>
     </section>
 <section class="slide slide-content slide-addition" data-section="addition" id="slide-a12-prognoza">
-      <div class="slide-grid slide-grid-single">
-        <div class="slide-text slide-text-wide">
+      <div class="slide-grid">
+        <div class="slide-text">
           <p class="eyebrow">AI &middot; 12 / 22</p>
           <h2>Prognoza ruchu na najbliższe dni</h2>
           <p class="body">Rezerwacje, dzień tygodnia i pogoda razem podpowiadają, ile jedzenia szykować na jutro.</p>
@@ -846,11 +889,14 @@ button:focus-visible, a:focus-visible{outline:2px solid var(--focus); outline-of
           </div>
           <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a12-prognoza"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
         </div>
+        <div class="slide-media">
+          <div class="framecard icon-card"><div class="icon-card-inner"><svg width="104" height="104" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20h18"/><path d="M4 16l4.5-5 3.5 3 5-6.5 4 4.5"/><path d="M17 8h4v4"/></svg></div></div>
+        </div>
       </div>
     </section>
 <section class="slide slide-content slide-addition" data-section="addition" id="slide-a13-jezyki">
-      <div class="slide-grid slide-grid-single">
-        <div class="slide-text slide-text-wide">
+      <div class="slide-grid">
+        <div class="slide-text">
           <p class="eyebrow">AI &middot; 13 / 22</p>
           <h2>Kolejne wersje językowe</h2>
           <p class="body">Mechanizm dwujęzyczny już działa — dodanie ukraińskiego czy niemieckiego to głównie tłumaczenie treści, nie nowa budowa.</p>
@@ -863,11 +909,14 @@ button:focus-visible, a:focus-visible{outline:2px solid var(--focus); outline-of
           </div>
           <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a13-jezyki"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
         </div>
+        <div class="slide-media">
+          <div class="framecard icon-card"><div class="icon-card-inner"><svg width="104" height="104" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18z"/></svg></div></div>
+        </div>
       </div>
     </section>
 <section class="slide slide-content slide-addition" data-section="addition" id="slide-a14-wydarzenia">
-      <div class="slide-grid slide-grid-single">
-        <div class="slide-text slide-text-wide">
+      <div class="slide-grid">
+        <div class="slide-text">
           <p class="eyebrow">TREŚĆ I MARKETING &middot; 14 / 22</p>
           <h2>Wydarzenia z zapisami i limitem miejsc</h2>
           <p class="body">Sylwester, kolacja degustacyjna — gość zapisuje się przez formularz, a system sam pilnuje limitu miejsc.</p>
@@ -880,11 +929,14 @@ button:focus-visible, a:focus-visible{outline:2px solid var(--focus); outline-of
           </div>
           <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a14-wydarzenia"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
         </div>
+        <div class="slide-media">
+          <div class="framecard icon-card"><div class="icon-card-inner"><svg width="104" height="104" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><circle cx="9.5" cy="15" r="1.6"/><path d="M6.3 19c.4-1.7 1.7-2.6 3.2-2.6s2.8.9 3.2 2.6"/></svg></div></div>
+        </div>
       </div>
     </section>
 <section class="slide slide-content slide-addition" data-section="addition" id="slide-a15-blog">
-      <div class="slide-grid slide-grid-single">
-        <div class="slide-text slide-text-wide">
+      <div class="slide-grid">
+        <div class="slide-text">
           <p class="eyebrow">TREŚĆ I MARKETING &middot; 15 / 22</p>
           <h2>Blog i aktualności</h2>
           <p class="body">Krótkie wpisy o kuchni i wydarzeniach — budują historię lokalu i dobrze działają pod wyszukiwarkę Google.</p>
@@ -897,11 +949,14 @@ button:focus-visible, a:focus-visible{outline:2px solid var(--focus); outline-of
           </div>
           <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a15-blog"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
         </div>
+        <div class="slide-media">
+          <div class="framecard icon-card"><div class="icon-card-inner"><svg width="104" height="104" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="1.6"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div></div>
+        </div>
       </div>
     </section>
 <section class="slide slide-content slide-addition" data-section="addition" id="slide-a16-wideo">
-      <div class="slide-grid slide-grid-single">
-        <div class="slide-text slide-text-wide">
+      <div class="slide-grid">
+        <div class="slide-text">
           <p class="eyebrow">TREŚĆ I MARKETING &middot; 16 / 22</p>
           <h2>Wideo z kuchni</h2>
           <p class="body">Krótka rolka wideo (wygenerowana albo prawdziwe nagranie) ożywiająca tło strony głównej.</p>
@@ -914,11 +969,14 @@ button:focus-visible, a:focus-visible{outline:2px solid var(--focus); outline-of
           </div>
           <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a16-wideo"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
         </div>
+        <div class="slide-media">
+          <div class="framecard icon-card"><div class="icon-card-inner"><svg width="104" height="104" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2.2"/><path d="M10.5 9.3v5.4l4.6-2.7z"/></svg></div></div>
+        </div>
       </div>
     </section>
 <section class="slide slide-content slide-addition" data-section="addition" id="slide-a17-zespol">
-      <div class="slide-grid slide-grid-single">
-        <div class="slide-text slide-text-wide">
+      <div class="slide-grid">
+        <div class="slide-text">
           <p class="eyebrow">TREŚĆ I MARKETING &middot; 17 / 22</p>
           <h2>Sekcja „Zespół i historia”</h2>
           <p class="body">Twarze i historia lokalu budują zaufanie szybciej niż najlepiej opisane danie w karcie.</p>
@@ -931,11 +989,14 @@ button:focus-visible, a:focus-visible{outline:2px solid var(--focus); outline-of
           </div>
           <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a17-zespol"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
         </div>
+        <div class="slide-media">
+          <div class="framecard icon-card"><div class="icon-card-inner"><svg width="104" height="104" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8.5" cy="8.5" r="3"/><circle cx="16" cy="9.5" r="2.4"/><path d="M3.5 20c.6-3.4 2.6-5.2 5-5.2s4.4 1.8 5 5.2"/><path d="M14.5 20c.4-2.4 1.7-4 3.6-4.4"/></svg></div></div>
+        </div>
       </div>
     </section>
 <section class="slide slide-content slide-addition" data-section="addition" id="slide-a18-galeria">
-      <div class="slide-grid slide-grid-single">
-        <div class="slide-text slide-text-wide">
+      <div class="slide-grid">
+        <div class="slide-text">
           <p class="eyebrow">TREŚĆ I MARKETING &middot; 18 / 22</p>
           <h2>Galeria z opisami realizacji</h2>
           <p class="body">Rozszerzenie portfolio o krótkie historie „jak to wyglądało” przy każdym większym wydarzeniu.</p>
@@ -948,11 +1009,14 @@ button:focus-visible, a:focus-visible{outline:2px solid var(--focus); outline-of
           </div>
           <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a18-galeria"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
         </div>
+        <div class="slide-media">
+          <div class="framecard icon-card"><div class="icon-card-inner"><svg width="104" height="104" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1.4"/><rect x="13" y="3" width="8" height="8" rx="1.4"/><rect x="3" y="13" width="8" height="8" rx="1.4"/><rect x="13" y="13" width="8" height="8" rx="1.4"/></svg></div></div>
+        </div>
       </div>
     </section>
 <section class="slide slide-content slide-addition" data-section="addition" id="slide-a19-panel">
-      <div class="slide-grid slide-grid-single">
-        <div class="slide-text slide-text-wide">
+      <div class="slide-grid">
+        <div class="slide-text">
           <p class="eyebrow">TECHNICZNE &middot; 19 / 22</p>
           <h2>Panel do edycji menu bez kodu</h2>
           <p class="body">Restaurator sam zmienia dania i ceny z prostego panelu — bez proszenia programisty o każdą drobną zmianę.</p>
@@ -965,11 +1029,14 @@ button:focus-visible, a:focus-visible{outline:2px solid var(--focus); outline-of
           </div>
           <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a19-panel"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
         </div>
+        <div class="slide-media">
+          <div class="framecard icon-card"><div class="icon-card-inner"><svg width="104" height="104" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="10" cy="18" r="2"/></svg></div></div>
+        </div>
       </div>
     </section>
 <section class="slide slide-content slide-addition" data-section="addition" id="slide-a20-statystyki">
-      <div class="slide-grid slide-grid-single">
-        <div class="slide-text slide-text-wide">
+      <div class="slide-grid">
+        <div class="slide-text">
           <p class="eyebrow">TECHNICZNE &middot; 20 / 22</p>
           <h2>Statystyki odwiedzin bez ciasteczek</h2>
           <p class="body">Wiadomo, które podstrony działają najlepiej — bez łamania obietnicy „zero śledzenia” złożonej gościom.</p>
@@ -982,11 +1049,14 @@ button:focus-visible, a:focus-visible{outline:2px solid var(--focus); outline-of
           </div>
           <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a20-statystyki"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
         </div>
+        <div class="slide-media">
+          <div class="framecard icon-card"><div class="icon-card-inner"><svg width="104" height="104" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20h18"/><rect x="5" y="12" width="3.4" height="8"/><rect x="10.3" y="7" width="3.4" height="13"/><rect x="15.6" y="15" width="3.4" height="5"/></svg></div></div>
+        </div>
       </div>
     </section>
 <section class="slide slide-content slide-addition" data-section="addition" id="slide-a21-wcag">
-      <div class="slide-grid slide-grid-single">
-        <div class="slide-text slide-text-wide">
+      <div class="slide-grid">
+        <div class="slide-text">
           <p class="eyebrow">TECHNICZNE &middot; 21 / 22</p>
           <h2>Tryb wysokiego kontrastu i pełny audyt WCAG</h2>
           <p class="body">Dodatkowy argument przy klientach publicznych i sieciowych, dla których dostępność cyfrowa bywa wymogiem formalnym.</p>
@@ -999,11 +1069,14 @@ button:focus-visible, a:focus-visible{outline:2px solid var(--focus); outline-of
           </div>
           <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a21-wcag"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
         </div>
+        <div class="slide-media">
+          <div class="framecard icon-card"><div class="icon-card-inner"><svg width="104" height="104" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3.4"/><path d="M12 8.6A3.4 3.4 0 0 1 12 15.4z" fill="currentColor" stroke="none"/></svg></div></div>
+        </div>
       </div>
     </section>
 <section class="slide slide-content slide-addition" data-section="addition" id="slide-a22-pos">
-      <div class="slide-grid slide-grid-single">
-        <div class="slide-text slide-text-wide">
+      <div class="slide-grid">
+        <div class="slide-text">
           <p class="eyebrow">TECHNICZNE &middot; 22 / 22</p>
           <h2>Eksport rezerwacji do systemu kasowego</h2>
           <p class="body">Rezerwacja z formularza trafia prosto do systemu POS, którego restaurator już używa na co dzień.</p>
@@ -1015,6 +1088,9 @@ button:focus-visible, a:focus-visible{outline:2px solid var(--focus); outline-of
             </div>
           </div>
           <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a22-pos"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+        <div class="slide-media">
+          <div class="framecard icon-card"><div class="icon-card-inner"><svg width="104" height="104" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="10.5" y="4" width="11" height="8" rx="1.3"/><path d="M14 15.5h4M16 12v3.5"/><path d="M2 8h6.2M8.2 8l-2.4-2.4M8.2 8l-2.4 2.4"/></svg></div></div>
         </div>
       </div>
     </section>
@@ -1116,9 +1192,20 @@ button:focus-visible, a:focus-visible{outline:2px solid var(--focus); outline-of
 
   slides.forEach(function (s) { applyPickerState(s); });
 
+  var mobileScrollMode = window.matchMedia('(max-width: 900px)');
+
   function render() {
     slides.forEach(function (s, i) { s.classList.toggle('is-active', i === idx); });
     var current = slides[idx];
+    // Na telefonie slajdy stoją jedne pod drugimi w normalnym przepływie strony
+    // (patrz CSS) — przełączenie klasy .is-active samo nic nie przewija, trzeba
+    // to zrobić ręcznie.
+    if (mobileScrollMode.matches) {
+      // 'auto' (nie 'smooth') celowo: przy płynnym przewijaniu przez wiele
+      // slajdów z obrazkami "loading=lazy" po drodze ich ładowanie w locie
+      // przesuwało układ strony i przewijało w złe miejsce.
+      current.scrollIntoView({ behavior: 'auto', block: 'start' });
+    }
     var section = current.getAttribute('data-section');
     hudSection.textContent = SECTION_LABELS[section] || '';
     hudFrac.textContent = (idx + 1) + ' / ' + total;
