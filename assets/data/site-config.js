@@ -12,8 +12,8 @@ window.ZP_CONFIG = {
   telefon: "795 870 359",
   telefonHref: "+48795870359",
   telefonOpis: { pl: "Telefon główny — restauracja, rezerwacje i catering", en: "Main phone — restaurant, reservations and catering" },
-  email: "kontakt@zielonapergola.pl", // adres demonstracyjny (bez aktywnej skrzynki)
-  emailDemo: true,
+  email: "piotr.aparat@gmail.com",
+  emailDemo: false,
 
   /* godziny otwarcia wg dnia tygodnia (0 = niedziela) */
   godziny: {

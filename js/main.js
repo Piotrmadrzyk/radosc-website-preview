@@ -414,6 +414,33 @@ console.info('[RADOSC] main.js loaded', {
 })();
 
 /* ============================================================
+   Tryb wysokiego kontrastu — przełącznik ◐ w nagłówku (desktop
+   i mobile). Stan zapamiętany w localStorage (zp-contrast);
+   wczesne zastosowanie zapisanego stanu robi inline-script
+   w <head>, żeby uniknąć błysku złego motywu.
+   ============================================================ */
+(function () {
+  'use strict';
+  var KEY = 'zp-contrast';
+  var toggles = document.querySelectorAll('[data-contrast-toggle]');
+  if (!toggles.length) return;
+
+  function sync() {
+    var on = document.documentElement.classList.contains('high-contrast');
+    toggles.forEach(function (btn) { btn.setAttribute('aria-pressed', String(on)); });
+  }
+  sync();
+
+  toggles.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var on = document.documentElement.classList.toggle('high-contrast');
+      try { localStorage.setItem(KEY, on ? '1' : '0'); } catch (e) {}
+      sync();
+    });
+  });
+})();
+
+/* ============================================================
    Renderowanie menu z plików danych (assets/data/lunch-menu.js,
    assets/data/menu.js) — menu edytuje się TYLKO tam.
    ============================================================ */
