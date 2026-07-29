@@ -629,6 +629,18 @@ label .req{color:var(--gold-light)}
 .post-card h2{margin:10px 0 14px}
 .post-card p{font-size:15.5px;line-height:1.7;color:var(--ink-soft);margin-bottom:14px}
 
+/* Opinie gości */
+.review-list{display:flex;flex-direction:column;gap:22px;margin-top:40px}
+.review-card{background:rgba(255,255,255,.55);border:1px solid rgba(21,50,31,.12);border-radius:16px;padding:26px 28px}
+.review-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.review-name{font-family:"Fraunces",serif;font-weight:600;color:var(--ink);font-size:17px}
+.review-date{font-size:12.5px;color:var(--ink-soft)}
+.review-stars{color:var(--gold-dark);letter-spacing:2px;font-size:15px;white-space:nowrap}
+.review-stars .dim{color:rgba(21,50,31,.22)}
+.review-text{font-size:15px;line-height:1.65;color:var(--ink-soft);margin-bottom:16px}
+.review-reply{background:var(--cream-deep);border-radius:12px;padding:16px 18px;font-size:14px;line-height:1.6;color:var(--ink)}
+.review-reply-label{font-size:10.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:6px;display:block}
+
 /* kolaż galeryjny */
 .gallery{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:200px;gap:14px;margin-top:44px;grid-auto-flow:dense}
 .g-item{position:relative;overflow:hidden;background:var(--cream-deep)}

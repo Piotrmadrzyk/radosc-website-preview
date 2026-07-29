@@ -106,6 +106,7 @@ console.info('[RADOSC] main.js loaded', {
     if (field.tagName === 'SELECT') {
       if (field.name === 'rtime') return t('reqTime', 'Wybierz godzinę rezerwacji.');
       if (field.name === 'otime') return t('reqTimeOrder', 'Wybierz godzinę zamówienia.');
+      if (field.name === 'rating') return t('reqRating', 'Wybierz ocenę.');
       return t('reqSelect', 'Wybierz typ zapytania.');
     }
     return t('fillField', 'Uzupełnij to pole.');
@@ -205,6 +206,15 @@ console.info('[RADOSC] main.js loaded', {
             strona: location.pathname.split('/').pop() || 'index.html',
             lang: document.documentElement.lang || 'pl'
           };
+        } else if (form.dataset.formType === 'opinia') {
+          payload = {
+            imie: fd.get('name') || '',
+            email: fd.get('email') || '',
+            ocena: fd.get('rating') || '',
+            tresc: fd.get('message') || '',
+            strona: location.pathname.split('/').pop() || 'index.html',
+            lang: document.documentElement.lang || 'pl'
+          };
         } else {
           var temat = fd.get('topic') ||
             [fd.get('event'), fd.get('date'), fd.get('guests') ? fd.get('guests') + ' gości' : '', fd.get('place')]
@@ -243,7 +253,9 @@ console.info('[RADOSC] main.js loaded', {
               ? t('okNewsletter', 'Dziękujemy! Zapis demonstracyjny przyjęty.')
               : form.dataset.formType === 'zamowienie'
                 ? ((d && d.message) || t('okOrder', 'Zamówienie demonstracyjne przyjęte.'))
-                : t('okContact', 'Dziękujemy! Zgłoszenie demonstracyjne dotarło.');
+                : form.dataset.formType === 'opinia'
+                  ? t('okReview', 'Dziękujemy za opinię!')
+                  : t('okContact', 'Dziękujemy! Zgłoszenie demonstracyjne dotarło.');
           form.reset();
           form.querySelectorAll('.field-error').forEach(clearFieldError);
           /* P4/P11: pełny reset stanów pomocniczych po udanej demonstracji */
