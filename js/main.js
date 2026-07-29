@@ -637,42 +637,46 @@ console.info('[RADOSC] main.js loaded', {
   var daypart = document.getElementById('daypart');
   if (daypart && document.documentElement.lang === 'en') {
     var nowEn = new Date(); var hEn = nowEn.getHours(); var dEn = nowEn.getDay();
-    var t = '';
+    var t = ''; var openEn = true;
     if (dEn >= 1 && dEn <= 5) {
-      if (hEn < 8) t = 'We open at 8:00 — start your day with breakfast and coffee.';
+      if (hEn < 8) { t = 'We open at 8:00 — start your day with breakfast and coffee.'; openEn = false; }
       else if (hEn < 11) t = 'Breakfast time (until 11:00) — coffee on the house with every breakfast.';
       else if (hEn < 15) t = 'Lunch is on — daily specials until 17:00.';
       else if (hEn < 17) t = 'Lunch until 17:00, the dinner menu is already open.';
       else if (hEn < 21) t = 'Evening at Pergola — dinner menu and wood-fired pizza until 21:00.';
-      else t = 'Closed for today — pizza and burgers daily 11:00–21:00.';
+      else { t = 'Closed for today — pizza and burgers daily 11:00–21:00.'; openEn = false; }
     } else if (dEn === 6) {
-      t = hEn < 11 ? 'We open at 11:00 — weekend menu until 22:00.' : hEn < 22 ? 'Weekend at Pergola — full menu until 22:00.' : 'Closed for today — Sundays from 11:00.';
+      if (hEn < 11) { t = 'We open at 11:00 — weekend menu until 22:00.'; openEn = false; }
+      else if (hEn < 22) t = 'Weekend at Pergola — full menu until 22:00.';
+      else { t = 'Closed for today — Sundays from 11:00.'; openEn = false; }
     } else {
-      t = hEn < 11 ? 'We open at 11:00 — weekend menu until 20:00.' : hEn < 20 ? 'Sunday at Pergola — full menu until 20:00.' : 'Closed for today — weekdays from 8:00.';
+      if (hEn < 11) { t = 'We open at 11:00 — weekend menu until 20:00.'; openEn = false; }
+      else if (hEn < 20) t = 'Sunday at Pergola — full menu until 20:00.';
+      else { t = 'Closed for today — weekdays from 8:00.'; openEn = false; }
     }
-    daypart.innerHTML = '<b>Today:</b> ' + t;
+    daypart.innerHTML = '<span class="status-dot ' + (openEn ? 'status-dot--open' : 'status-dot--closed') + '" aria-hidden="true"></span><b>' + (openEn ? 'Open now:' : 'Today:') + '</b> ' + t;
   } else if (daypart) {
     var now = new Date();
     var h = now.getHours();
     var dow = now.getDay(); /* 0 = niedziela, 6 = sobota */
-    var txt = '';
+    var txt = ''; var openPl = true;
     if (dow >= 1 && dow <= 5) {
-      if (h < 8) txt = 'Otwieramy o 8:00 — na początek śniadanie i kawa.';
+      if (h < 8) { txt = 'Otwieramy o 8:00 — na początek śniadanie i kawa.'; openPl = false; }
       else if (h < 11) txt = 'Pora śniadań (do 11:00) — kawa do śniadania gratis.';
       else if (h < 15) txt = 'Trwa lunch — bemary i menu dnia do 17:00.';
       else if (h < 17) txt = 'Lunch jeszcze do 17:00, karta restauracyjna już działa.';
       else if (h < 21) txt = 'Wieczór w Pergoli — karta restauracyjna i pizza z pieca do 21:00.';
-      else txt = 'Dziś już zamknięte — zapraszamy jutro. Pizza i burgery codziennie 11:00–21:00.';
+      else { txt = 'Dziś już zamknięte — zapraszamy jutro. Pizza i burgery codziennie 11:00–21:00.'; openPl = false; }
     } else if (dow === 6) {
-      if (h < 11) txt = 'Otwieramy o 11:00 — weekendowa karta bez lunchy, do 22:00.';
+      if (h < 11) { txt = 'Otwieramy o 11:00 — weekendowa karta bez lunchy, do 22:00.'; openPl = false; }
       else if (h < 22) txt = 'Weekend w Pergoli — pełna karta do 22:00, pizza i burgery do 21:00.';
-      else txt = 'Dziś już zamknięte — w niedzielę zapraszamy od 11:00.';
+      else { txt = 'Dziś już zamknięte — w niedzielę zapraszamy od 11:00.'; openPl = false; }
     } else {
-      if (h < 11) txt = 'Otwieramy o 11:00 — weekendowa karta bez lunchy, do 20:00.';
+      if (h < 11) { txt = 'Otwieramy o 11:00 — weekendowa karta bez lunchy, do 20:00.'; openPl = false; }
       else if (h < 20) txt = 'Niedziela w Pergoli — pełna karta do 20:00.';
-      else txt = 'Dziś już zamknięte — w tygodniu zapraszamy od 8:00.';
+      else { txt = 'Dziś już zamknięte — w tygodniu zapraszamy od 8:00.'; openPl = false; }
     }
-    daypart.innerHTML = '<b>Dziś:</b> ' + txt;
+    daypart.innerHTML = '<span class="status-dot ' + (openPl ? 'status-dot--open' : 'status-dot--closed') + '" aria-hidden="true"></span><b>' + (openPl ? 'Teraz otwarte:' : 'Dziś:') + '</b> ' + txt;
   }
 
   /* ===== ETAP 7.3: tryb wieczorny hero =====

@@ -168,6 +168,9 @@ h1 .l2 .amp{font-size:calc(var(--h1)*.75);color:var(--ink-soft);margin-right:6px
 /* mikrotekst codziennego Bistro */
 .micro{margin-top:18px;font-size:13.5px;font-weight:500;color:var(--ink-soft);letter-spacing:.01em}
 .micro b{color:var(--ink);font-weight:600}
+.status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;vertical-align:middle}
+.status-dot--open{background:var(--sage);box-shadow:0 0 0 3px rgba(140,161,131,.25)}
+.status-dot--closed{background:var(--ink-soft);opacity:.55}
 
 /* złota gałązka */
 .branch{position:absolute;left:calc(var(--h1)*6.71);top:calc(var(--h1)*2.5);z-index:6;
