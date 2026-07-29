@@ -172,7 +172,7 @@
       }
     }
 
-    if (drawerBody) drawerBody.innerHTML = has ? rowsHtml() :
+    if (drawerBody) drawerBody.innerHTML = has ? rowsHtml() + upsellHtml() :
       '<p class="cart-empty">' + esc(t('orderEmpty', 'Koszyk jest pusty — dodaj coś z karty poniżej.')) + '</p>';
     if (drawerCta) drawerCta.disabled = !has;
 
@@ -190,6 +190,11 @@
 
   if (drawerBody) {
     drawerBody.addEventListener('click', function (e) {
+      var chip = e.target.closest('.upsell-chip');
+      if (chip) {
+        addItem(chip.getAttribute('data-upsell-name'), parseInt(chip.getAttribute('data-upsell-price'), 10), chip.getAttribute('data-upsell-cat'));
+        return;
+      }
       var row = e.target.closest('.order-row');
       if (!row) return;
       if (e.target.closest('.o-more')) changeQty(row.getAttribute('data-name'), 1);
@@ -211,6 +216,7 @@
   }
 
   /* ---- przyciski „Do zamówienia” przy pozycjach kart ---- */
+  var catalog = []; /* {name, price, cat} dla wszystkich pozycji z kart — źródło podpowiedzi w koszyku */
   function decorate(boxId, cat) {
     var box = document.getElementById(boxId);
     if (!box) return;
@@ -221,6 +227,7 @@
       var price = parseInt(String(priceEl.textContent).trim(), 10);
       if (!Number.isFinite(price)) return; /* ceny wariantowe („27 / 31”) — tylko telefonicznie */
       var name = nameEl.childNodes[0] ? String(nameEl.childNodes[0].textContent).trim() : nameEl.textContent.trim();
+      catalog.push({ name: name, price: price, cat: cat });
       var btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'order-add';
@@ -242,6 +249,43 @@
   decorate('burger-menu', 'burger');
   decorate('antipasti-menu', 'antipasti');
   decorate('makarony-menu', 'makaron');
+
+  /* ---- podpowiedzi w koszyku: proste, oparte o pozycje już istniejące
+     na karcie (żadnych wymyślonych dań) — dopasowane do kategorii, które
+     gość już ma w koszyku, bez powtarzania tego, co już zamówił ---- */
+  var UPSELL_RULES = [
+    { whenCat: ['burger'], itemName: 'Dodatkowa porcja frytek' },
+    { whenCat: ['pizza', 'makaron'], itemName: 'Bruschetta Ogrodowa' },
+    { whenCat: ['pizza', 'burger', 'makaron', 'antipasti'], itemName: 'Bruschetta z Kozim Serem' }
+  ];
+  function pickSuggestions() {
+    var cartCats = cart.map(function (it) { return it.cat; });
+    var cartNames = cart.map(function (it) { return it.name; });
+    var out = [];
+    UPSELL_RULES.forEach(function (rule) {
+      if (out.length >= 2) return;
+      var matches = rule.whenCat.some(function (c) { return cartCats.indexOf(c) !== -1; });
+      if (!matches) return;
+      if (cartNames.indexOf(rule.itemName) !== -1) return;
+      if (out.some(function (o) { return o.name === rule.itemName; })) return;
+      var found = catalog.filter(function (c) { return c.name === rule.itemName; })[0];
+      if (found) out.push(found);
+    });
+    return out;
+  }
+  function upsellHtml() {
+    var suggestions = pickSuggestions();
+    if (!suggestions.length) return '';
+    var h = '<div class="cart-upsell"><p class="cart-upsell-title">' + esc(t('upsellTitle', 'Może jeszcze coś?')) + '</p>';
+    suggestions.forEach(function (s) {
+      h += '<button type="button" class="upsell-chip" data-upsell-name="' + esc(s.name) + '" ' +
+        'data-upsell-price="' + s.price + '" data-upsell-cat="' + esc(s.cat) + '">' +
+        '<span>' + esc(s.name) + ' &middot; ' + s.price + ' zł</span>' +
+        '<b>+ ' + esc(t('upsellAdd', 'Dodaj')) + '</b></button>';
+    });
+    h += '</div>';
+    return h;
+  }
 
   /* ---- godziny odbioru: dziś 11:00–21:00, min. 40 min wyprzedzenia ---- */
   function rebuildTimes() {

@@ -1667,6 +1667,17 @@ body.cart-drawer-lock{overflow:hidden}
 .order-row.order-sum{flex-direction:row;align-items:center;gap:14px;
   border-bottom:0;border-top:2px solid rgba(21,50,31,.4);margin-top:4px;font-size:17px}
 
+/* ---- podpowiedzi w koszyku (istniejące pozycje z karty, dopasowane do zawartości) ---- */
+.cart-upsell{margin-top:18px;padding-top:16px;border-top:1px dashed rgba(21,50,31,.18)}
+.cart-upsell-title{margin:0 0 10px;font-size:12px;font-weight:600;letter-spacing:.06em;
+  text-transform:uppercase;color:rgba(21,50,31,.55)}
+.upsell-chip{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;
+  border:1px solid rgba(21,50,31,.22);border-radius:11px;background:#fff;
+  padding:10px 14px;margin-bottom:8px;font:inherit;font-size:13.5px;color:var(--ink);
+  cursor:pointer;text-align:left;transition:border-color .2s ease,background .2s ease}
+.upsell-chip:hover,.upsell-chip:focus-visible{border-color:var(--gold);background:rgba(169,129,47,.06)}
+.upsell-chip b{flex:none;font-weight:600;color:var(--gold-dark)}
+
 /* ---- skrócone podsumowanie w formularzu zamówienia ---- */
 .cart-summary{margin:22px 0;padding:16px 18px;border-radius:12px;background:rgba(21,50,31,.05);
   display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
