@@ -1,0 +1,1341 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zielona Pergola — funkcje i pomysły na rozwój</title>
+<meta name="description" content="Materiał do rozmowy o rozwoju strony Zielona Pergola — co już działa i co można dodać.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2315321F'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='20' font-weight='600' fill='%23F6F1E5' text-anchor='middle'%3EP%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/fonts.css">
+<style>
+
+
+
+
+
+
+/* ============================================================
+   TOKENS — jasny motyw (bazowy)
+   Paleta wywiedziona wprost z faktycznej strony Zielona Pergola:
+   butelkowa zieleń + złoto + kremowa poświata, tu w układzie
+   prezentacji/slajdów, nie klonowania układu strony.
+   ============================================================ */
+:root{
+  --ink:#15321F;
+  --ink-soft:#3c5b46;
+  --cream:#F6F1E5;
+  --cream-deep:#EDE4D0;
+  --panel:#FFFDF8;
+  --gold:#A9812F;
+  --gold-light:#D8B26A;
+  --gold-dark:#8A661F;
+  --sage:#7E9877;
+  --line:rgba(21,50,31,.16);
+  --line-soft:rgba(21,50,31,.09);
+  --shadow:0 32px 64px -28px rgba(21,50,31,.38), 0 4px 14px rgba(21,50,31,.08);
+  --danger:#A63A24;
+  --focus:#8A661F;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --ink:#F3EEE0;
+    --ink-soft:#C9C2AC;
+    --cream:#12180F;
+    --cream-deep:#1A2216;
+    --panel:#1E271B;
+    --gold:#D9B36C;
+    --gold-light:#E7CE9B;
+    --gold-dark:#B98F3F;
+    --sage:#9BB093;
+    --line:rgba(243,238,224,.14);
+    --line-soft:rgba(243,238,224,.08);
+    --shadow:0 32px 64px -28px rgba(0,0,0,.65), 0 4px 14px rgba(0,0,0,.3);
+    --danger:#E08A6E;
+    --focus:#E7CE9B;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#F3EEE0; --ink-soft:#C9C2AC; --cream:#12180F; --cream-deep:#1A2216; --panel:#1E271B;
+  --gold:#D9B36C; --gold-light:#E7CE9B; --gold-dark:#B98F3F;
+  --line:rgba(243,238,224,.14); --line-soft:rgba(243,238,224,.08);
+  --shadow:0 32px 64px -28px rgba(0,0,0,.65), 0 4px 14px rgba(0,0,0,.3);
+  --danger:#E08A6E; --focus:#E7CE9B;
+}
+:root[data-theme="light"]{
+  --ink:#15321F; --ink-soft:#3c5b46; --cream:#F6F1E5; --cream-deep:#EDE4D0; --panel:#FFFDF8;
+  --gold:#A9812F; --gold-light:#D8B26A; --gold-dark:#8A661F;
+  --line:rgba(21,50,31,.16); --line-soft:rgba(21,50,31,.09);
+  --shadow:0 32px 64px -28px rgba(21,50,31,.38), 0 4px 14px rgba(21,50,31,.08);
+  --danger:#A63A24; --focus:#8A661F;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--cream); color:var(--ink);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  overflow:hidden; height:100svh; width:100vw;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{font-family:'Fraunces',Georgia,'Iowan Old Style',serif; font-weight:600; margin:0; text-wrap:balance}
+p{margin:0}
+button{font-family:inherit; cursor:pointer}
+button:focus-visible, a:focus-visible{outline:2px solid var(--focus); outline-offset:3px; border-radius:4px}
+::selection{background:var(--gold-light); color:var(--ink)}
+
+.deck{position:relative; height:100svh; width:100vw; overflow:hidden}
+
+.slide{
+  position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center;
+  padding:56px clamp(24px,6vw,96px);
+  opacity:0; visibility:hidden; transform:translateY(14px);
+  transition:opacity .38s ease, transform .38s ease;
+  pointer-events:none;
+}
+.slide.is-active{opacity:1; visibility:visible; transform:translateY(0); pointer-events:auto}
+@media (prefers-reduced-motion: reduce){
+  .slide{transition:opacity .01s linear; transform:none}
+}
+
+/* ---------- slajdy treściowe (funkcje / dodatki) ---------- */
+.slide-grid{
+  display:grid; grid-template-columns:minmax(320px,460px) 1fr; gap:clamp(28px,5vw,72px);
+  align-items:center; max-width:1360px; margin:0 auto; width:100%;
+}
+.slide-grid-single{grid-template-columns:1fr; max-width:900px}
+.slide-text-wide{max-width:760px}
+
+.eyebrow{
+  font-size:11.5px; font-weight:600; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--gold-dark); margin-bottom:16px;
+}
+.slide-text h2{font-size:clamp(24px,2.7vw,36px); line-height:1.14; margin-bottom:18px; color:var(--ink)}
+.slide-text .body{font-size:16.5px; line-height:1.62; color:var(--ink-soft); max-width:56ch}
+.slide-text .tech{
+  margin-top:18px; font-size:13.5px; line-height:1.6; color:var(--ink-soft); opacity:.86;
+  padding-top:14px; border-top:1px solid var(--line-soft); max-width:56ch;
+}
+.slide-text .tech span{font-weight:600; color:var(--gold-dark); margin-right:4px}
+.slide-text .note{
+  margin-top:10px; font-size:13.5px; font-style:italic; color:var(--gold-dark); opacity:.9;
+}
+
+.slide-media{display:flex; align-items:center; justify-content:center; min-width:0}
+.framecard{
+  position:relative; width:100%; max-width:640px; border-radius:16px; overflow:hidden;
+  background:var(--panel); box-shadow:var(--shadow); border:1px solid var(--line-soft);
+}
+.framecard::before{
+  content:""; display:block; height:9px; width:100%;
+  background:linear-gradient(90deg, var(--gold) 0 46px, transparent 46px);
+  background-color:var(--cream-deep);
+}
+.framecard img{display:block; width:100%; height:auto}
+
+/* ---------- meta (dodatki): nakład pracy ---------- */
+.meta-row{display:flex; gap:40px; margin:22px 0 8px; flex-wrap:wrap}
+.meta-block{display:flex; flex-direction:column; gap:8px}
+.meta-label{font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); opacity:.75}
+.effort-pill{
+  display:inline-flex; align-items:center; padding:4px 13px; border-radius:999px;
+  font-size:12.5px; font-weight:600; width:fit-content;
+  background:var(--cream-deep); color:var(--ink-soft); border:1px solid var(--line);
+}
+.effort-maly{color:var(--sage); border-color:var(--sage)}
+.effort-sredni{color:var(--gold-dark); border-color:var(--gold-dark)}
+.effort-duzy{color:var(--danger); border-color:var(--danger)}
+.effort-zalezny{color:var(--ink-soft)}
+
+/* ---------- picker (Wybieram / Wstępnie zainteresowany) ---------- */
+.picker{margin-top:26px; display:flex; align-items:center; gap:14px; flex-wrap:wrap}
+.picker-label{font-size:12px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft); opacity:.7}
+.picker-btns{display:flex; gap:10px; flex-wrap:wrap}
+.pick{
+  font:inherit; font-size:13.5px; font-weight:600; padding:10px 18px; border-radius:999px;
+  border:1.5px solid var(--line); background:transparent; color:var(--ink-soft);
+  transition:background .18s ease, color .18s ease, border-color .18s ease, transform .12s ease;
+}
+.pick:hover{transform:translateY(-1px)}
+.pick-yes{border-color:var(--ink); color:var(--ink)}
+.pick-yes.is-active{background:var(--ink); color:var(--cream); border-color:var(--ink)}
+.pick-maybe{border-color:var(--gold-dark); color:var(--gold-dark)}
+.pick-maybe.is-active{background:var(--gold); color:#fff; border-color:var(--gold)}
+.pick-demo{pointer-events:none; display:inline-flex}
+.pick-static{padding:8px 16px; font-size:13px}
+
+/* ---------- slajdy strukturalne ---------- */
+.slide-structural{align-items:center; text-align:center}
+.title-inner{max-width:820px; margin:0 auto}
+.slide-structural .eyebrow{text-align:center}
+.slide-structural h1{font-size:clamp(34px,5.4vw,64px); line-height:1.08}
+.slide-structural h1 em, .slide-structural h2 em{
+  font-style:italic; font-weight:500; color:var(--gold-dark);
+  text-shadow:0 1px 0 rgba(246,241,229,.5);
+}
+.lede{margin-top:22px; font-size:18px; line-height:1.6; color:var(--ink-soft); max-width:58ch; margin-left:auto; margin-right:auto}
+.divider-inner .lede{font-size:19px}
+
+.title-stats{display:flex; justify-content:center; gap:clamp(28px,6vw,64px); margin-top:40px}
+.title-stats div{display:flex; flex-direction:column; align-items:center; gap:4px}
+.title-stats b{font-family:'Fraunces',serif; font-size:34px; color:var(--ink)}
+.title-stats span{font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft); opacity:.75}
+
+.btn-start{
+  margin-top:44px; font:inherit; font-size:15px; font-weight:600; letter-spacing:.02em;
+  padding:15px 34px; border-radius:999px; border:0; background:var(--ink); color:var(--cream);
+  box-shadow:var(--shadow); transition:transform .15s ease, background .15s ease;
+}
+.btn-start:hover{transform:translateY(-2px); background:var(--ink-soft)}
+.btn-small{margin-top:0; padding:12px 26px; font-size:13.5px; box-shadow:none}
+.btn-reset-link{
+  display:block; margin:18px auto 0; font:inherit; font-size:12.5px; color:var(--ink-soft);
+  background:none; border:0; text-decoration:underline; opacity:.7;
+}
+.btn-reset-link:hover{opacity:1}
+
+.intro-grid{display:flex; gap:22px; justify-content:center; margin-top:36px; flex-wrap:wrap}
+.intro-card{
+  background:var(--panel); border:1px solid var(--line-soft); border-radius:14px; padding:22px 24px;
+  max-width:280px; text-align:left; box-shadow:var(--shadow);
+}
+.intro-card p{margin-top:14px; font-size:14.5px; color:var(--ink-soft); line-height:1.55}
+.intro-note{margin-top:34px; font-size:13.5px; color:var(--ink-soft); max-width:58ch; margin-left:auto; margin-right:auto; opacity:.85}
+
+.summary-cols{display:grid; grid-template-columns:1fr 1fr; gap:36px; margin-top:34px; text-align:left; max-width:860px; margin-left:auto; margin-right:auto}
+.summary-col h3{margin-bottom:14px}
+.summary-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; max-height:34vh; overflow-y:auto}
+.summary-list li{font-size:14.5px; padding:9px 12px; background:var(--panel); border:1px solid var(--line-soft); border-radius:9px; color:var(--ink)}
+.summary-empty{color:var(--ink-soft); font-style:italic; opacity:.7; background:transparent !important; border:none !important; padding:4px 0 !important}
+.summary-actions{display:flex; flex-direction:column; align-items:center; gap:6px; margin-top:34px}
+.summary-hint{font-size:13px; color:var(--sage); min-height:18px}
+
+/* ---------- makiety CSS (PWA / automatyzacje) ---------- */
+.mockcard{width:100%; max-width:420px; margin:0 auto}
+.phoneframe{
+  width:260px; margin:0 auto; border-radius:34px; background:var(--ink); padding:14px 10px;
+  box-shadow:var(--shadow);
+}
+.phonenotch{width:60px; height:14px; background:var(--cream); border-radius:8px; margin:0 auto 8px}
+.phonescreen{background:var(--cream-deep); border-radius:20px; padding:16px 14px; min-height:340px; display:flex; flex-direction:column; justify-content:flex-end; gap:16px}
+.ios-prompt{background:var(--panel); border-radius:14px; padding:18px 16px; text-align:center; box-shadow:0 8px 20px rgba(0,0,0,.18)}
+.ios-icon{width:44px; height:44px; border-radius:11px; background:var(--ink); color:var(--cream); font-family:'Fraunces',serif; font-weight:600; font-size:20px; display:flex; align-items:center; justify-content:center; margin:0 auto 10px}
+.ios-prompt p{font-size:13px; margin-top:4px}
+.ios-sub{color:var(--ink-soft); font-size:11.5px !important}
+.ios-btns{display:flex; justify-content:space-between; margin-top:14px; border-top:1px solid var(--line-soft); padding-top:10px; font-size:13px; font-weight:600}
+.ios-add{color:var(--gold-dark)}
+.home-icons{display:flex; gap:14px; justify-content:center}
+.hi{width:40px; height:40px; border-radius:10px; background:rgba(21,50,31,.12)}
+.hi-new{background:var(--ink); color:var(--cream); display:flex; align-items:center; justify-content:center; font-family:'Fraunces',serif; font-weight:600}
+
+.mailcard{background:var(--panel); border-radius:14px; box-shadow:var(--shadow); padding:8px; display:flex; flex-direction:column}
+.mail-row{display:flex; gap:12px; align-items:flex-start; padding:14px 12px; border-bottom:1px solid var(--line-soft); text-align:left}
+.mail-row:last-child{border-bottom:0}
+.mail-row b{display:block; font-size:14px; color:var(--ink); font-weight:600}
+.mail-row small{display:block; margin-top:3px; font-size:11.5px; color:var(--ink-soft); opacity:.75}
+.mail-dot{width:9px; height:9px; border-radius:50%; margin-top:6px; flex:none}
+.mail-dot-1{background:var(--sage)}
+.mail-dot-2{background:var(--gold)}
+
+/* ---------- HUD: pasek postępu, nawigacja, spis treści ---------- */
+.hud{position:fixed; inset:0; pointer-events:none; z-index:40}
+.progress-track{position:fixed; top:0; left:0; right:0; height:3px; background:var(--line-soft); z-index:41}
+.progress-fill{height:100%; background:var(--gold); transition:width .3s ease; width:0%}
+.hud-top{
+  position:fixed; top:16px; left:24px; right:24px; display:flex; justify-content:space-between; align-items:center;
+  font-size:12px; color:var(--ink-soft); pointer-events:none; z-index:41;
+}
+.hud-section{font-weight:600; letter-spacing:.08em; text-transform:uppercase}
+.hud-frac{font-variant-numeric:tabular-nums}
+.hud-btn{pointer-events:auto; background:var(--panel); border:1px solid var(--line); color:var(--ink);
+  border-radius:999px; padding:7px 15px; font-size:12px; font-weight:600; box-shadow:var(--shadow)}
+
+.nav-controls{
+  position:fixed; bottom:22px; right:24px; display:flex; gap:10px; z-index:41; pointer-events:auto;
+}
+.nav-btn{
+  width:46px; height:46px; border-radius:50%; border:1px solid var(--line); background:var(--panel);
+  color:var(--ink); display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow);
+  transition:transform .15s ease, background .15s ease;
+}
+.nav-btn:hover{transform:translateY(-2px)}
+.nav-btn:disabled{opacity:.35; pointer-events:none}
+.nav-btn svg{width:19px; height:19px}
+
+.toc-btn{
+  position:fixed; bottom:22px; left:24px; z-index:41; pointer-events:auto;
+  background:var(--panel); border:1px solid var(--line); color:var(--ink); border-radius:999px;
+  padding:11px 20px; font-size:13px; font-weight:600; box-shadow:var(--shadow);
+  display:flex; align-items:center; gap:8px;
+}
+
+.toc-overlay{
+  position:fixed; inset:0; background:rgba(10,16,10,.55); z-index:60; display:flex; align-items:center; justify-content:center;
+  opacity:0; visibility:hidden; transition:opacity .2s ease; padding:40px 20px;
+}
+.toc-overlay.is-open{opacity:1; visibility:visible}
+.toc-panel{
+  background:var(--cream); border-radius:18px; box-shadow:var(--shadow); max-width:560px; width:100%;
+  max-height:80vh; display:flex; flex-direction:column; overflow:hidden;
+}
+.toc-head{display:flex; justify-content:space-between; align-items:center; padding:20px 24px; border-bottom:1px solid var(--line-soft)}
+.toc-head h3{font-size:19px}
+.toc-close{background:none; border:0; font-size:22px; color:var(--ink-soft); line-height:1; padding:4px}
+.toc-list{list-style:none; margin:0; padding:10px 12px; overflow-y:auto}
+.toc-h{font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--gold-dark); padding:14px 12px 6px}
+.toc-list button{
+  display:block; width:100%; text-align:left; background:none; border:0; padding:10px 12px; border-radius:8px;
+  font-size:14.5px; color:var(--ink);
+}
+.toc-list button:hover{background:var(--cream-deep)}
+
+@media (max-width:900px){
+  body{overflow-y:auto; height:auto}
+  .deck{height:auto; overflow:visible}
+  .slide{position:relative; min-height:100svh; padding:88px 22px 140px; transform:none}
+  .slide-grid{grid-template-columns:1fr; gap:30px}
+  .slide-media{order:-1}
+  .framecard{max-width:420px}
+  .summary-cols{grid-template-columns:1fr}
+  .hud-top{left:16px; right:16px}
+  .nav-controls{bottom:16px; right:16px}
+  .toc-btn{bottom:16px; left:16px; padding:10px 16px; font-size:12px}
+}
+@media (max-width:520px){
+  .title-stats{gap:22px}
+  .title-stats b{font-size:26px}
+  .intro-grid{gap:14px}
+  .picker{flex-direction:column; align-items:flex-start}
+}
+</style>
+
+</head>
+<body>
+<div class="deck">
+<section class="slide slide-structural " data-section="title" id="slide-title">
+  <div class="title-inner">
+    <p class="eyebrow">ZIELONA PERGOLA &middot; DEMO PORTFOLIO</p>
+    <h1>Czego już użyliśmy<br><em>i co możemy dodać.</em></h1>
+    <p class="lede">Materiał do rozmowy na żywo — przechodzimy funkcję po funkcji, a przy każdej zaznaczamy, co bierzemy od razu, a nad czym warto się jeszcze zastanowić.</p>
+    <div class="title-stats">
+      <div><b>19</b><span>gotowych funkcji</span></div>
+      <div><b>22</b><span>pomysłów do dodania</span></div>
+      <div><b>2</b><span>wersje językowe</span></div>
+    </div>
+    <button type="button" class="btn-start" id="btn-go-start">Zaczynamy <span aria-hidden="true">&rarr;</span></button>
+    <button type="button" class="btn-reset-link" id="btn-reset-top">Nowe spotkanie — wyczyść poprzednie zaznaczenia</button>
+  </div>
+</section>
+<section class="slide slide-structural " data-section="intro" id="slide-intro">
+  <div class="title-inner intro-inner">
+    <p class="eyebrow">JAK KORZYSTAĆ Z TEGO MATERIAŁU</p>
+    <h2>Jedna funkcja na slajd. Dwa przyciski decyzji.</h2>
+    <div class="intro-grid">
+      <div class="intro-card">
+        <span class="pick pick-yes pick-demo">Wybieram</span>
+        <p>Klient chce to mieć w swojej stronie — traktujemy jako ustalone.</p>
+      </div>
+      <div class="intro-card">
+        <span class="pick pick-maybe pick-demo">Wstępnie zainteresowany</span>
+        <p>Podoba się, ale decyzja zapada później — do omówienia przy wycenie.</p>
+      </div>
+    </div>
+    <p class="intro-note">Zaznaczenia zapisują się w tej przeglądarce i widać je na slajdzie podsumowania na końcu. Jeśli przeglądasz ten materiał samodzielnie, Twoje wybory trafiają też do nas e-mailem — żebyśmy mogli się lepiej przygotować do rozmowy. Nawigacja: strzałki &larr; &rarr;, spacja, albo przyciski w rogu ekranu. Klawisz <b>M</b> otwiera spis treści.</p>
+  </div>
+</section>
+<section class="slide slide-structural " data-section="divider" id="slide-divider-a">
+  <div class="title-inner divider-inner">
+    <p class="eyebrow">CZĘŚĆ PIERWSZA</p>
+    <h1>Co już <em>działa.</em></h1>
+    <p class="lede">19 funkcji, które można pokazać na żywo już dziś — każda naprawdę uruchomiona, nie makieta.</p>
+  </div>
+</section>
+<section class="slide slide-content" data-section="feature" id="slide-f01-hero">
+      <div class="slide-grid">
+        <div class="slide-text">
+          <p class="eyebrow">CO JUŻ DZIAŁA &middot; 01 / 19</p>
+          <h2>Strona główna, która sprzedaje od pierwszej sekundy</h2>
+          <p class="body">Zamiast statycznego baneru — pasek, który sam mówi gościowi co jest ważne teraz: „dziś trwa lunch”, „pizza cały dzień”. Przyciski prowadzą prosto do rezerwacji, cateringu i zamówienia.</p>
+          <p class="tech"><span>Jak to działa:</span> Napis „Dziś: trwa lunch…” liczy się z aktualnej godziny i dnia tygodnia — nikt nie musi tego ręcznie zmieniać.</p>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="f01-hero"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+        <div class="slide-media">
+          <div class="framecard"><img src="assets/img/oferta/idea-01.jpg" alt="" loading="lazy"></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content" data-section="feature" id="slide-f02-manager">
+      <div class="slide-grid">
+        <div class="slide-text">
+          <p class="eyebrow">CO JUŻ DZIAŁA &middot; 02 / 19</p>
+          <h2>Wirtualny Manager — czat AI, który zna kartę i godziny</h2>
+          <p class="body">Gość klika ikonę w rogu i pyta o cokolwiek: dzisiejszy lunch, godziny, catering, rezerwację. Odpowiada prawdziwy model językowy, nie skrypt z gotowymi zdaniami — można też zapytać głosem i odsłuchać odpowiedź.</p>
+          <p class="tech"><span>Jak to działa:</span> Pytanie leci do modelu AI razem z aktualnym menu i zasadami restauracji; odpowiedź wraca w języku gościa (PL/EN) w kilka sekund.</p>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="f02-manager"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+        <div class="slide-media">
+          <div class="framecard"><img src="assets/img/oferta/idea-02.jpg" alt="" loading="lazy"></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content" data-section="feature" id="slide-f03-lunch">
+      <div class="slide-grid">
+        <div class="slide-text">
+          <p class="eyebrow">CO JUŻ DZIAŁA &middot; 03 / 19</p>
+          <h2>Menu lunchowe na cały tydzień — jedno miejsce edycji</h2>
+          <p class="body">Zupa i dwa dania na każdy dzień tygodnia, z listkiem przy opcjach wegetariańskich. Restaurator zmienia treść w jednym miejscu, a menu aktualizuje się wszędzie — na stronie, w czacie AI i w poniedziałkowym newsletterze.</p>
+          <p class="tech"><span>Jak to działa:</span> Dane dań trzymane są w jednym pliku, z którego korzystają trzy różne funkcje strony naraz.</p>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="f03-lunch"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+        <div class="slide-media">
+          <div class="framecard"><img src="assets/img/oferta/idea-03.jpg" alt="" loading="lazy"></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content" data-section="feature" id="slide-f04-plan-sali">
+      <div class="slide-grid">
+        <div class="slide-text">
+          <p class="eyebrow">CO JUŻ DZIAŁA &middot; 04 / 19</p>
+          <h2>Rezerwacja z wizualnym planem sali</h2>
+          <p class="body">Gość wybiera stolik klikając na rysunku sali — plan sam blokuje stoliki za małe dla podanej liczby osób. Rezerwacja trafia prosto do kalendarza, a gość dostaje e-mail z potwierdzeniem.</p>
+          <p class="tech"><span>Jak to działa:</span> Dostępne godziny liczą się z bieżących godzin otwarcia (inne dla dnia powszedniego i weekendu) i znikają, jeśli już minęły dzisiaj.</p>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="f04-plan-sali"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+        <div class="slide-media">
+          <div class="framecard"><img src="assets/img/oferta/idea-04.jpg" alt="" loading="lazy"></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content" data-section="feature" id="slide-f05-walidacja">
+      <div class="slide-grid">
+        <div class="slide-text">
+          <p class="eyebrow">CO JUŻ DZIAŁA &middot; 05 / 19</p>
+          <h2>Formularze, które prowadzą za rękę</h2>
+          <p class="body">Zamiast ogólnego „błąd w formularzu” — każde pole dostaje własny, konkretny komunikat i znika, gdy dane są poprawne. Strona sama przewija ekran do pierwszego błędu.</p>
+          <p class="tech"><span>Jak to działa:</span> Telefon musi mieć 9–15 cyfr, e-mail realny format, zgoda RODO jest wymagana — wszystko sprawdzane w przeglądarce i ponownie na serwerze.</p>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="f05-walidacja"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+        <div class="slide-media">
+          <div class="framecard"><img src="assets/img/oferta/idea-05.jpg" alt="" loading="lazy"></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content" data-section="feature" id="slide-f06-zamowienie">
+      <div class="slide-grid">
+        <div class="slide-text">
+          <p class="eyebrow">CO JUŻ DZIAŁA &middot; 06 / 19</p>
+          <h2>Zamawianie pizzy online, z koszykiem w szufladzie</h2>
+          <p class="body">Ikona koszyka jest zawsze widoczna w nagłówku, z licznikiem pozycji — gość klika i z dowolnego miejsca strony otwiera wysuwany panel zamówienia, tak jak w znanych mu sklepach internetowych. Przy każdej pozycji może dopisać uwagę — „mniej ostra”, „bez cebuli” — i widzi ją potem w potwierdzeniu.</p>
+          <p class="tech"><span>Jak to działa:</span> Koszyk zapamiętuje zawartość w przeglądarce gościa; cena końcowa i uwagi są też sprawdzane po stronie serwera, zanim trafią do restauracji e-mailem.</p>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="f06-zamowienie"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+        <div class="slide-media">
+          <div class="framecard"><img src="assets/img/oferta/idea-06.jpg" alt="" loading="lazy"></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content" data-section="feature" id="slide-f07-newsletter">
+      <div class="slide-grid">
+        <div class="slide-text">
+          <p class="eyebrow">CO JUŻ DZIAŁA &middot; 07 / 19</p>
+          <h2>Newsletter, który sam wysyła się w poniedziałki</h2>
+          <p class="body">Gość zostawia e-mail raz, a każdy poniedziałek o 9:00 system sam wysyła aktualne menu lunchowe tygodnia — bez udziału człowieka.</p>
+          <p class="tech"><span>Jak to działa:</span> Automat pobiera to samo menu, które widzą goście na stronie, więc nigdy się z nim nie rozjedzie.</p>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="f07-newsletter"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+        <div class="slide-media">
+          <div class="framecard"><img src="assets/img/oferta/idea-07.jpg" alt="" loading="lazy"></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content" data-section="feature" id="slide-f08-audio">
+      <div class="slide-grid">
+        <div class="slide-text">
+          <p class="eyebrow">CO JUŻ DZIAŁA &middot; 08 / 19</p>
+          <h2>Audio-wizytówka — restauracja, która mówi</h2>
+          <p class="body">Krótkie nagranie głosowe opowiadające o restauracji w pół minuty — do posłuchania jednym kliknięciem, bez czytania.</p>
+          <p class="tech"><span>Jak to działa:</span> Nagranie wygenerowane głosem AI, osadzone jako zwykły odtwarzacz audio na stronie.</p>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="f08-audio"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+        <div class="slide-media">
+          <div class="framecard"><img src="assets/img/oferta/idea-08.jpg" alt="" loading="lazy"></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content" data-section="feature" id="slide-f09-mapa">
+      <div class="slide-grid">
+        <div class="slide-text">
+          <p class="eyebrow">CO JUŻ DZIAŁA &middot; 09 / 19</p>
+          <h2>Mapa dojazdu bez ujawniania prawdziwego adresu</h2>
+          <p class="body">Zamiast prawdziwej mapy Google (która zdradziłaby, że adres jest fikcyjny) — własna ilustrowana mapa z parkingiem i przykładowymi ulicami, w kolorach marki.</p>
+          <p class="tech"><span>Jak to działa:</span> To rysunek wektorowy, nie zewnętrzna usługa — strona nic nie pobiera z Google Maps.</p>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="f09-mapa"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+        <div class="slide-media">
+          <div class="framecard"><img src="assets/img/oferta/idea-09.jpg" alt="" loading="lazy"></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content" data-section="feature" id="slide-f10-faq">
+      <div class="slide-grid">
+        <div class="slide-text">
+          <p class="eyebrow">CO JUŻ DZIAŁA &middot; 10 / 19</p>
+          <h2>FAQ w formie rozwijanej listy</h2>
+          <p class="body">Pytania i odpowiedzi chowają się pod kliknięciem — sekcja zajmuje mniej miejsca i wygląda nowocześniej niż ściana tekstu.</p>
+          <p class="tech"><span>Jak to działa:</span> Pierwsze pytanie jest zawsze otwarte, reszta czeka na klik; działa też z klawiatury i z czytnikiem ekranu.</p>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="f10-faq"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+        <div class="slide-media">
+          <div class="framecard"><img src="assets/img/oferta/idea-10.jpg" alt="" loading="lazy"></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content" data-section="feature" id="slide-f11-cookie">
+      <div class="slide-grid">
+        <div class="slide-text">
+          <p class="eyebrow">CO JUŻ DZIAŁA &middot; 11 / 19</p>
+          <h2>Uczciwy komunikat o ciasteczkach</h2>
+          <p class="body">Strona naprawdę nie ma ciasteczek śledzących ani analityki — baner mówi to wprost, zamiast prosić o zgodę na coś, czego nie ma.</p>
+          <p class="tech"><span>Jak to działa:</span> Jeden przycisk „Rozumiem”; decyzja gościa zapamiętana lokalnie w jego przeglądarce.</p>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="f11-cookie"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+        <div class="slide-media">
+          <div class="framecard"><img src="assets/img/oferta/idea-11.jpg" alt="" loading="lazy"></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content" data-section="feature" id="slide-f12-rodo">
+      <div class="slide-grid">
+        <div class="slide-text">
+          <p class="eyebrow">CO JUŻ DZIAŁA &middot; 12 / 19</p>
+          <h2>Zgoda RODO przy każdym formularzu</h2>
+          <p class="body">Każdy formularz — kontakt, rezerwacja, zamówienie, newsletter — ma wymagany checkbox zgody z linkiem do polityki prywatności.</p>
+          <p class="tech"><span>Jak to działa:</span> To realna zgoda na przetwarzanie danych, nie dekoracja — bez zaznaczenia serwer odrzuci zgłoszenie.</p>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="f12-rodo"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+        <div class="slide-media">
+          <div class="framecard"><img src="assets/img/oferta/idea-12.jpg" alt="" loading="lazy"></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content" data-section="feature" id="slide-f13-mobile">
+      <div class="slide-grid">
+        <div class="slide-text">
+          <p class="eyebrow">CO JUŻ DZIAŁA &middot; 13 / 19</p>
+          <h2>Pełna wersja mobilna, nie tylko „jakoś działa”</h2>
+          <p class="body">Menu, formularze, czat, plan sali — wszystko przemyślane osobno pod telefon, z dolnym paskiem szybkich akcji: zadzwoń, menu, catering.</p>
+          <p class="tech"><span>Jak to działa:</span> Widżet czatu na wąskich ekranach chowa się do samej ikony, żeby nie zasłaniał dolnego paska.</p>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="f13-mobile"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+        <div class="slide-media">
+          <div class="framecard"><img src="assets/img/oferta/idea-13.jpg" alt="" loading="lazy"></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content" data-section="feature" id="slide-f14-wieczor">
+      <div class="slide-grid">
+        <div class="slide-text">
+          <p class="eyebrow">CO JUŻ DZIAŁA &middot; 14 / 19</p>
+          <h2>Tryb wieczorny — strona, która wie, która jest godzina</h2>
+          <p class="body">Po 18:00 strona główna sama przechodzi w cieplejszy, ciemniejszy nastrój — inne zdjęcie w tle, inny podpis. Rano znów jest jasno.</p>
+          <p class="tech"><span>Jak to działa:</span> Zegar w przeglądarce gościa decyduje, którą wersję hero pokazać — bez przeładowania strony.</p>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="f14-wieczor"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+        <div class="slide-media">
+          <div class="framecard"><img src="assets/img/oferta/idea-14.jpg" alt="" loading="lazy"></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content" data-section="feature" id="slide-f15-en">
+      <div class="slide-grid">
+        <div class="slide-text">
+          <p class="eyebrow">CO JUŻ DZIAŁA &middot; 15 / 19</p>
+          <h2>Pełna wersja angielska, nie tłumaczenie maszynowe</h2>
+          <p class="body">Każda podstrona ma bliźniaczy odpowiednik po angielsku, osobno przygotowany, z przełącznikiem PL/EN w nagłówku.</p>
+          <p class="tech"><span>Jak to działa:</span> Osobne strony dla obu języków, ale ten sam mechanizm formularzy i czatu — bez podwójnej pracy przy każdej zmianie.</p>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="f15-en"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+        <div class="slide-media">
+          <div class="framecard"><img src="assets/img/oferta/idea-15.jpg" alt="" loading="lazy"></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content" data-section="feature" id="slide-f16-logo">
+      <div class="slide-grid">
+        <div class="slide-text">
+          <p class="eyebrow">CO JUŻ DZIAŁA &middot; 16 / 19</p>
+          <h2>Logo i identyfikacja do dopasowania pod dowolną markę</h2>
+          <p class="body">Prosta, elegancka typografia zamiast gotowego szablonu graficznego — to samo podejście przenosi się na inną nazwę, inne kolory, inny charakter lokalu.</p>
+          <p class="tech"><span>Jak to działa:</span> Logo to czysty tekst, nie plik graficzny — zmiana nazwy restauracji to edycja jednej linijki, nie nowa grafika.</p>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="f16-logo"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+        <div class="slide-media">
+          <div class="framecard"><img src="assets/img/oferta/idea-16.jpg" alt="" loading="lazy"></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content" data-section="feature" id="slide-f17-realizacje">
+      <div class="slide-grid">
+        <div class="slide-text">
+          <p class="eyebrow">CO JUŻ DZIAŁA &middot; 17 / 19</p>
+          <h2>Portfolio realizacji z filtrami</h2>
+          <p class="body">Zdjęcia z wydarzeń podzielone na kategorie: wesela, rodzinne, firmowe, catering, restauracja. Gość filtruje jednym kliknięciem.</p>
+          <p class="tech"><span>Jak to działa:</span> Filtrowanie dzieje się w przeglądarce, bez przeładowania strony.</p>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="f17-realizacje"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+        <div class="slide-media">
+          <div class="framecard"><img src="assets/img/oferta/idea-17.jpg" alt="" loading="lazy"></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content" data-section="feature" id="slide-f18-pwa">
+      <div class="slide-grid">
+        <div class="slide-text">
+          <p class="eyebrow">CO JUŻ DZIAŁA &middot; 18 / 19</p>
+          <h2>Aplikacja bez sklepu z aplikacjami</h2>
+          <p class="body">Gość dodaje stronę do ekranu głównego telefonu jak prawdziwą aplikację — własna ikona, pełny ekran, działa nawet przy słabym internecie.</p>
+          <p class="tech"><span>Jak to działa:</span> To standard przeglądarkowy (Progressive Web App) — zero opłat i zero procesu zatwierdzania w App Store czy Google Play.</p>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="f18-pwa"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+        <div class="slide-media">
+          <div class="framecard"><div class="mockcard mock-pwa" aria-hidden="true">
+      <div class="phoneframe">
+        <div class="phonenotch"></div>
+        <div class="phonescreen">
+          <div class="ios-prompt">
+            <div class="ios-icon">P</div>
+            <p><b>Dodaj do ekranu głównego?</b></p>
+            <p class="ios-sub">zielonapergola.pl</p>
+            <div class="ios-btns"><span>Anuluj</span><span class="ios-add">Dodaj</span></div>
+          </div>
+          <div class="home-icons">
+            <div class="hi"></div><div class="hi"></div><div class="hi hi-new">P</div><div class="hi"></div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content" data-section="feature" id="slide-f19-automatyzacje">
+      <div class="slide-grid">
+        <div class="slide-text">
+          <p class="eyebrow">CO JUŻ DZIAŁA &middot; 19 / 19</p>
+          <h2>Automatyzacje, które pracują, gdy nikt nie patrzy</h2>
+          <p class="body">Codziennie o 17:00 — przypomnienie o jutrzejszej rezerwacji. W każdą niedzielę wieczorem — raport AI z podsumowaniem tygodnia i rekomendacjami dla właściciela.</p>
+          <p class="tech"><span>Jak to działa:</span> Wszystko dzieje się w tle na serwerze — restaurator dostaje gotowy e-mail, nie musi nic klikać.</p>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="f19-automatyzacje"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+        <div class="slide-media">
+          <div class="framecard"><div class="mockcard mock-auto" aria-hidden="true">
+      <div class="mailcard">
+        <div class="mail-row"><span class="mail-dot mail-dot-1"></span><div><b>Przypomnienie: Twój stolik jutro o 19:00</b><small>Zielona Pergola — rezerwacje · 17:00</small></div></div>
+        <div class="mail-row"><span class="mail-dot mail-dot-2"></span><div><b>Tygodniowy raport AI — 6 zgłoszeń, 3 rezerwacje</b><small>Zielona Pergola — raport AI · niedziela 20:00</small></div></div>
+        <div class="mail-row"><span class="mail-dot mail-dot-1"></span><div><b>Menu lunchowe tygodnia</b><small>Zielona Pergola — newsletter · poniedziałek 9:00</small></div></div>
+      </div>
+    </div></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-structural " data-section="divider" id="slide-divider-b">
+  <div class="title-inner divider-inner">
+    <p class="eyebrow">CZĘŚĆ DRUGA</p>
+    <h1>Co można <em>dodać.</em></h1>
+    <p class="lede">22 pomysły pogrupowane w cztery obszary: sprzedaż, AI, treść i technika. Przy każdym — orientacyjny „wow” na spotkaniu i nakład pracy.</p>
+  </div>
+</section>
+<section class="slide slide-content slide-addition" data-section="addition" id="slide-a01-qr">
+      <div class="slide-grid slide-grid-single">
+        <div class="slide-text slide-text-wide">
+          <p class="eyebrow">SPRZEDAŻ I KONWERSJA &middot; 01 / 22</p>
+          <h2>Kod QR na stoliku → zamawianie z miejsca</h2>
+          <p class="body">Gość skanuje kod leżący na stole, widzi menu i zamawia od razu — kelner tylko wydaje, nie przyjmuje zamówień.</p>
+          
+          <div class="meta-row">
+            <div class="meta-block">
+              <span class="meta-label">Nakład pracy</span>
+              <span class="effort-pill effort-średni">średni</span>
+            </div>
+          </div>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a01-qr"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content slide-addition" data-section="addition" id="slide-a02-platnosc">
+      <div class="slide-grid slide-grid-single">
+        <div class="slide-text slide-text-wide">
+          <p class="eyebrow">SPRZEDAŻ I KONWERSJA &middot; 02 / 22</p>
+          <h2>Prawdziwa płatność online</h2>
+          <p class="body">Przelewy24 albo Stripe zamiast symulowanego „zapłać przy odbiorze” — realna transakcja kartą lub BLIK-iem.</p>
+          <p class="note">wymaga konta firmowego i weryfikacji</p>
+          <div class="meta-row">
+            <div class="meta-block">
+              <span class="meta-label">Nakład pracy</span>
+              <span class="effort-pill effort-średni">średni</span>
+            </div>
+          </div>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a02-platnosc"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content slide-addition" data-section="addition" id="slide-a03-status">
+      <div class="slide-grid slide-grid-single">
+        <div class="slide-text slide-text-wide">
+          <p class="eyebrow">SPRZEDAŻ I KONWERSJA &middot; 03 / 22</p>
+          <h2>Status zamówienia na żywo</h2>
+          <p class="body">Przyjęte → w przygotowaniu → gotowe do odbioru — jak w aplikacji kurierskiej, z linkiem wysłanym w potwierdzeniu.</p>
+          
+          <div class="meta-row">
+            <div class="meta-block">
+              <span class="meta-label">Nakład pracy</span>
+              <span class="effort-pill effort-średni">średni</span>
+            </div>
+          </div>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a03-status"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content slide-addition" data-section="addition" id="slide-a04-vouchery">
+      <div class="slide-grid slide-grid-single">
+        <div class="slide-text slide-text-wide">
+          <p class="eyebrow">SPRZEDAŻ I KONWERSJA &middot; 04 / 22</p>
+          <h2>Vouchery i karty podarunkowe</h2>
+          <p class="body">Gość kupuje bon online, dostaje e-mailem kod QR do zrealizowania w lokalu — gotowy prezent bez wychodzenia z domu.</p>
+          
+          <div class="meta-row">
+            <div class="meta-block">
+              <span class="meta-label">Nakład pracy</span>
+              <span class="effort-pill effort-średni">średni</span>
+            </div>
+          </div>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a04-vouchery"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content slide-addition" data-section="addition" id="slide-a05-lojalnosc">
+      <div class="slide-grid slide-grid-single">
+        <div class="slide-text slide-text-wide">
+          <p class="eyebrow">SPRZEDAŻ I KONWERSJA &middot; 05 / 22</p>
+          <h2>Program lojalnościowy</h2>
+          <p class="body">Cyfrowa karta stemplowa — dziesiąta kawa gratis, wszystko na koncie gościa, bez plastikowych kartoników.</p>
+          
+          <div class="meta-row">
+            <div class="meta-block">
+              <span class="meta-label">Nakład pracy</span>
+              <span class="effort-pill effort-średni">średni</span>
+            </div>
+          </div>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a05-lojalnosc"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content slide-addition" data-section="addition" id="slide-a06-upsell">
+      <div class="slide-grid slide-grid-single">
+        <div class="slide-text slide-text-wide">
+          <p class="eyebrow">SPRZEDAŻ I KONWERSJA &middot; 06 / 22</p>
+          <h2>Podpowiedzi w koszyku</h2>
+          <p class="body">Sos, deser, dodatkowa porcja frytek — system sam podpowiada, zanim gość kliknie „zamawiam”, podnosząc wartość koszyka.</p>
+          
+          <div class="meta-row">
+            <div class="meta-block">
+              <span class="meta-label">Nakład pracy</span>
+              <span class="effort-pill effort-mały">mały</span>
+            </div>
+          </div>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a06-upsell"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content slide-addition" data-section="addition" id="slide-a07-voicebot">
+      <div class="slide-grid slide-grid-single">
+        <div class="slide-text slide-text-wide">
+          <p class="eyebrow">AI &middot; 07 / 22</p>
+          <h2>Voicebot telefoniczny</h2>
+          <p class="body">AI odbiera telefon i przyjmuje rezerwację głosem — nawet gdy w lokalu nikt nie może akurat podejść do słuchawki.</p>
+          <p class="note">osobny projekt i koszt usługi telefonicznej</p>
+          <div class="meta-row">
+            <div class="meta-block">
+              <span class="meta-label">Nakład pracy</span>
+              <span class="effort-pill effort-duzy">duży</span>
+            </div>
+          </div>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a07-voicebot"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content slide-addition" data-section="addition" id="slide-a08-messenger">
+      <div class="slide-grid slide-grid-single">
+        <div class="slide-text slide-text-wide">
+          <p class="eyebrow">AI &middot; 08 / 22</p>
+          <h2>Bot na Messengerze i WhatsAppie</h2>
+          <p class="body">Ta sama wiedza co Wirtualny Manager, tylko dokładnie tam, gdzie gość już do Was pisze.</p>
+          <p class="note">wymaga strony firmowej na Facebooku</p>
+          <div class="meta-row">
+            <div class="meta-block">
+              <span class="meta-label">Nakład pracy</span>
+              <span class="effort-pill effort-średni">średni</span>
+            </div>
+          </div>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a08-messenger"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content slide-addition" data-section="addition" id="slide-a09-social">
+      <div class="slide-grid slide-grid-single">
+        <div class="slide-text slide-text-wide">
+          <p class="eyebrow">AI &middot; 09 / 22</p>
+          <h2>Generator postów na social media</h2>
+          <p class="body">Co poniedziałek gotowy pakiet pięciu postów z menu tygodnia — gotowe do wklejenia, bez zatrudniania grafika.</p>
+          
+          <div class="meta-row">
+            <div class="meta-block">
+              <span class="meta-label">Nakład pracy</span>
+              <span class="effort-pill effort-średni">średni</span>
+            </div>
+          </div>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a09-social"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content slide-addition" data-section="addition" id="slide-a10-opinie">
+      <div class="slide-grid slide-grid-single">
+        <div class="slide-text slide-text-wide">
+          <p class="eyebrow">AI &middot; 10 / 22</p>
+          <h2>Opinie gości z automatyczną odpowiedzią AI</h2>
+          <p class="body">Formularz opinii, AI odpowiada uprzejmie i na temat, a najlepsze recenzje trafiają prosto na stronę.</p>
+          
+          <div class="meta-row">
+            <div class="meta-block">
+              <span class="meta-label">Nakład pracy</span>
+              <span class="effort-pill effort-średni">średni</span>
+            </div>
+          </div>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a10-opinie"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content slide-addition" data-section="addition" id="slide-a11-zdjecia">
+      <div class="slide-grid slide-grid-single">
+        <div class="slide-text slide-text-wide">
+          <p class="eyebrow">AI &middot; 11 / 22</p>
+          <h2>Generator zdjęć dań na żądanie</h2>
+          <p class="body">Restaurator wpisuje nazwę nowego dania, dostaje fotorealistyczne zdjęcie — bez umawiania sesji zdjęciowej.</p>
+          
+          <div class="meta-row">
+            <div class="meta-block">
+              <span class="meta-label">Nakład pracy</span>
+              <span class="effort-pill effort-średni">średni</span>
+            </div>
+          </div>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a11-zdjecia"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content slide-addition" data-section="addition" id="slide-a12-prognoza">
+      <div class="slide-grid slide-grid-single">
+        <div class="slide-text slide-text-wide">
+          <p class="eyebrow">AI &middot; 12 / 22</p>
+          <h2>Prognoza ruchu na najbliższe dni</h2>
+          <p class="body">Rezerwacje, dzień tygodnia i pogoda razem podpowiadają, ile jedzenia szykować na jutro.</p>
+          
+          <div class="meta-row">
+            <div class="meta-block">
+              <span class="meta-label">Nakład pracy</span>
+              <span class="effort-pill effort-średni">średni</span>
+            </div>
+          </div>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a12-prognoza"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content slide-addition" data-section="addition" id="slide-a13-jezyki">
+      <div class="slide-grid slide-grid-single">
+        <div class="slide-text slide-text-wide">
+          <p class="eyebrow">AI &middot; 13 / 22</p>
+          <h2>Kolejne wersje językowe</h2>
+          <p class="body">Mechanizm dwujęzyczny już działa — dodanie ukraińskiego czy niemieckiego to głównie tłumaczenie treści, nie nowa budowa.</p>
+          
+          <div class="meta-row">
+            <div class="meta-block">
+              <span class="meta-label">Nakład pracy</span>
+              <span class="effort-pill effort-mały">mały</span>
+            </div>
+          </div>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a13-jezyki"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content slide-addition" data-section="addition" id="slide-a14-wydarzenia">
+      <div class="slide-grid slide-grid-single">
+        <div class="slide-text slide-text-wide">
+          <p class="eyebrow">TREŚĆ I MARKETING &middot; 14 / 22</p>
+          <h2>Wydarzenia z zapisami i limitem miejsc</h2>
+          <p class="body">Sylwester, kolacja degustacyjna — gość zapisuje się przez formularz, a system sam pilnuje limitu miejsc.</p>
+          
+          <div class="meta-row">
+            <div class="meta-block">
+              <span class="meta-label">Nakład pracy</span>
+              <span class="effort-pill effort-średni">średni</span>
+            </div>
+          </div>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a14-wydarzenia"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content slide-addition" data-section="addition" id="slide-a15-blog">
+      <div class="slide-grid slide-grid-single">
+        <div class="slide-text slide-text-wide">
+          <p class="eyebrow">TREŚĆ I MARKETING &middot; 15 / 22</p>
+          <h2>Blog i aktualności</h2>
+          <p class="body">Krótkie wpisy o kuchni i wydarzeniach — budują historię lokalu i dobrze działają pod wyszukiwarkę Google.</p>
+          
+          <div class="meta-row">
+            <div class="meta-block">
+              <span class="meta-label">Nakład pracy</span>
+              <span class="effort-pill effort-średni">średni</span>
+            </div>
+          </div>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a15-blog"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content slide-addition" data-section="addition" id="slide-a16-wideo">
+      <div class="slide-grid slide-grid-single">
+        <div class="slide-text slide-text-wide">
+          <p class="eyebrow">TREŚĆ I MARKETING &middot; 16 / 22</p>
+          <h2>Wideo z kuchni</h2>
+          <p class="body">Krótka rolka wideo (wygenerowana albo prawdziwe nagranie) ożywiająca tło strony głównej.</p>
+          
+          <div class="meta-row">
+            <div class="meta-block">
+              <span class="meta-label">Nakład pracy</span>
+              <span class="effort-pill effort-mały">mały</span>
+            </div>
+          </div>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a16-wideo"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content slide-addition" data-section="addition" id="slide-a17-zespol">
+      <div class="slide-grid slide-grid-single">
+        <div class="slide-text slide-text-wide">
+          <p class="eyebrow">TREŚĆ I MARKETING &middot; 17 / 22</p>
+          <h2>Sekcja „Zespół i historia”</h2>
+          <p class="body">Twarze i historia lokalu budują zaufanie szybciej niż najlepiej opisane danie w karcie.</p>
+          
+          <div class="meta-row">
+            <div class="meta-block">
+              <span class="meta-label">Nakład pracy</span>
+              <span class="effort-pill effort-mały">mały</span>
+            </div>
+          </div>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a17-zespol"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content slide-addition" data-section="addition" id="slide-a18-galeria">
+      <div class="slide-grid slide-grid-single">
+        <div class="slide-text slide-text-wide">
+          <p class="eyebrow">TREŚĆ I MARKETING &middot; 18 / 22</p>
+          <h2>Galeria z opisami realizacji</h2>
+          <p class="body">Rozszerzenie portfolio o krótkie historie „jak to wyglądało” przy każdym większym wydarzeniu.</p>
+          
+          <div class="meta-row">
+            <div class="meta-block">
+              <span class="meta-label">Nakład pracy</span>
+              <span class="effort-pill effort-mały">mały</span>
+            </div>
+          </div>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a18-galeria"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content slide-addition" data-section="addition" id="slide-a19-panel">
+      <div class="slide-grid slide-grid-single">
+        <div class="slide-text slide-text-wide">
+          <p class="eyebrow">TECHNICZNE &middot; 19 / 22</p>
+          <h2>Panel do edycji menu bez kodu</h2>
+          <p class="body">Restaurator sam zmienia dania i ceny z prostego panelu — bez proszenia programisty o każdą drobną zmianę.</p>
+          <p class="note">częsty warunek decyzji klienta</p>
+          <div class="meta-row">
+            <div class="meta-block">
+              <span class="meta-label">Nakład pracy</span>
+              <span class="effort-pill effort-duzy">duży</span>
+            </div>
+          </div>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a19-panel"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content slide-addition" data-section="addition" id="slide-a20-statystyki">
+      <div class="slide-grid slide-grid-single">
+        <div class="slide-text slide-text-wide">
+          <p class="eyebrow">TECHNICZNE &middot; 20 / 22</p>
+          <h2>Statystyki odwiedzin bez ciasteczek</h2>
+          <p class="body">Wiadomo, które podstrony działają najlepiej — bez łamania obietnicy „zero śledzenia” złożonej gościom.</p>
+          
+          <div class="meta-row">
+            <div class="meta-block">
+              <span class="meta-label">Nakład pracy</span>
+              <span class="effort-pill effort-mały">mały</span>
+            </div>
+          </div>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a20-statystyki"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content slide-addition" data-section="addition" id="slide-a21-wcag">
+      <div class="slide-grid slide-grid-single">
+        <div class="slide-text slide-text-wide">
+          <p class="eyebrow">TECHNICZNE &middot; 21 / 22</p>
+          <h2>Tryb wysokiego kontrastu i pełny audyt WCAG</h2>
+          <p class="body">Dodatkowy argument przy klientach publicznych i sieciowych, dla których dostępność cyfrowa bywa wymogiem formalnym.</p>
+          
+          <div class="meta-row">
+            <div class="meta-block">
+              <span class="meta-label">Nakład pracy</span>
+              <span class="effort-pill effort-średni">średni</span>
+            </div>
+          </div>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a21-wcag"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-content slide-addition" data-section="addition" id="slide-a22-pos">
+      <div class="slide-grid slide-grid-single">
+        <div class="slide-text slide-text-wide">
+          <p class="eyebrow">TECHNICZNE &middot; 22 / 22</p>
+          <h2>Eksport rezerwacji do systemu kasowego</h2>
+          <p class="body">Rezerwacja z formularza trafia prosto do systemu POS, którego restaurator już używa na co dzień.</p>
+          <p class="note">zakres zależy od konkretnego systemu klienta</p>
+          <div class="meta-row">
+            <div class="meta-block">
+              <span class="meta-label">Nakład pracy</span>
+              <span class="effort-pill effort-zalezny">zależny</span>
+            </div>
+          </div>
+          <div class="picker" role="group" aria-label="Twoja decyzja dla tej pozycji" data-slide-id="a22-pos"><span class="picker-label">Twoja decyzja:</span><div class="picker-btns"><button type="button" class="pick pick-yes" data-choice="wybieram">Wybieram</button><button type="button" class="pick pick-maybe" data-choice="zainteresowany">Wstępnie zainteresowany</button></div></div>
+        </div>
+      </div>
+    </section>
+<section class="slide slide-structural " data-section="summary" id="slide-summary">
+  <div class="title-inner summary-inner">
+    <p class="eyebrow">PODSUMOWANIE SPOTKANIA</p>
+    <h2>Co ustaliliśmy.</h2>
+    <div class="summary-cols">
+      <div class="summary-col">
+        <h3><span class="pick pick-yes pick-demo pick-static">Wybieram</span></h3>
+        <ul id="sum-yes" class="summary-list"><li class="summary-empty">Nic jeszcze niezaznaczone.</li></ul>
+      </div>
+      <div class="summary-col">
+        <h3><span class="pick pick-maybe pick-demo pick-static">Wstępnie zainteresowany</span></h3>
+        <ul id="sum-maybe" class="summary-list"><li class="summary-empty">Nic jeszcze niezaznaczone.</li></ul>
+      </div>
+    </div>
+    <div class="summary-actions">
+      <button type="button" class="btn-start btn-small" id="btn-copy">Kopiuj listę do schowka</button>
+      <button type="button" class="btn-reset-link" id="btn-reset-bottom">Wyczyść wszystkie zaznaczenia</button>
+    </div>
+    <p class="summary-hint" id="copy-hint" aria-live="polite"></p>
+  </div>
+</section>
+</div>
+
+<div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+<div class="hud-top">
+  <span class="hud-section" id="hud-section"></span>
+  <span class="hud-frac" id="hud-frac"></span>
+</div>
+
+<button type="button" class="toc-btn" id="toc-btn-open" aria-haspopup="dialog">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="14" y2="17"/></svg>
+  Spis treści <span style="opacity:.6">(M)</span>
+</button>
+
+<div class="nav-controls">
+  <button type="button" class="nav-btn" id="btn-prev" aria-label="Poprzedni slajd">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <button type="button" class="nav-btn" id="btn-next" aria-label="Następny slajd">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+</div>
+
+<div class="toc-overlay" id="toc-overlay" role="dialog" aria-modal="true" aria-label="Spis treści">
+  <div class="toc-panel">
+    <div class="toc-head">
+      <h3>Spis treści</h3>
+      <button type="button" class="toc-close" id="toc-close" aria-label="Zamknij spis treści">&times;</button>
+    </div>
+    <ul class="toc-list" id="toc-list">
+<li class="toc-h">Start</li><li><button data-jump="title">Strona tytułowa</button></li><li><button data-jump="intro">Jak korzystać</button></li><li class="toc-h">Co już działa</li><li><button data-jump="f01-hero">01 &middot; Strona główna, która sprzedaje od pierwszej sekundy</button></li><li><button data-jump="f02-manager">02 &middot; Wirtualny Manager — czat AI, który zna kartę i godziny</button></li><li><button data-jump="f03-lunch">03 &middot; Menu lunchowe na cały tydzień — jedno miejsce edycji</button></li><li><button data-jump="f04-plan-sali">04 &middot; Rezerwacja z wizualnym planem sali</button></li><li><button data-jump="f05-walidacja">05 &middot; Formularze, które prowadzą za rękę</button></li><li><button data-jump="f06-zamowienie">06 &middot; Zamawianie pizzy online, z koszykiem w szufladzie</button></li><li><button data-jump="f07-newsletter">07 &middot; Newsletter, który sam wysyła się w poniedziałki</button></li><li><button data-jump="f08-audio">08 &middot; Audio-wizytówka — restauracja, która mówi</button></li><li><button data-jump="f09-mapa">09 &middot; Mapa dojazdu bez ujawniania prawdziwego adresu</button></li><li><button data-jump="f10-faq">10 &middot; FAQ w formie rozwijanej listy</button></li><li><button data-jump="f11-cookie">11 &middot; Uczciwy komunikat o ciasteczkach</button></li><li><button data-jump="f12-rodo">12 &middot; Zgoda RODO przy każdym formularzu</button></li><li><button data-jump="f13-mobile">13 &middot; Pełna wersja mobilna, nie tylko „jakoś działa”</button></li><li><button data-jump="f14-wieczor">14 &middot; Tryb wieczorny — strona, która wie, która jest godzina</button></li><li><button data-jump="f15-en">15 &middot; Pełna wersja angielska, nie tłumaczenie maszynowe</button></li><li><button data-jump="f16-logo">16 &middot; Logo i identyfikacja do dopasowania pod dowolną markę</button></li><li><button data-jump="f17-realizacje">17 &middot; Portfolio realizacji z filtrami</button></li><li><button data-jump="f18-pwa">18 &middot; Aplikacja bez sklepu z aplikacjami</button></li><li><button data-jump="f19-automatyzacje">19 &middot; Automatyzacje, które pracują, gdy nikt nie patrzy</button></li><li class="toc-h">Co można dodać</li><li><button data-jump="a01-qr">01 &middot; Kod QR na stoliku → zamawianie z miejsca</button></li><li><button data-jump="a02-platnosc">02 &middot; Prawdziwa płatność online</button></li><li><button data-jump="a03-status">03 &middot; Status zamówienia na żywo</button></li><li><button data-jump="a04-vouchery">04 &middot; Vouchery i karty podarunkowe</button></li><li><button data-jump="a05-lojalnosc">05 &middot; Program lojalnościowy</button></li><li><button data-jump="a06-upsell">06 &middot; Podpowiedzi w koszyku</button></li><li><button data-jump="a07-voicebot">07 &middot; Voicebot telefoniczny</button></li><li><button data-jump="a08-messenger">08 &middot; Bot na Messengerze i WhatsAppie</button></li><li><button data-jump="a09-social">09 &middot; Generator postów na social media</button></li><li><button data-jump="a10-opinie">10 &middot; Opinie gości z automatyczną odpowiedzią AI</button></li><li><button data-jump="a11-zdjecia">11 &middot; Generator zdjęć dań na żądanie</button></li><li><button data-jump="a12-prognoza">12 &middot; Prognoza ruchu na najbliższe dni</button></li><li><button data-jump="a13-jezyki">13 &middot; Kolejne wersje językowe</button></li><li><button data-jump="a14-wydarzenia">14 &middot; Wydarzenia z zapisami i limitem miejsc</button></li><li><button data-jump="a15-blog">15 &middot; Blog i aktualności</button></li><li><button data-jump="a16-wideo">16 &middot; Wideo z kuchni</button></li><li><button data-jump="a17-zespol">17 &middot; Sekcja „Zespół i historia”</button></li><li><button data-jump="a18-galeria">18 &middot; Galeria z opisami realizacji</button></li><li><button data-jump="a19-panel">19 &middot; Panel do edycji menu bez kodu</button></li><li><button data-jump="a20-statystyki">20 &middot; Statystyki odwiedzin bez ciasteczek</button></li><li><button data-jump="a21-wcag">21 &middot; Tryb wysokiego kontrastu i pełny audyt WCAG</button></li><li><button data-jump="a22-pos">22 &middot; Eksport rezerwacji do systemu kasowego</button></li><li class="toc-h">Koniec</li><li><button data-jump="summary">Podsumowanie</button></li>
+    </ul>
+  </div>
+</div>
+
+<script>window.__ZP_CHOOSABLE__ = [["f01-hero", "Strona główna, która sprzedaje od pierwszej sekundy", "feature"], ["f02-manager", "Wirtualny Manager — czat AI, który zna kartę i godziny", "feature"], ["f03-lunch", "Menu lunchowe na cały tydzień — jedno miejsce edycji", "feature"], ["f04-plan-sali", "Rezerwacja z wizualnym planem sali", "feature"], ["f05-walidacja", "Formularze, które prowadzą za rękę", "feature"], ["f06-zamowienie", "Zamawianie pizzy online, z koszykiem w szufladzie", "feature"], ["f07-newsletter", "Newsletter, który sam wysyła się w poniedziałki", "feature"], ["f08-audio", "Audio-wizytówka — restauracja, która mówi", "feature"], ["f09-mapa", "Mapa dojazdu bez ujawniania prawdziwego adresu", "feature"], ["f10-faq", "FAQ w formie rozwijanej listy", "feature"], ["f11-cookie", "Uczciwy komunikat o ciasteczkach", "feature"], ["f12-rodo", "Zgoda RODO przy każdym formularzu", "feature"], ["f13-mobile", "Pełna wersja mobilna, nie tylko „jakoś działa”", "feature"], ["f14-wieczor", "Tryb wieczorny — strona, która wie, która jest godzina", "feature"], ["f15-en", "Pełna wersja angielska, nie tłumaczenie maszynowe", "feature"], ["f16-logo", "Logo i identyfikacja do dopasowania pod dowolną markę", "feature"], ["f17-realizacje", "Portfolio realizacji z filtrami", "feature"], ["f18-pwa", "Aplikacja bez sklepu z aplikacjami", "feature"], ["f19-automatyzacje", "Automatyzacje, które pracują, gdy nikt nie patrzy", "feature"], ["a01-qr", "Kod QR na stoliku → zamawianie z miejsca", "addition"], ["a02-platnosc", "Prawdziwa płatność online", "addition"], ["a03-status", "Status zamówienia na żywo", "addition"], ["a04-vouchery", "Vouchery i karty podarunkowe", "addition"], ["a05-lojalnosc", "Program lojalnościowy", "addition"], ["a06-upsell", "Podpowiedzi w koszyku", "addition"], ["a07-voicebot", "Voicebot telefoniczny", "addition"], ["a08-messenger", "Bot na Messengerze i WhatsAppie", "addition"], ["a09-social", "Generator postów na social media", "addition"], ["a10-opinie", "Opinie gości z automatyczną odpowiedzią AI", "addition"], ["a11-zdjecia", "Generator zdjęć dań na żądanie", "addition"], ["a12-prognoza", "Prognoza ruchu na najbliższe dni", "addition"], ["a13-jezyki", "Kolejne wersje językowe", "addition"], ["a14-wydarzenia", "Wydarzenia z zapisami i limitem miejsc", "addition"], ["a15-blog", "Blog i aktualności", "addition"], ["a16-wideo", "Wideo z kuchni", "addition"], ["a17-zespol", "Sekcja „Zespół i historia”", "addition"], ["a18-galeria", "Galeria z opisami realizacji", "addition"], ["a19-panel", "Panel do edycji menu bez kodu", "addition"], ["a20-statystyki", "Statystyki odwiedzin bez ciasteczek", "addition"], ["a21-wcag", "Tryb wysokiego kontrastu i pełny audyt WCAG", "addition"], ["a22-pos", "Eksport rezerwacji do systemu kasowego", "addition"]];</script>
+<script>
+(function () {
+  'use strict';
+
+  var deck = document.querySelector('.deck');
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var total = slides.length;
+  var idx = 0;
+
+  var SECTION_LABELS = {
+    title: 'Start', intro: 'Start', divider: 'Przejście',
+    feature: 'Co już działa', addition: 'Co można dodać', summary: 'Podsumowanie'
+  };
+
+  var progressFill = document.getElementById('progress-fill');
+  var hudSection = document.getElementById('hud-section');
+  var hudFrac = document.getElementById('hud-frac');
+  var btnPrev = document.getElementById('btn-prev');
+  var btnNext = document.getElementById('btn-next');
+
+  var STORE_KEY = 'zpDeckSelections_v1';
+  function loadStore() {
+    try { return JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); } catch (e) { return {}; }
+  }
+  function saveStore(s) {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(s)); } catch (e) { /* tryb prywatny */ }
+  }
+  var store = loadStore();
+
+  function slideIdOf(el) { return el.id.replace(/^slide-/, ''); }
+
+  function applyPickerState(slideEl) {
+    var sid = slideIdOf(slideEl);
+    var choice = store[sid];
+    var yes = slideEl.querySelector('.pick-yes');
+    var maybe = slideEl.querySelector('.pick-maybe');
+    if (yes) yes.classList.toggle('is-active', choice === 'wybieram');
+    if (maybe) maybe.classList.toggle('is-active', choice === 'zainteresowany');
+  }
+
+  slides.forEach(function (s) { applyPickerState(s); });
+
+  function render() {
+    slides.forEach(function (s, i) { s.classList.toggle('is-active', i === idx); });
+    var current = slides[idx];
+    var section = current.getAttribute('data-section');
+    hudSection.textContent = SECTION_LABELS[section] || '';
+    hudFrac.textContent = (idx + 1) + ' / ' + total;
+    progressFill.style.width = (idx / (total - 1) * 100) + '%';
+    btnPrev.disabled = idx === 0;
+    btnNext.disabled = idx === total - 1;
+    if (section === 'summary') renderSummary();
+    try { history.replaceState(null, '', '#' + slideIdOf(current)); } catch (e) {}
+    var heading = current.querySelector('h1, h2');
+    if (heading) {
+      heading.setAttribute('tabindex', '-1');
+      heading.focus({ preventScroll: true });
+    }
+  }
+
+  function goTo(i) {
+    idx = Math.max(0, Math.min(total - 1, i));
+    render();
+  }
+  function next() { if (idx < total - 1) { idx++; render(); } }
+  function prev() { if (idx > 0) { idx--; render(); } }
+
+  btnNext.addEventListener('click', next);
+  btnPrev.addEventListener('click', prev);
+
+  document.addEventListener('keydown', function (e) {
+    if (tocOpen()) {
+      if (e.key === 'Escape') closeToc();
+      return;
+    }
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); next(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prev(); }
+    else if (e.key === 'm' || e.key === 'M') { openToc(); }
+    else if (e.key === 'Home') { goTo(0); }
+    else if (e.key === 'End') { goTo(total - 1); }
+  });
+
+  // swipe (dotyk)
+  var touchX = null;
+  deck.addEventListener('touchstart', function (e) { touchX = e.changedTouches[0].clientX; }, { passive: true });
+  deck.addEventListener('touchend', function (e) {
+    if (touchX === null) return;
+    var dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 60) { dx < 0 ? next() : prev(); }
+    touchX = null;
+  }, { passive: true });
+
+  // przyciski „start” / skoki wewnętrzne
+  document.getElementById('btn-go-start')?.addEventListener('click', function () { next(); });
+
+  // ---------- picker (Wybieram / Wstępnie zainteresowany) ----------
+  document.querySelectorAll('.picker').forEach(function (picker) {
+    picker.addEventListener('click', function (e) {
+      var btn = e.target.closest('.pick');
+      if (!btn) return;
+      var sid = picker.getAttribute('data-slide-id');
+      var choice = btn.getAttribute('data-choice');
+      var was = store[sid];
+      if (was === choice) { delete store[sid]; } else { store[sid] = choice; }
+      saveStore(store);
+      applyPickerState(picker.closest('.slide'));
+      scheduleNotify();
+    });
+  });
+
+  // ---------- reset ----------
+  function resetAll() {
+    if (!window.confirm('Wyczyścić wszystkie zaznaczenia „Wybieram” / „Wstępnie zainteresowany”? Przyda się przed nowym spotkaniem z kolejnym klientem.')) return;
+    store = {};
+    saveStore(store);
+    slides.forEach(applyPickerState);
+    renderSummary();
+  }
+  document.getElementById('btn-reset-top')?.addEventListener('click', resetAll);
+  document.getElementById('btn-reset-bottom')?.addEventListener('click', resetAll);
+
+  // ---------- powiadomienie e-mail o wyborach ----------
+  // Gdy ktoś przegląda ten materiał samodzielnie (bez Ciebie obok), jego wybory
+  // trafiają e-mailem — z opóźnieniem po ostatniej zmianie i przy zamknięciu karty,
+  // żeby nie wysyłać osobnego maila po każdym pojedynczym kliknięciu.
+  var NOTIFY_ENDPOINT = 'https://pmresearch.app.n8n.cloud/webhook/zielona-pergola-oferta-wybory';
+  var NOTIFY_IDLE_MS = 20000;
+  var notifySessionId = (function () {
+    try {
+      var k = 'zpDeckSession_v1';
+      var v = sessionStorage.getItem(k);
+      if (!v) { v = 'sid-' + Date.now() + '-' + Math.random().toString(36).slice(2, 9); sessionStorage.setItem(k, v); }
+      return v;
+    } catch (e) { return 'sid-' + Date.now(); }
+  })();
+  var lastNotifySignature = '';
+  var notifyTimer = null;
+
+  function currentSelections() {
+    var yes = [], maybe = [];
+    CHOOSABLE.forEach(function (row) {
+      if (store[row[0]] === 'wybieram') yes.push(row[1]);
+      else if (store[row[0]] === 'zainteresowany') maybe.push(row[1]);
+    });
+    return { yes: yes, maybe: maybe };
+  }
+
+  function sendNotify(useBeacon) {
+    var sel = currentSelections();
+    if (!sel.yes.length && !sel.maybe.length) return;
+    var signature = sel.yes.join('|') + '::' + sel.maybe.join('|');
+    if (signature === lastNotifySignature) return;
+    var payload = {
+      sessionId: notifySessionId,
+      wybieram: sel.yes,
+      zainteresowany: sel.maybe,
+      strona: location.pathname.split('/').pop() || 'oferta.html'
+    };
+    lastNotifySignature = signature;
+    try {
+      if (useBeacon && navigator.sendBeacon) {
+        navigator.sendBeacon(NOTIFY_ENDPOINT, new Blob([JSON.stringify(payload)], { type: 'application/json' }));
+      } else {
+        fetch(NOTIFY_ENDPOINT, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload), keepalive: true
+        }).catch(function () {});
+      }
+    } catch (e) { /* brak połączenia — spróbujemy przy kolejnej zmianie */ }
+  }
+
+  function scheduleNotify() {
+    clearTimeout(notifyTimer);
+    notifyTimer = setTimeout(function () { sendNotify(false); }, NOTIFY_IDLE_MS);
+  }
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'hidden') { clearTimeout(notifyTimer); sendNotify(true); }
+  });
+  window.addEventListener('pagehide', function () { clearTimeout(notifyTimer); sendNotify(true); });
+
+  // ---------- podsumowanie ----------
+  var CHOOSABLE = window.__ZP_CHOOSABLE__ || [];
+  function renderSummary() {
+    var sumYes = document.getElementById('sum-yes');
+    var sumMaybe = document.getElementById('sum-maybe');
+    if (!sumYes || !sumMaybe) return;
+    var yesItems = [], maybeItems = [];
+    CHOOSABLE.forEach(function (row) {
+      var id = row[0], title = row[1];
+      if (store[id] === 'wybieram') yesItems.push(title);
+      else if (store[id] === 'zainteresowany') maybeItems.push(title);
+    });
+    function fill(ul, items) {
+      ul.innerHTML = '';
+      if (!items.length) {
+        var li = document.createElement('li');
+        li.className = 'summary-empty';
+        li.textContent = 'Nic jeszcze niezaznaczone.';
+        ul.appendChild(li);
+        return;
+      }
+      items.forEach(function (t) {
+        var li = document.createElement('li');
+        li.textContent = t;
+        ul.appendChild(li);
+      });
+    }
+    fill(sumYes, yesItems);
+    fill(sumMaybe, maybeItems);
+  }
+
+  document.getElementById('btn-copy')?.addEventListener('click', function () {
+    var yes = [], maybe = [];
+    CHOOSABLE.forEach(function (row) {
+      if (store[row[0]] === 'wybieram') yes.push('- ' + row[1]);
+      else if (store[row[0]] === 'zainteresowany') maybe.push('- ' + row[1]);
+    });
+    var text = 'ZIELONA PERGOLA — PODSUMOWANIE SPOTKANIA\n\n' +
+      'WYBIERAM:\n' + (yes.length ? yes.join('\n') : '(brak)') + '\n\n' +
+      'WSTĘPNIE ZAINTERESOWANY:\n' + (maybe.length ? maybe.join('\n') : '(brak)');
+    var hint = document.getElementById('copy-hint');
+    function ok() { if (hint) { hint.textContent = 'Skopiowano do schowka ✓'; setTimeout(function () { hint.textContent = ''; }, 3500); } }
+    function fail() {
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); ok(); } catch (e) { if (hint) hint.textContent = 'Nie udało się skopiować — zaznacz i skopiuj ręcznie.'; }
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(ok).catch(fail);
+    } else { fail(); }
+  });
+
+  // ---------- spis treści ----------
+  var tocOverlay = document.getElementById('toc-overlay');
+  function tocOpen() { return tocOverlay.classList.contains('is-open'); }
+  function openToc() { tocOverlay.classList.add('is-open'); }
+  function closeToc() { tocOverlay.classList.remove('is-open'); }
+  document.getElementById('toc-btn-open')?.addEventListener('click', openToc);
+  document.getElementById('toc-close')?.addEventListener('click', closeToc);
+  tocOverlay.addEventListener('click', function (e) { if (e.target === tocOverlay) closeToc(); });
+  document.getElementById('toc-list')?.addEventListener('click', function (e) {
+    var btn = e.target.closest('button[data-jump]');
+    if (!btn) return;
+    var targetId = 'slide-' + btn.getAttribute('data-jump');
+    var i = slides.findIndex(function (s) { return s.id === targetId; });
+    if (i >= 0) { goTo(i); closeToc(); }
+  });
+
+  // ---------- start position via hash ----------
+  var startHash = location.hash.replace('#', '');
+  if (startHash) {
+    var found = slides.findIndex(function (s) { return s.id === 'slide-' + startHash; });
+    if (found >= 0) idx = found;
+  }
+  render();
+})();
+</script>
+
+
+</body>
+</html>
+</body></html>
