@@ -15,6 +15,7 @@ node_modules/
 *.tmp
 *.zip
 
-# katalog roboczy galerii (oryginalne skany, migawki, arkusze stykowe)
+# katalogi robocze galerii (oryginalne skany, migawki, arkusze stykowe, zrzuty)
 .work/
+.work-prz/
 __pycache__/
