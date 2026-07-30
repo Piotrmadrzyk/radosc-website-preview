@@ -17,3 +17,4 @@ node_modules/
 
 # katalog roboczy galerii (oryginalne skany, migawki, arkusze stykowe)
 .work/
+__pycache__/
