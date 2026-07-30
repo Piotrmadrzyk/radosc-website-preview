@@ -1,0 +1,33 @@
+{
+ "_opis": "Poprawki redakcyjne nanoszone na scalone noty przy kontroli globalnej. Podagenci piszący noty nie widzą się nawzajem, więc kolizje tytułów przy kartach z tym samym motywem wychodzą dopiero po scaleniu. Trzymamy je tutaj, a nie na sztywno w noty.json, żeby potok pozostał odtwarzalny: merge_notes.py scala cząstkowe wyniki i dopiero na nie nakłada ten plik.",
+ "_1_klomb": "PT:2:2 i PT:2:19 to ten sam kadr ul. Grunwaldzkiej z dwóch nakładów Sztuki (Déposé 1914 No. 5 i Déposé 1916 No. 5) — obaj podagenci nazwali je identycznie. Różnicujemy po obiegu, bo to jedyne, co je naprawdę odróżnia.",
+ "PT:2:2": {
+  "tytul": "Klomb i latarnia, Feldpost do Orferode"
+ },
+ "PT:2:19": {
+  "tytul": "Klomb i latarnia, kaszet pułku 251"
+ },
+ "_2_pochody": "Cztery tytuły zaczynały się od słowa „Pochód”, a PT:2:49 i PT:2:52 różniły się wyłącznie przyimkiem („przy skrzyżowaniu” / „na skrzyżowaniu”) — katalog wiąże je jako dwa ujęcia tego samego zdarzenia, więc mówimy to wprost. Po zmianie tytułu PT:2:55 zaczynała notę własnym pierwszym słowem — przestawiony szyk pierwszego zdania, treść bez zmian.",
+ "PT:2:52": {
+  "tytul": "Drugie ujęcie tego samego pochodu"
+ },
+ "PT:2:55": {
+  "tytul": "Wieńce przed modernistycznym gmachem",
+  "nota": "Niesione w pochodzie wieńce każą myśleć o kondukcie pogrzebowym, ale katalog stawia to wyłącznie jako przypuszczenie. Tłum zebrał się przed dużym modernistycznym gmachem, w tle widać kopułę kościoła i pojazd. Ołówkowy opis odwrocia podaje współczesną nazwę ulicy, jest więc późniejszą adnotacją, nie datowaniem kadru; sam kadr określono ogólnie na połowę XX wieku."
+ },
+ "_3_turnheim": "PT:2:16 i PT:2:38 to ta sama ul. Sobieskiego z szyldem magazynu Turnheim; oba tytuły kręciły się wokół samego szyldu. Różnicujemy po technice i obiegu — czarno-biały światłodruk nieobiegowy wobec barwnego druku, który poszedł pocztą polową.",
+ "PT:2:16": {
+  "tytul": "Magazyn Turnheim w czarno-białym druku"
+ },
+ "PT:2:38": {
+  "tytul": "Turnheim w kolorze, poczta polowa"
+ },
+ "_4_klasztor": "PT:2:20 („Zespół klasztorny Reformatów w sepii”) i PT:2:34 („Zespół klasztorny w sepii”) zaczynały się tak samo, a PT:2:34 jest właśnie tą pozycją, której katalog nie potrafi zidentyfikować. Tytuł ma to nieść.",
+ "PT:2:34": {
+  "tytul": "Kopuła i dwie wieże, atrybucja otwarta"
+ },
+ "_5_powtorzenie": "PT:2:45 zaczynała notę tym samym słowem, co własny tytuł („Trzej”). Przestawiony punkt wejścia, treść bez zmian.",
+ "PT:2:45": {
+  "nota": "Odpoczynek na trawie: trzej młodzi mężczyźni w mundurach, czapkach i wysokich butach, za nimi konstrukcja, w której katalog dopuszcza wieżę wspinalniczą. Formacji nie ustalono — straż pożarna albo wojsko, sprawa pozostaje do potwierdzenia. Odbitkę zapisano z tyłu atramentem, data i podpisy czekają na odczyt, datowanie wymaga zawężenia."
+ }
+}
