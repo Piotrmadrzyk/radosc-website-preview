@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#060B18">
+<meta name="robots" content="noindex, nofollow">
+<title>Pytania uzupełniające · Michał Elżbieciak · PM Growth Lab</title>
+<meta name="description" content="Formularz uzupełniający przygotowany indywidualnie dla Michała Elżbieciaka. PM Growth Lab — Strategia. Technologia. Wzrost.">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23060B18'/><path d='M14 47V17h8a7.5 7.5 0 0 1 0 15h-8' stroke='%2334E0E8' stroke-width='4' fill='none' stroke-linecap='round' stroke-linejoin='round'/><path d='M32 47V26l8.5 11L49 26v21' stroke='%234C8DFF' stroke-width='4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+</head>
+<body>
+
+<div class="ambient" aria-hidden="true">
+  <span class="ambient__glow ambient__glow--a"></span>
+  <span class="ambient__glow ambient__glow--b"></span>
+  <span class="ambient__grid"></span>
+</div>
+
+<a class="skip-link" href="#screen">Przejdź do treści formularza</a>
+
+<header class="site-header">
+  <div class="brand">
+    <svg class="brand__mark" viewBox="0 0 64 64" role="img" aria-label="Monogram PM Growth Lab">
+      <defs>
+        <linearGradient id="pmg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#34E0E8"/>
+          <stop offset="100%" stop-color="#4C8DFF"/>
+        </linearGradient>
+      </defs>
+      <rect x="1.5" y="1.5" width="61" height="61" rx="16" fill="none" stroke="url(#pmg)" stroke-width="1.5" opacity=".55"/>
+      <path d="M14 47V17h8a7.5 7.5 0 0 1 0 15h-8" fill="none" stroke="url(#pmg)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M32 47V26l8.5 11L49 26v21" fill="none" stroke="url(#pmg)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="47.5" cy="17.5" r="2.6" fill="#34E0E8"/>
+    </svg>
+    <span class="brand__text">
+      <span class="brand__name"><b>PM</b> GROWTH LAB</span>
+      <span class="brand__tagline">Strategia. Technologia. Wzrost.</span>
+    </span>
+  </div>
+  <p class="site-header__note">Pytania uzupełniające przygotowane indywidualnie dla&nbsp;Michała&nbsp;Elżbieciaka</p>
+</header>
+
+<div class="progress" id="progress" hidden>
+  <div class="progress__bar"><span class="progress__fill" id="progressFill"></span></div>
+  <div class="progress__meta">
+    <span id="progressStage" class="progress__stage">Sekcja 1 z 10</span>
+    <span id="progressPercent" class="progress__percent">0%</span>
+  </div>
+</div>
+
+<main>
+  <section id="screen" class="card" tabindex="-1" aria-live="polite"></section>
+</main>
+
+<nav class="navbar" id="navbar" hidden aria-label="Nawigacja formularza">
+  <div class="navbar__inner">
+    <button type="button" class="btn btn--ghost" id="btnBack">Wstecz</button>
+    <span class="saved" id="savedFlag" role="status" aria-live="polite">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span id="savedText">Odpowiedzi zapisane</span>
+    </span>
+    <button type="button" class="btn btn--primary" id="btnNext">Dalej</button>
+  </div>
+</nav>
+
+<footer class="site-footer">
+  <span>PM Growth Lab · Piotr Mądrzyk</span>
+  <button type="button" class="linklike" id="btnReset">Wyczyść zapisane odpowiedzi</button>
+</footer>
+
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalBody">
+  <div class="modal__box">
+    <h2 class="modal__title" id="modalTitle"></h2>
+    <p class="modal__body" id="modalBody"></p>
+    <div class="modal__actions" id="modalActions"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="script.js"></script>
+</body>
+</html>
