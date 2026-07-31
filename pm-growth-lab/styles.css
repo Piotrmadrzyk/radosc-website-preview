@@ -431,8 +431,40 @@ select {
 .saved.is-visible { opacity: 1; }
 
 /* -------------------------------------------------------------- podsumowanie */
+/* ------------------------------------------------------- wysyłka odpowiedzi */
+.send {
+  margin-top: 32px; padding: 26px clamp(20px, 3.5vw, 30px);
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(180deg, rgba(15, 181, 203, .07), rgba(60, 125, 255, .05)),
+    var(--surface-soft);
+  border: 1.5px solid rgba(15, 181, 203, .28);
+}
+.send__title { margin: 0 0 8px; font-size: 22px; letter-spacing: -.01em; color: var(--ink); }
+.send__lead { margin: 0 0 20px; color: var(--ink-soft); font-size: 16.5px; max-width: 52ch; }
+.send__btn { width: 100%; max-width: 340px; }
+.send__note { margin: 14px 0 0; font-size: 14px; color: var(--ink-mute); }
+.send__status { margin: 14px 0 0; font-size: 15px; color: var(--ink-soft); }
+.send__status--warn {
+  background: #FFF7EA; border: 1px solid #F3DFBC; border-radius: var(--radius-sm);
+  padding: 12px 15px; color: #7A5410;
+}
+.send__status a { color: var(--accent-deep); font-weight: 600; }
+
+.send--done { border-color: rgba(15, 181, 203, .45); }
+.send__done {
+  display: flex; align-items: center; gap: 12px; margin: 0 0 10px;
+  font-size: 19px; font-weight: 650; color: var(--ink); letter-spacing: -.01em;
+}
+.send__done svg {
+  flex: none; width: 34px; height: 34px; padding: 7px; border-radius: 50%;
+  background: var(--grad); color: #04121F;
+}
+.linklike--dark { color: var(--ink-mute); margin-top: 12px; display: inline-block; }
+.linklike--dark:hover { color: var(--accent-deep); }
+
 .actions-grid {
-  display: grid; gap: 10px; margin-top: 26px;
+  display: grid; gap: 10px; margin-top: 22px;
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
 }
 .summary { margin-top: 30px; }

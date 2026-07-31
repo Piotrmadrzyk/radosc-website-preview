@@ -77,9 +77,58 @@ Nie jest potrzebna żadna komenda budowania — `publish directory` to ten katal
 
 ---
 
+## Wysyłka odpowiedzi — konfiguracja (2 minuty)
+
+Na ostatnim ekranie jest przycisk **WYŚLIJ ODPOWIEDZI**, który wysyła komplet
+odpowiedzi jednym kliknięciem. W trakcie wypełniania nic nie wychodzi na zewnątrz.
+
+Strona nie ma backendu, więc wysyłkę obsługuje darmowa usługa pośrednicząca.
+Konfiguracja to **dwie linijki na górze `script.js`**, w obiekcie `CONFIG`:
+
+```js
+var CONFIG = {
+  ENDPOINT: '',      // adres usługi
+  ACCESS_KEY: '',    // klucz (tylko Web3Forms)
+  EMAIL: ''          // adres zapasowy do kontaktu
+};
+```
+
+**Wariant A — Web3Forms** (bez zakładania konta, najszybszy):
+
+1. wejdź na [web3forms.com](https://web3forms.com), podaj swój e-mail — klucz przyjdzie na skrzynkę,
+2. uzupełnij:
+
+```js
+ENDPOINT: 'https://api.web3forms.com/submit',
+ACCESS_KEY: 'twój-klucz-z-maila',
+```
+
+**Wariant B — Formspree** (darmowe konto):
+
+1. załóż formularz na [formspree.io](https://formspree.io),
+2. uzupełnij:
+
+```js
+ENDPOINT: 'https://formspree.io/f/twój-identyfikator',
+ACCESS_KEY: '',
+```
+
+Na skrzynkę przychodzi wtedy: temat z procentem uzupełnienia, pełny raport TXT
+w treści wiadomości oraz komplet danych w formacie JSON.
+
+**Zanim uzupełnisz `ENDPOINT`, przycisk nadal działa:** pobiera plik z odpowiedziami
+i — jeśli podasz `EMAIL` — otwiera program pocztowy z gotową wiadomością, żeby
+klient odesłał plik w załączniku. Ten sam mechanizm zadziała, gdy usługa wysyłki
+będzie chwilowo niedostępna, więc odpowiedzi nigdy nie przepadają.
+
+Po udanej wysyłce ekran zamienia się w potwierdzenie z datą i godziną, a stan
+przeżywa odświeżenie strony. Jest też link **Wyślij jeszcze raz**.
+
+---
+
 ## Eksport odpowiedzi
 
-Na ekranie podsumowania dostępne są przyciski:
+Poza przyciskiem wysyłki na ekranie podsumowania są przyciski:
 
 | Przycisk | Efekt |
 |---|---|

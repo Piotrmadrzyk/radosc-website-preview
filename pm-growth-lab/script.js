@@ -9,6 +9,31 @@
   var STORAGE_KEY = 'pmgl.michal.formularz.v1';
   var TOTAL_QUESTIONS = 84;
 
+  /* --------------------------------------------------------------------------
+     WYSYŁKA ODPOWIEDZI — jedyne miejsce do skonfigurowania.
+
+     Formularz nie ma backendu, więc komplet odpowiedzi wysyłamy przez darmową
+     usługę pośredniczącą. Wystarczy uzupełnić dwie linijki poniżej.
+
+     Wariant A — Web3Forms (bez zakładania konta):
+       1. wejdź na https://web3forms.com, podaj swój e-mail, dostaniesz klucz
+       2. ENDPOINT:   'https://api.web3forms.com/submit'
+          ACCESS_KEY: 'wklej-tutaj-klucz'
+
+     Wariant B — Formspree (darmowe konto):
+       1. załóż formularz na https://formspree.io
+       2. ENDPOINT:   'https://formspree.io/f/twoj-identyfikator'
+          ACCESS_KEY: '' (zostaw puste)
+
+     Dopóki ENDPOINT jest pusty, przycisk „Wyślij” nadal działa: pobiera plik
+     z odpowiedziami i — jeśli podasz EMAIL — otwiera program pocztowy.
+     -------------------------------------------------------------------------- */
+  var CONFIG = {
+    ENDPOINT: '',
+    ACCESS_KEY: '',
+    EMAIL: ''
+  };
+
   /* title — wersja do eksportu (wersaliki), name — wersja wyświetlana na stronie */
   var STAGES = [
     { n: 1, title: 'MICHAŁ I JEGO DZIAŁALNOŚĆ', name: 'Michał i jego działalność' },
@@ -563,7 +588,7 @@
   });
 
   /* ------------------------------------------------------------------ stan */
-  var state = { answers: {}, index: 0, started: false, completed: false, savedAt: null };
+  var state = { answers: {}, index: 0, started: false, completed: false, savedAt: null, sentAt: null };
 
   var el = {
     screen: document.getElementById('screen'),
@@ -593,7 +618,8 @@
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({
         answers: state.answers, index: state.index,
-        started: state.started, completed: state.completed, savedAt: state.savedAt
+        started: state.started, completed: state.completed,
+        savedAt: state.savedAt, sentAt: state.sentAt
       }));
       flashSaved('Odpowiedzi zapisane');
     } catch (e) {
@@ -1266,11 +1292,13 @@
     sig.appendChild(h('div', 'sig__role', 'PM GROWTH LAB · Strategia. Technologia. Wzrost.'));
     c.appendChild(sig);
 
+    c.appendChild(buildSendBlock());
+
     var grid = h('div', 'actions-grid');
     var summaryBox = h('div', 'summary');
     summaryBox.hidden = true;
 
-    grid.appendChild(mkBtn('ZOBACZ MOJE ODPOWIEDZI', 'btn--primary', function (b) {
+    grid.appendChild(mkBtn('ZOBACZ MOJE ODPOWIEDZI', 'btn--light', function (b) {
       summaryBox.hidden = !summaryBox.hidden;
       b.textContent = summaryBox.hidden ? 'ZOBACZ MOJE ODPOWIEDZI' : 'UKRYJ ODPOWIEDZI';
       if (!summaryBox.hidden) {
@@ -1292,6 +1320,132 @@
     }));
     c.appendChild(grid);
     c.appendChild(summaryBox);
+  }
+
+  /* ---------------------------------------------------- wysyłka odpowiedzi */
+  function buildSendBlock() {
+    var box = h('section', 'send');
+    box.setAttribute('aria-label', 'Wysłanie odpowiedzi');
+    drawSend(box);
+    return box;
+  }
+
+  function drawSend(box) {
+    box.innerHTML = '';
+
+    if (state.sentAt) {
+      box.classList.add('send--done');
+      var okRow = h('p', 'send__done');
+      okRow.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      okRow.appendChild(h('span', null, 'Odpowiedzi wysłane · ' + formatStamp(state.sentAt)));
+      box.appendChild(okRow);
+      box.appendChild(h('p', 'send__note', 'Piotr ma już komplet informacji. Możesz zamknąć tę stronę — odpowiedzi zostają też zapisane na tym urządzeniu.'));
+      var again = h('button', 'linklike linklike--dark', 'Wyślij jeszcze raz');
+      again.type = 'button';
+      again.addEventListener('click', function () { state.sentAt = null; save(); drawSend(box); });
+      box.appendChild(again);
+      return;
+    }
+
+    box.classList.remove('send--done');
+    box.appendChild(h('h2', 'send__title', 'Wyślij odpowiedzi'));
+    var pct = completionPercent();
+    box.appendChild(h('p', 'send__lead', pct >= 100
+      ? 'Komplet odpowiedzi jest gotowy. Wyślij go jednym kliknięciem — trafi bezpośrednio do Piotra.'
+      : 'Uzupełniłeś ' + pct + '% formularza. Możesz wysłać odpowiedzi teraz albo wrócić i uzupełnić brakujące miejsca.'));
+
+    var btn = h('button', 'btn btn--primary btn--xl send__btn', 'WYŚLIJ ODPOWIEDZI');
+    btn.type = 'button';
+    var status = h('p', 'send__status');
+    status.setAttribute('role', 'status');
+    status.setAttribute('aria-live', 'polite');
+
+    btn.addEventListener('click', function () { sendAnswers(box, btn, status); });
+    box.appendChild(btn);
+    box.appendChild(status);
+    box.appendChild(h('p', 'send__note', 'Wysyłamy komplet odpowiedzi naraz — nic nie wychodzi w trakcie wypełniania.'));
+  }
+
+  function sendAnswers(box, btn, status) {
+    status.className = 'send__status';
+
+    if (!CONFIG.ENDPOINT) { sendFallback(status, 'Wysyłka bezpośrednia nie jest jeszcze skonfigurowana.'); return; }
+
+    btn.disabled = true;
+    btn.textContent = 'WYSYŁANIE…';
+    status.textContent = 'Przesyłamy odpowiedzi…';
+
+    var payload = {
+      subject: 'Formularz strategiczny — Michał Elżbieciak (' + completionPercent() + '%)',
+      from_name: 'PM Growth Lab — formularz strategiczny',
+      klient: 'Michał Elżbieciak',
+      uzupelnienie: completionPercent() + '%',
+      data: todayPL(),
+      message: buildTxt(),
+      dane: buildJson()
+    };
+    if (CONFIG.ACCESS_KEY) payload.access_key = CONFIG.ACCESS_KEY;
+
+    var done = false;
+    var timer = setTimeout(function () {
+      if (done) return;
+      done = true;
+      failed(box, btn, status, 'Wysyłka trwa zbyt długo.');
+    }, 20000);
+
+    fetch(CONFIG.ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json().catch(function () { return {}; });
+    }).then(function (data) {
+      if (done) return;
+      done = true; clearTimeout(timer);
+      if (data && data.success === false) throw new Error(data.message || 'odmowa usługi');
+      state.sentAt = new Date().toISOString();
+      save();
+      drawSend(box);
+      toast('Odpowiedzi wysłane. Dziękujemy!');
+    }).catch(function (err) {
+      if (done) return;
+      done = true; clearTimeout(timer);
+      failed(box, btn, status, 'Nie udało się połączyć z serwerem (' + err.message + ').');
+    });
+  }
+
+  function failed(box, btn, status, reason) {
+    btn.disabled = false;
+    btn.textContent = 'SPRÓBUJ WYSŁAĆ PONOWNIE';
+    sendFallback(status, reason);
+  }
+
+  /* gdy wysyłka bezpośrednia nie zadziała — pobieramy plik i podstawiamy e-mail */
+  function sendFallback(status, reason) {
+    download('formularz-strategiczny-michal-elzbieciak.txt', buildTxt(), 'text/plain;charset=utf-8');
+    status.className = 'send__status send__status--warn';
+    status.innerHTML = '';
+    status.appendChild(h('strong', null, reason + ' '));
+    if (CONFIG.EMAIL) {
+      status.appendChild(document.createTextNode('Pobraliśmy plik z Twoimi odpowiedziami — wyślij go w załączniku na adres '));
+      var a = document.createElement('a');
+      a.href = 'mailto:' + CONFIG.EMAIL +
+        '?subject=' + encodeURIComponent('Formularz strategiczny — Michał Elżbieciak') +
+        '&body=' + encodeURIComponent('Cześć Piotrze,\n\nw załączniku przesyłam wypełniony formularz strategiczny.\n\nPozdrawiam,\nMichał');
+      a.textContent = CONFIG.EMAIL;
+      status.appendChild(a);
+      status.appendChild(document.createTextNode('.'));
+    } else {
+      status.appendChild(document.createTextNode('Pobraliśmy plik z Twoimi odpowiedziami — odeślij go Piotrowi w załączniku wiadomości.'));
+    }
+  }
+
+  function formatStamp(iso) {
+    var d = new Date(iso);
+    if (isNaN(d)) return '';
+    var p = function (x) { return (x < 10 ? '0' : '') + x; };
+    return p(d.getDate()) + '.' + p(d.getMonth() + 1) + '.' + d.getFullYear() + ', godz. ' + p(d.getHours()) + ':' + p(d.getMinutes());
   }
 
   function mkBtn(text, cls, fn) {
@@ -1502,7 +1656,7 @@
           label: 'Tak, wyczyść', primary: true, fn: function () {
             wiping = true;
             clearTimeout(saveTimer);
-            state.answers = {}; state.index = 0; state.started = false; state.completed = false;
+            state.answers = {}; state.index = 0; state.started = false; state.completed = false; state.sentAt = null;
             try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
             location.reload();
           }
@@ -1544,13 +1698,14 @@
               state.index = typeof saved.index === 'number' ? saved.index : 0;
               state.started = !!saved.started;
               state.completed = !!saved.completed;
+              state.sentAt = saved.sentAt || null;
               render();
               flashSaved('Wczytano zapisane odpowiedzi');
             }
           },
           {
             label: 'Zacznij od początku', fn: function () {
-              state.answers = {}; state.index = 0; state.started = false; state.completed = false;
+              state.answers = {}; state.index = 0; state.started = false; state.completed = false; state.sentAt = null;
               try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
               render();
             }
@@ -1567,7 +1722,7 @@
     state: state, SCREENS: SCREENS, go: go, goToIndex: goToIndex,
     buildTxt: buildTxt, buildJson: buildJson, collect: collect,
     completionPercent: completionPercent, visibleScreens: visibleScreens,
-    setAnswer: function (id, v) { state.answers[id] = v; }, render: render, save: save,
+    setAnswer: function (id, v) { state.answers[id] = v; }, render: render, save: save, CONFIG: CONFIG,
     STORAGE_KEY: STORAGE_KEY
   };
 
