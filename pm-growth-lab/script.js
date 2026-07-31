@@ -31,7 +31,7 @@
   var CONFIG = {
     ENDPOINT: '',
     ACCESS_KEY: '',
-    EMAIL: ''
+    EMAIL: 'piotr.aparat@gmail.com'
   };
 
   /* title — wersja do eksportu (wersaliki), name — wersja wyświetlana na stronie */

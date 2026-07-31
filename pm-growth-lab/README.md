@@ -87,9 +87,9 @@ Konfiguracja to **dwie linijki na górze `script.js`**, w obiekcie `CONFIG`:
 
 ```js
 var CONFIG = {
-  ENDPOINT: '',      // adres usługi
-  ACCESS_KEY: '',    // klucz (tylko Web3Forms)
-  EMAIL: ''          // adres zapasowy do kontaktu
+  ENDPOINT: '',                          // adres usługi
+  ACCESS_KEY: '',                        // klucz (tylko Web3Forms)
+  EMAIL: 'piotr.aparat@gmail.com'        // adres zapasowy do kontaktu
 };
 ```
 
