@@ -39,55 +39,83 @@ api/pm-growth-lab/
 
 ---
 
-## Uruchomienie wysyłki — co trzeba zrobić raz
+## Uruchomienie wysyłki — checklista dla Piotra
 
-### 1. Konto Resend i zweryfikowana domena
+Stan na dziś: kod formularza i funkcji jest gotowy i przetestowany, brakuje
+wyłącznie konta Resend i wdrożenia na Vercel. Poniżej pełna lista czynności.
 
-Załóż konto na [resend.com](https://resend.com), dodaj domenę nadawcy
-(np. `pmgrowthlab.pl`) i wygeneruj klucz API. Bez zweryfikowanej domeny
-Resend pozwala wysyłać tylko na adres właściciela konta.
+### Krok 1 — Resend
 
-### 2. Wdrożenie funkcji na Vercel
+1. Załóż konto na [resend.com](https://resend.com) na docelowy adres odbiorcy raportu.
+2. W zakładce **API Keys** utwórz klucz (uprawnienie *Sending access* wystarczy).
+3. Nadawca:
+   - **bez własnej domeny** możesz na start wysyłać z `onboarding@resend.dev`,
+     ale Resend dostarczy wtedy wiadomość **wyłącznie na adres właściciela konta**.
+     Jeśli konto założysz na docelowy adres odbiorcy, to w zupełności wystarcza.
+   - **z własną domeną** (np. `pmgrowthlab.pl`) dodaj ją w zakładce *Domains*,
+     ustaw rekordy DNS i użyj adresu w rodzaju `raporty@pmgrowthlab.pl`.
 
-Podłącz to repozytorium do nowego projektu na [vercel.com](https://vercel.com).
-Vercel automatycznie wykryje katalog `api/` i opublikuje funkcję pod adresem:
+### Krok 2 — Vercel
+
+1. Zaloguj się na [vercel.com](https://vercel.com) kontem GitHub.
+2. **Add New → Project** i wybierz repozytorium `radosc-website-preview`.
+3. Framework Preset: **Other**. Katalog główny zostaw bez zmian —
+   Vercel sam wykryje funkcję w `api/`.
+4. Przed pierwszym wdrożeniem dodaj zmienne środowiskowe
+   (Settings → Environment Variables, zaznacz wszystkie trzy środowiska):
+
+```
+RESEND_API_KEY          = <klucz z Resend>
+REPORT_RECIPIENT_EMAIL  = <docelowy adres odbiorcy raportu>
+REPORT_FROM_EMAIL       = PM Growth Lab <onboarding@resend.dev>
+ALLOWED_ORIGINS         = (zostaw puste — domyślnie dozwolony jest tylko GitHub Pages)
+```
+
+5. **Deploy**. Po wdrożeniu adres funkcji to:
 
 ```
 https://<nazwa-projektu>.vercel.app/api/pm-growth-lab/send-followup-report
 ```
 
-Projekt na Vercelu obsługuje wyłącznie tę funkcję — strona nadal stoi
-na GitHub Pages i nic w niej się nie zmienia.
+Zmienne zmienione po wdrożeniu wymagają ponownego wdrożenia
+(Deployments → … → Redeploy).
 
-### 3. Zmienne środowiskowe (Vercel → Settings → Environment Variables)
+### Krok 3 — sprawdź, że e-mail naprawdę przychodzi
 
-| Zmienna | Znaczenie |
-|---|---|
-| `RESEND_API_KEY` | klucz API z Resend |
-| `REPORT_RECIPIENT_EMAIL` | adres, na który ma trafiać raport (adres Piotra) |
-| `REPORT_FROM_EMAIL` | adres nadawcy z domeny zweryfikowanej w Resend, np. `raporty@pmgrowthlab.pl` |
-| `ALLOWED_ORIGINS` | opcjonalnie — dodatkowe originy, po przecinku (do testów lokalnych) |
+Wklej w terminalu, podmieniając tylko nazwę projektu:
 
-Żadna z tych wartości nie znajduje się w repozytorium ani w kodzie strony.
-
-### 4. Wpisanie adresu funkcji w formularzu
-
-W `script.js`, w obiekcie `CONFIG` na samej górze:
-
-```js
-var CONFIG = {
-  ENDPOINT: 'https://<nazwa-projektu>.vercel.app/api/pm-growth-lab/send-followup-report',
-  ...
-};
+```bash
+curl -i -X POST \
+  -H "Content-Type: application/json" \
+  -H "Origin: https://piotrmadrzyk.github.io" \
+  -d '{"formId":"pm-growth-lab-followup-v1","submissionId":"UZ-TEST-0001","completion":50,"consent":true,"hp":"","sections":[{"n":1,"title":"TEST","items":[{"n":1,"question":"Pytanie testowe","answer":"Odpowiedź testowa","other":"","comment":"Komentarz testowy"}]}]}' \
+  https://<nazwa-projektu>.vercel.app/api/pm-growth-lab/send-followup-report
 ```
 
-Sam adres endpointu nie jest sekretem — sekrety zostają po stronie serwera.
+Oczekiwany wynik: `HTTP/2 200` oraz `{"ok":true,...}`, a na skrzynce odbiorcy
+wiadomość *„PM Growth Lab — odpowiedzi uzupełniające…”*.
+Jeśli jej nie ma w Odebranych, sprawdź Spam i Oferty.
 
-**Dopóki `ENDPOINT` jest pusty, formularz nie udaje wysyłki.** Przycisk
-informuje wprost, że wysyłka nie została jeszcze uruchomiona, a odpowiedzi
-zostają zapisane na urządzeniu.
+Najczęstsze odpowiedzi błędów:
 
----
+| Odpowiedź | Znaczenie |
+|---|---|
+| `503 mail_not_configured` | brakuje którejś ze zmiennych środowiskowych |
+| `502 mail_send_failed` | Resend odrzucił wysyłkę (zły klucz albo niedozwolony nadawca) |
+| `403 origin_not_allowed` | żądanie z innego adresu niż GitHub Pages |
+
+### Krok 4 — przekaż wykonawcy
+
+Odeślij: **adres funkcji** (bez klucza) oraz **potwierdzenie, że testowy e-mail
+dotarł**. Wtedy adres zostanie wpisany w `CONFIG.ENDPOINT` w `script.js`,
+wdrożony na GitHub Pages i przetestowany na publicznej stronie.
+
+### Uwaga o kopii strony na Vercelu
+
+Vercel opublikuje przy okazji statyczną kopię całego repozytorium pod adresem
+`*.vercel.app`. Plik `vercel.json` w katalogu głównym oznacza ją nagłówkiem
+`X-Robots-Tag: noindex, nofollow`, więc nie trafi do wyszukiwarek. Adresem
+roboczym pozostaje GitHub Pages.
 
 ## Bezpieczeństwo endpointu
 
