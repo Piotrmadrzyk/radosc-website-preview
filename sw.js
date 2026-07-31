@@ -1,7 +1,7 @@
 /* Zielona Pergola — minimalny service worker PWA.
    HTML: zawsze z sieci (świeże treści), fallback do cache offline.
    Zasoby statyczne: cache-first z douzupełnianiem. */
-var CACHE = 'zp-v1';
+var CACHE = 'zp-v2';
 self.addEventListener('install', function (e) { self.skipWaiting(); });
 self.addEventListener('activate', function (e) {
   e.waitUntil(caches.keys().then(function (keys) {
@@ -11,6 +11,9 @@ self.addEventListener('activate', function (e) {
 self.addEventListener('fetch', function (e) {
   var req = e.request;
   if (req.method !== 'GET' || new URL(req.url).origin !== location.origin) return;
+  /* Moduł PM Growth Lab zawsze prosto z sieci — jego pliki zmieniają się
+     niezależnie od strony i nie mogą utknąć w pamięci podręcznej. */
+  if (new URL(req.url).pathname.indexOf('/pm-growth-lab/') !== -1) return;
   if (req.mode === 'navigate' || (req.headers.get('accept') || '').indexOf('text/html') !== -1) {
     e.respondWith(fetch(req).then(function (res) {
       var copy = res.clone();
