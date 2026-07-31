@@ -86,8 +86,8 @@
           'ubezpieczenia na życie', 'ubezpieczenia grupowe', 'ubezpieczenia majątkowe',
           'ubezpieczenia komunikacyjne', 'zabezpieczenie emerytalne', 'inwestycje i oszczędności',
           'benefity pracownicze', 'rozwiązania dla firm', 'leasing', 'inne'
-        ], { n: 1, req: true, help: 'Zaznacz wszystko, czym realnie się zajmujesz — także obszary poboczne.' }),
-        F.text('q1_other', 'Jakie inne obszary?', { showIf: has('q1', 'inne'), placeholder: 'np. gwarancje ubezpieczeniowe, kredyty hipoteczne' })
+        ], { n: 1, req: true, help: 'Zaznacz wszystko, czym realnie się zajmujesz — także obszary poboczne.', otherField: 'q1_other' }),
+        F.text('q1_other', 'Jakie inne obszary?', { showIf: has('q1', 'inne'), placeholder: 'np. gwarancje ubezpieczeniowe, kredyty hipoteczne', reqIf: has('q1', 'inne'), reqMsg: 'Dopisz nazwę obszaru, który chcesz uwzględnić.' })
       ]
     },
 
@@ -102,18 +102,18 @@
 
     {
       type: 'q', stage: 1, q: [4, 5], fields: [
-        F.text('q4', 'Od ilu lat działasz w branży?', { n: 4, numeric: true, req: true, placeholder: 'np. 12' }),
+        F.text('q4', 'Od ilu lat działasz w branży?', { n: 4, numeric: true, req: true, placeholder: 'np. 12', numRange: [0, 80] }),
         F.radio('q5_mode', 'Ilu aktywnych klientów obsługujesz obecnie?', ['Dokładna liczba', 'Liczba przybliżona', 'Muszę sprawdzić'], { n: 5, req: true }),
-        F.text('q5_value', 'Podaj liczbę', { showIf: isOneOf('q5_mode', ['Dokładna liczba', 'Liczba przybliżona']), numeric: true, placeholder: 'np. 320' })
+        F.text('q5_value', 'Podaj liczbę', { showIf: isOneOf('q5_mode', ['Dokładna liczba', 'Liczba przybliżona']), numeric: true, placeholder: 'np. 320', numRange: [0, 999999] })
       ]
     },
 
     {
       type: 'q', stage: 1, q: [6, 7], fields: [
-        F.text('q6', 'Ile nowych rozmów lub spotkań z potencjalnymi klientami odbywasz średnio w miesiącu?', { n: 6, numeric: true, quick: true, placeholder: 'np. 25' }),
+        F.text('q6', 'Ile nowych rozmów lub spotkań z potencjalnymi klientami odbywasz średnio w miesiącu?', { n: 6, numeric: true, quick: true, placeholder: 'np. 25', numRange: [0, 999999] }),
         F.radio('q7_mode', 'Ilu z tych klientów średnio finalizuje zakup?', ['Podam liczbę', 'Podam procent', 'Muszę sprawdzić'], { n: 7 }),
-        F.text('q7_count', 'Liczba klientów miesięcznie', { showIf: is('q7_mode', 'Podam liczbę'), numeric: true, placeholder: 'np. 8' }),
-        F.text('q7_pct', 'Procent skuteczności', { showIf: is('q7_mode', 'Podam procent'), numeric: true, placeholder: 'np. 35' })
+        F.text('q7_count', 'Liczba klientów miesięcznie', { showIf: is('q7_mode', 'Podam liczbę'), numeric: true, placeholder: 'np. 8', numRange: [0, 999999] }),
+        F.text('q7_pct', 'Procent skuteczności', { showIf: is('q7_mode', 'Podam procent'), numeric: true, percent: true, placeholder: 'np. 35' })
       ]
     },
 
@@ -123,7 +123,7 @@
     {
       type: 'q', stage: 2, q: [8, 8], fields: [
         F.radio('q8_mode', 'Ilu aktywnych klientów masz obecnie przypisanych do swojego portalu SWRN?', ['Podam liczbę', 'Podam przedział', 'Muszę sprawdzić'], { n: 8, req: true }),
-        F.text('q8_value', 'Liczba klientów', { showIf: is('q8_mode', 'Podam liczbę'), numeric: true, placeholder: 'np. 74' }),
+        F.text('q8_value', 'Liczba klientów', { showIf: is('q8_mode', 'Podam liczbę'), numeric: true, placeholder: 'np. 74', numRange: [0, 999999] }),
         F.radio('q8_range', 'Przedział', ['do 10', '10–50', '50–100', '100–250', 'powyżej 250'], { showIf: is('q8_mode', 'Podam przedział') })
       ]
     },
@@ -192,8 +192,8 @@
         F.radio('q15', 'Jak długo przeciętny klient pozostaje aktywny?',
           ['mniej niż 6 miesięcy', '6–12 miesięcy', '1–2 lata', 'ponad 2 lata', 'nie mam takich danych'], { n: 15, req: true }),
         F.radio('q16_mode', 'Ilu klientów średnio rezygnuje?', ['Podam liczby', 'Nie mam takich danych', 'Muszę sprawdzić'], { n: 16 }),
-        F.text('q16_month', 'Rezygnacje w miesiącu', { showIf: is('q16_mode', 'Podam liczby'), numeric: true, placeholder: 'np. 2' }),
-        F.text('q16_year', 'Rezygnacje w roku', { showIf: is('q16_mode', 'Podam liczby'), numeric: true, placeholder: 'np. 18' })
+        F.text('q16_month', 'Rezygnacje w miesiącu', { showIf: is('q16_mode', 'Podam liczby'), numeric: true, placeholder: 'np. 2', numRange: [0, 999999] }),
+        F.text('q16_year', 'Rezygnacje w roku', { showIf: is('q16_mode', 'Podam liczby'), numeric: true, placeholder: 'np. 18', numRange: [0, 999999] })
       ]
     },
 
@@ -298,7 +298,7 @@
     {
       type: 'q', stage: 4, q: [34, 35], fields: [
         F.check('q34', 'Która z tych grup najczęściej kupuje obecnie?', null, { n: 34, optionsFrom: 'q33', max: 2, req: true, help: 'Wybierz maksymalnie dwie.' }),
-        F.check('q35', 'Z którą grupą masz najlepszy kontakt i największe doświadczenie?', null, { n: 35, optionsFrom: 'q33', max: 2, req: true })
+        F.check('q35', 'Z którymi grupami masz najlepszy kontakt i największe doświadczenie?', null, { n: 35, optionsFrom: 'q33', max: 2, req: true })
       ]
     },
 
@@ -313,13 +313,13 @@
       type: 'q', stage: 4, q: [38, 38], fields: [
         F.radio('q38', 'Czy masz już kontakty do firm, którym można zaproponować benefity dla pracowników?',
           ['Tak, sporo', 'Tak, kilka', 'Nie, ale mogę je zdobyć', 'Nie'], { n: 38, req: true }),
-        F.text('q38_count', 'Ile firm mniej więcej?', { showIf: isOneOf('q38', ['Tak, sporo', 'Tak, kilka']), numeric: true, placeholder: 'np. 15' })
+        F.text('q38_count', 'Ile firm mniej więcej?', { showIf: isOneOf('q38', ['Tak, sporo', 'Tak, kilka']), numeric: true, placeholder: 'np. 15', numRange: [0, 999999] })
       ]
     },
 
     {
       type: 'q', stage: 4, q: [39, 39], fields: [
-        F.text('q39', 'Ilu obecnych lub dawnych klientów można potencjalnie poinformować o nowej ofercie?', { n: 39, numeric: true, quick: true, placeholder: 'np. 200' }),
+        F.text('q39', 'Ilu obecnych lub dawnych klientów można potencjalnie poinformować o nowej ofercie?', { n: 39, numeric: true, quick: true, placeholder: 'np. 200', numRange: [0, 999999] }),
         F.radio('q39_consent', 'Czy posiadasz zgody na kontakt marketingowy z tymi osobami?',
           ['Tak, mam zgody', 'Częściowo', 'Nie', 'Muszę sprawdzić'], { req: true }),
         { type: 'info', id: '_i39', text: 'Nie chodzi jeszcze o przekazywanie nam danych osobowych. Potrzebujemy jedynie przybliżonej liczby i informacji, czy posiadasz odpowiednie zgody na kontakt.' }
@@ -533,9 +533,9 @@
     {
       type: 'q', stage: 9, q: [77, 77], fields: [
         F.radio('q77_mode', 'Ilu nowych aktywnych klientów SWRN chcesz pozyskać?', ['Podam cele', 'Ustalimy po analizie'], { n: 77, req: true }),
-        F.text('q77_3', 'W ciągu 3 miesięcy', { showIf: is('q77_mode', 'Podam cele'), numeric: true, placeholder: 'np. 20' }),
-        F.text('q77_6', 'W ciągu 6 miesięcy', { showIf: is('q77_mode', 'Podam cele'), numeric: true, placeholder: 'np. 60' }),
-        F.text('q77_12', 'W ciągu 12 miesięcy', { showIf: is('q77_mode', 'Podam cele'), numeric: true, placeholder: 'np. 150' })
+        F.text('q77_3', 'W ciągu 3 miesięcy', { showIf: is('q77_mode', 'Podam cele'), numeric: true, placeholder: 'np. 20', numRange: [0, 999999] }),
+        F.text('q77_6', 'W ciągu 6 miesięcy', { showIf: is('q77_mode', 'Podam cele'), numeric: true, placeholder: 'np. 60', numRange: [0, 999999] }),
+        F.text('q77_12', 'W ciągu 12 miesięcy', { showIf: is('q77_mode', 'Podam cele'), numeric: true, placeholder: 'np. 150', numRange: [0, 999999] })
       ]
     },
 
@@ -669,12 +669,82 @@
 
   function visibleScreens() { return SCREENS.filter(screenVisible); }
 
+  /* ------------------------------------------------------- pola liczbowe */
+  function numericLimits(f) {
+    if (f.percent) return { min: 0, max: 100 };
+    if (f.numRange) return { min: f.numRange[0], max: f.numRange[1] };
+    return { min: 0, max: 999999999 };
+  }
+
+  function numericError(f, raw) {
+    if (raw === undefined || raw === null) return null;
+    var trimmed = String(raw).trim();
+    if (trimmed === '') return null;
+    if (f.quick && QUICK.indexOf(trimmed) !== -1) return null;
+    if (!/^-?\d+([.,]\d+)?$/.test(trimmed)) {
+      return 'W tym miejscu potrzebujemy liczby, bez liter.';
+    }
+    var num = parseFloat(trimmed.replace(',', '.'));
+    var lim = numericLimits(f);
+    if (num < lim.min) {
+      return f.percent ? 'Wartość procentowa powinna mieścić się w zakresie od 0 do 100.' : 'Wpisz liczbę równą zero lub większą.';
+    }
+    if (num > lim.max) {
+      return f.percent ? 'Wartość procentowa powinna mieścić się w zakresie od 0 do 100.' : ('Wpisz liczbę z zakresu ' + lim.min + '–' + lim.max + '.');
+    }
+    return null;
+  }
+
+  function checkNumeric(f, input) {
+    var wrap = input.closest('.field');
+    if (!wrap) return;
+    var msg = numericError(f, input.value);
+    var span = wrap.querySelector('.hint__text');
+    if (msg) {
+      wrap.classList.add('is-invalid');
+      if (span) span.textContent = msg;
+    } else {
+      wrap.classList.remove('is-invalid');
+      if (span) span.textContent = f.msg || MSG_DEFAULT;
+    }
+  }
+
+  /* ------------------------------------------------- własna odpowiedź „inne” */
+  function isOtherFieldId(id) {
+    return Object.keys(FIELDS).some(function (k) { return FIELDS[k].otherField === id; });
+  }
+
+  function syncOtherRename(otherFieldId, oldText, newText) {
+    if (oldText === newText) return;
+    Object.keys(FIELDS).forEach(function (baseId) {
+      var base = FIELDS[baseId];
+      if (base.otherField !== otherFieldId) return;
+      Object.keys(FIELDS).forEach(function (fid) {
+        var f = FIELDS[fid];
+        if (f.optionsFrom !== baseId) return;
+        var val = state.answers[fid];
+        if (!Array.isArray(val) || !oldText) return;
+        var idx = val.indexOf(oldText);
+        if (idx !== -1) {
+          var updated = val.slice();
+          updated[idx] = newText || 'inne';
+          state.answers[fid] = updated;
+          saveSoon();
+        }
+      });
+    });
+  }
+
   function optionsOf(f) {
     if (f.optionsFrom) {
       var src = state.answers[f.optionsFrom];
-      if (Array.isArray(src) && src.length) return src.slice();
       var base = FIELDS[f.optionsFrom];
-      return base && base.options ? base.options.slice() : [];
+      var list = (Array.isArray(src) && src.length) ? src.slice() : (base && base.options ? base.options.slice() : []);
+      if (base && base.otherField) {
+        var customText = String(state.answers[base.otherField] || '').trim();
+        if (customText) list = list.map(function (opt) { return opt === 'inne' ? customText : opt; });
+      }
+      return list;
     }
     return f.options || [];
   }
@@ -816,7 +886,9 @@
 
     var hint = h('div', 'hint');
     hint.innerHTML = '<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 6v5M10 13.6v.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
-    hint.appendChild(h('span', null, f.msg || MSG_DEFAULT));
+    hint.setAttribute('role', 'status');
+  hint.setAttribute('aria-live', 'polite');
+  hint.appendChild(h('span', 'hint__text', f.msg || MSG_DEFAULT));
     wrap.appendChild(hint);
 
     return wrap;
@@ -847,7 +919,14 @@
     if (f.numeric) { i.inputMode = 'numeric'; i.autocomplete = 'off'; }
     if (f.placeholder) i.placeholder = f.placeholder;
     i.value = state.answers[f.id] || '';
-    i.addEventListener('input', function () { setAnswer(f.id, i.value); clearInvalid(i); });
+    var isOtherSource = isOtherFieldId(f.id);
+    i.addEventListener('input', function () {
+      var prevVal = state.answers[f.id] || '';
+      setAnswer(f.id, i.value);
+      if (f.numeric) { checkNumeric(f, i); } else { clearInvalid(i); }
+      if (isOtherSource) { syncOtherRename(f.id, prevVal.trim(), i.value.trim()); }
+    });
+    if (f.numeric) { i.addEventListener('blur', function () { checkNumeric(f, i); }); }
     wrap.appendChild(i);
     return wrap;
   }
@@ -1185,10 +1264,25 @@
     var firstBad = null;
 
     s.fields.forEach(function (f) {
-      if (!fieldVisible(f) || !f.req) return;
+      if (!fieldVisible(f)) return;
       var node = el.screen.querySelector('[data-field="' + cssEsc(f.id) + '"]');
       if (!node) return;
-      var ok = answered(f);
+      var isReq = f.req || (f.reqIf && f.reqIf(state.answers));
+      var ok = true;
+      var msgOverride = null;
+      if (isReq && !answered(f)) {
+        ok = false;
+        if (f.reqMsg) msgOverride = f.reqMsg;
+      }
+      if (ok && f.numeric) {
+        var input = node.querySelector('#in_' + cssEsc(f.id));
+        var numMsg = input ? numericError(f, input.value) : null;
+        if (numMsg) { ok = false; msgOverride = numMsg; }
+      }
+      if (msgOverride) {
+        var span = node.querySelector('.hint__text');
+        if (span) span.textContent = msgOverride;
+      }
       node.classList.toggle('is-invalid', !ok);
       if (!ok && !firstBad) firstBad = node;
     });
@@ -1672,7 +1766,13 @@
     var t = e.target;
     var tag = t && t.tagName ? t.tagName.toLowerCase() : '';
     if (tag === 'textarea' && !(e.ctrlKey || e.metaKey)) return;
-    if (tag === 'button' || tag === 'a' || tag === 'select') return;
+    if (tag === 'input' && (t.type === 'checkbox' || t.type === 'radio')) {
+e.preventDefault();
+if (t.type === 'checkbox') { t.checked = !t.checked; } else { t.checked = true; }
+t.dispatchEvent(new Event('change', { bubbles: true }));
+return;
+}
+if (tag === 'button' || tag === 'a' || tag === 'select') return;
     if (el.navbar.hidden) {
       if (SCREENS[state.index].type === 'welcome') {
         var cta = el.screen.querySelector('.btn--primary');
