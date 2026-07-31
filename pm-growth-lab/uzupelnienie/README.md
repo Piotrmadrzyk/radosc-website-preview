@@ -39,83 +39,48 @@ api/pm-growth-lab/
 
 ---
 
-## Uruchomienie wysyłki — checklista dla Piotra
+## Jak działa wysyłka
 
-Stan na dziś: kod formularza i funkcji jest gotowy i przetestowany, brakuje
-wyłącznie konta Resend i wdrożenia na Vercel. Poniżej pełna lista czynności.
-
-### Krok 1 — Resend
-
-1. Załóż konto na [resend.com](https://resend.com) na docelowy adres odbiorcy raportu.
-2. W zakładce **API Keys** utwórz klucz (uprawnienie *Sending access* wystarczy).
-3. Nadawca:
-   - **bez własnej domeny** możesz na start wysyłać z `onboarding@resend.dev`,
-     ale Resend dostarczy wtedy wiadomość **wyłącznie na adres właściciela konta**.
-     Jeśli konto założysz na docelowy adres odbiorcy, to w zupełności wystarcza.
-   - **z własną domeną** (np. `pmgrowthlab.pl`) dodaj ją w zakładce *Domains*,
-     ustaw rekordy DNS i użyj adresu w rodzaju `raporty@pmgrowthlab.pl`.
-
-### Krok 2 — Vercel
-
-1. Zaloguj się na [vercel.com](https://vercel.com) kontem GitHub.
-2. **Add New → Project** i wybierz repozytorium `radosc-website-preview`.
-3. Framework Preset: **Other**. Katalog główny zostaw bez zmian —
-   Vercel sam wykryje funkcję w `api/`.
-4. Przed pierwszym wdrożeniem dodaj zmienne środowiskowe
-   (Settings → Environment Variables, zaznacz wszystkie trzy środowiska):
+Ten sam wzorzec, co formularze Zielonej Pergoli:
 
 ```
-RESEND_API_KEY          = <klucz z Resend>
-REPORT_RECIPIENT_EMAIL  = <docelowy adres odbiorcy raportu>
-REPORT_FROM_EMAIL       = PM Growth Lab <onboarding@resend.dev>
-ALLOWED_ORIGINS         = (zostaw puste — domyślnie dozwolony jest tylko GitHub Pages)
+przeglądarka → POST JSON → webhook n8n → walidacja i złożenie raportu → Gmail → e-mail
 ```
 
-5. **Deploy**. Po wdrożeniu adres funkcji to:
+Przepływ w n8n: **PM Growth Lab — raport z formularza uzupełniającego**
+(`GDu543S2W53Uch1R`, projekt osobisty). Sześć węzłów:
 
-```
-https://<nazwa-projektu>.vercel.app/api/pm-growth-lab/send-followup-report
-```
-
-Zmienne zmienione po wdrożeniu wymagają ponownego wdrożenia
-(Deployments → … → Redeploy).
-
-### Krok 3 — sprawdź, że e-mail naprawdę przychodzi
-
-Wklej w terminalu, podmieniając tylko nazwę projektu:
-
-```bash
-curl -i -X POST \
-  -H "Content-Type: application/json" \
-  -H "Origin: https://piotrmadrzyk.github.io" \
-  -d '{"formId":"pm-growth-lab-followup-v1","submissionId":"UZ-TEST-0001","completion":50,"consent":true,"hp":"","sections":[{"n":1,"title":"TEST","items":[{"n":1,"question":"Pytanie testowe","answer":"Odpowiedź testowa","other":"","comment":"Komentarz testowy"}]}]}' \
-  https://<nazwa-projektu>.vercel.app/api/pm-growth-lab/send-followup-report
-```
-
-Oczekiwany wynik: `HTTP/2 200` oraz `{"ok":true,...}`, a na skrzynce odbiorcy
-wiadomość *„PM Growth Lab — odpowiedzi uzupełniające…”*.
-Jeśli jej nie ma w Odebranych, sprawdź Spam i Oferty.
-
-Najczęstsze odpowiedzi błędów:
-
-| Odpowiedź | Znaczenie |
+| Węzeł | Rola |
 |---|---|
-| `503 mail_not_configured` | brakuje którejś ze zmiennych środowiskowych |
-| `502 mail_send_failed` | Resend odrzucił wysyłkę (zły klucz albo niedozwolony nadawca) |
-| `403 origin_not_allowed` | żądanie z innego adresu niż GitHub Pages |
+| Formularz uzupełniający PM Growth Lab | webhook `POST`, CORS ograniczony do `https://piotrmadrzyk.github.io`, `ignoreBots` |
+| Złóż raport | walidacja zgłoszenia i złożenie raportu HTML oraz wersji tekstowej |
+| Czy wysyłać raport? | rozdziela zgłoszenia poprawne od odrzuconych |
+| Wyślij raport do Piotra | węzeł Gmail na istniejącym poświadczeniu, adres odbiorcy tylko tutaj |
+| Potwierdź przyjęcie | odpowiedź `{ ok: true, submissionId }`, kod 200 |
+| Odpowiedz bez wysyłki | honeypot → 200 bez wysyłki, błędy → 400 z kodem błędu |
 
-### Krok 4 — przekaż wykonawcy
+Adres webhooka jest wpisany w `CONFIG.ENDPOINT` w `script.js`. **Adres odbiorcy
+raportu nie występuje w żadnym pliku repozytorium** — jest wyłącznie w węźle
+Gmail po stronie n8n.
 
-Odeślij: **adres funkcji** (bez klucza) oraz **potwierdzenie, że testowy e-mail
-dotarł**. Wtedy adres zostanie wpisany w `CONFIG.ENDPOINT` w `script.js`,
-wdrożony na GitHub Pages i przetestowany na publicznej stronie.
+### Co sprawdza przepływ, zanim wyśle raport
 
-### Uwaga o kopii strony na Vercelu
+- identyfikator formularza (`pm-growth-lab-followup-v1`),
+- zgodę użytkownika (`consent === true`) — bez niej `400 consent_required`,
+- honeypot — wypełnione ukryte pole oznacza bota: odpowiedź 200, ale **bez wysyłki**,
+- rozmiar zgłoszenia (limit 300 000 znaków) oraz liczbę sekcji i pozycji,
+- obecność choć jednej odpowiedzi — puste zgłoszenie dostaje `400 no_answers`,
+- escapuje każdy tekst przed zbudowaniem HTML i usuwa znaki sterujące.
 
-Vercel opublikuje przy okazji statyczną kopię całego repozytorium pod adresem
-`*.vercel.app`. Plik `vercel.json` w katalogu głównym oznacza ją nagłówkiem
-`X-Robots-Tag: noindex, nofollow`, więc nie trafi do wyszukiwarek. Adresem
-roboczym pozostaje GitHub Pages.
+Kody błędów zwracane do formularza: `consent_required`, `unknown_form`,
+`empty_payload`, `no_answers`, `payload_too_large`, `invalid_payload`.
+
+### Wariant zapasowy (nieużywany)
+
+W repozytorium leży też `api/pm-growth-lab/send-followup-report.js` — funkcja
+serverless dla Vercela z wysyłką przez Resend. Jest w pełni przetestowana, ale
+**nie jest nigdzie podłączona**; została jako alternatywa, gdyby raport miał
+kiedyś wychodzić z adresu transakcyjnego zamiast ze skrzynki Piotra.
 
 ## Bezpieczeństwo endpointu
 

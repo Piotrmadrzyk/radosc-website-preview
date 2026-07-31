@@ -8,17 +8,19 @@
   /* --------------------------------------------------------------------------
      KONFIGURACJA WYSYŁKI
 
-     ENDPOINT to publiczny adres funkcji serverless, która wysyła raport
-     e-mailem. Sam adres nie jest sekretem — klucz API oraz adres odbiorcy
-     żyją wyłącznie w zmiennych środowiskowych po stronie serwera:
+     ENDPOINT to publiczny adres webhooka n8n, który przyjmuje komplet
+     odpowiedzi, składa raport i wysyła go e-mailem. Ten sam wzorzec obsługuje
+     formularze Zielonej Pergoli.
 
-       RESEND_API_KEY, REPORT_RECIPIENT_EMAIL, REPORT_FROM_EMAIL
+     Sam adres webhooka nie jest sekretem. Adres odbiorcy raportu oraz
+     poświadczenie skrzynki żyją wyłącznie po stronie n8n i nie występują
+     nigdzie w kodzie strony ani w repozytorium.
 
-     Dopóki ENDPOINT jest pusty, formularz NIE pokazuje sukcesu — informuje
-     wprost, że wysyłka nie jest jeszcze uruchomiona, i zachowuje odpowiedzi.
+     Gdyby ENDPOINT był pusty, formularz NIE pokazuje sukcesu — informuje
+     wprost, że wysyłka nie jest uruchomiona, i zachowuje odpowiedzi.
      -------------------------------------------------------------------------- */
   var CONFIG = {
-    ENDPOINT: '',
+    ENDPOINT: 'https://pmresearch.app.n8n.cloud/webhook/36d9c89d-6eb8-461b-b03b-e00527e4968d/pm-growth-lab-uzupelnienie',
     FORM_ID: 'pm-growth-lab-followup-v1',
     TIMEOUT_MS: 25000
   };
