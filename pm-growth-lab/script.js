@@ -9,16 +9,17 @@
   var STORAGE_KEY = 'pmgl.michal.formularz.v1';
   var TOTAL_QUESTIONS = 84;
 
+  /* title — wersja do eksportu (wersaliki), name — wersja wyświetlana na stronie */
   var STAGES = [
-    { n: 1, title: 'MICHAŁ I JEGO DZIAŁALNOŚĆ' },
-    { n: 2, title: 'SWRN I PRZYCHÓD ODNAWIALNY' },
-    { n: 3, title: 'PRODUKTY, KTÓRE WARTO PROMOWAĆ' },
-    { n: 4, title: 'GRUPY KLIENTÓW' },
-    { n: 5, title: 'SPRZEDAŻ I OBSŁUGA LEADÓW' },
-    { n: 6, title: 'MARKA I KOMUNIKACJA' },
-    { n: 7, title: 'OBECNE KANAŁY I NOWY FACEBOOK' },
-    { n: 8, title: 'FUNDACJA I DZIAŁALNOŚĆ SPOŁECZNA' },
-    { n: 9, title: 'CELE I BUDŻET' }
+    { n: 1, title: 'MICHAŁ I JEGO DZIAŁALNOŚĆ', name: 'Michał i jego działalność' },
+    { n: 2, title: 'SWRN I PRZYCHÓD ODNAWIALNY', name: 'SWRN i przychód odnawialny' },
+    { n: 3, title: 'PRODUKTY, KTÓRE WARTO PROMOWAĆ', name: 'Produkty, które warto promować' },
+    { n: 4, title: 'GRUPY KLIENTÓW', name: 'Grupy klientów' },
+    { n: 5, title: 'SPRZEDAŻ I OBSŁUGA LEADÓW', name: 'Sprzedaż i obsługa leadów' },
+    { n: 6, title: 'MARKA I KOMUNIKACJA', name: 'Marka i komunikacja' },
+    { n: 7, title: 'OBECNE KANAŁY I NOWY FACEBOOK', name: 'Obecne kanały i nowy Facebook' },
+    { n: 8, title: 'FUNDACJA I DZIAŁALNOŚĆ SPOŁECZNA', name: 'Fundacja i działalność społeczna' },
+    { n: 9, title: 'CELE I BUDŻET', name: 'Cele i budżet' }
   ];
 
   var MSG_DEFAULT = 'Potrzebujemy tej informacji, żeby prawidłowo policzyć model biznesowy.';
@@ -728,7 +729,7 @@
     var c = el.screen;
     var st = stageOf(s.stage);
     c.appendChild(h('p', 'eyebrow', 'Etap ' + st.n + ' z 9'));
-    c.appendChild(h('h1', 'screen-title', st.title.charAt(0) + st.title.slice(1).toLowerCase()));
+    c.appendChild(h('h1', 'screen-title', st.name));
     c.appendChild(h('p', 'lead', s.lead));
     c.appendChild(h('p', 'muted', 'Pytania w tym etapie pojawiają się pojedynczo. Nic nie ginie — wszystko zapisuje się na bieżąco.'));
   }
@@ -1231,7 +1232,7 @@
     el.fill.style.width = (s.type === 'welcome' ? 0 : pct) + '%';
     el.percent.textContent = (s.type === 'welcome' ? 0 : pct) + '%';
     var st = s.stage ? stageOf(s.stage) : null;
-    el.stage.textContent = st ? ('Etap ' + st.n + ' z 9 · ' + st.title.charAt(0) + st.title.slice(1).toLowerCase()) : '';
+    el.stage.textContent = st ? ('Etap ' + st.n + ' z 9 · ' + st.name) : '';
 
     el.back.disabled = pos <= 0 || s.type === 'welcome';
     el.next.textContent = isLastQuestionScreen(s) ? 'Zakończ' : 'Dalej';
@@ -1243,7 +1244,7 @@
     return i >= 0 && i + 1 < vis.length && vis[i + 1].type === 'end';
   }
 
-  function stageOf(n) { return STAGES[n - 1] || { n: n, title: '' }; }
+  function stageOf(n) { return STAGES[n - 1] || { n: n, title: '', name: '' }; }
 
   /* ------------------------------------------------------------ podsumowanie */
   function renderEnd() {
