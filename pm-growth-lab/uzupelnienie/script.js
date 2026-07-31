@@ -20,7 +20,7 @@
      wprost, że wysyłka nie jest uruchomiona, i zachowuje odpowiedzi.
      -------------------------------------------------------------------------- */
   var CONFIG = {
-    ENDPOINT: 'https://pmresearch.app.n8n.cloud/webhook/36d9c89d-6eb8-461b-b03b-e00527e4968d/pm-growth-lab-uzupelnienie',
+    ENDPOINT: 'https://pmresearch.app.n8n.cloud/webhook/pm-growth-lab-uzupelnienie',
     FORM_ID: 'pm-growth-lab-followup-v1',
     TIMEOUT_MS: 25000
   };
@@ -1177,18 +1177,22 @@
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(payload)
     }).then(function (r) {
-      return r.json().catch(function () { return {}; }).then(function (data) { return { ok: r.ok, data: data }; });
+      return r.json().catch(function () { return {}; }).then(function (data) { return { ok: r.ok, status: r.status, data: data }; });
     }).then(function (r) {
       if (finished) return;
       finished = true; clearTimeout(timer);
-      if (!r.ok || !r.data || r.data.ok !== true) { failSend(btn, status); return; }
+      if (!r.ok || !r.data || r.data.ok !== true) {
+        console.error('[PM Growth Lab] wysyłka odrzucona — HTTP ' + r.status + ', kod: ' + ((r.data && r.data.error) || 'brak'));
+        failSend(btn, status); return;
+      }
       state.sentAt = new Date().toISOString();
       save();
       state.index = SCREENS.length - 1;
       render();
-    }).catch(function () {
+    }).catch(function (err) {
       if (finished) return;
       finished = true; clearTimeout(timer);
+      console.error('[PM Growth Lab] wysyłka nieudana — brak połączenia z serwerem: ' + (err && err.message ? err.message : 'nieznany błąd'));
       failSend(btn, status);
     });
   }
