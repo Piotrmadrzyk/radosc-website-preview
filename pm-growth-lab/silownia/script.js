@@ -327,6 +327,15 @@
     if (isNaN(d.getTime())) return iso;
     return WEEKDAYS[d.getDay()] + ', ' + d.getDate() + ' ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear();
   }
+  /* wariant do wnętrza zdania: „od dnia 3 sierpnia 2026 (poniedziałek)” */
+  function formatDateInline(iso) {
+    if (!iso) return '';
+    var p = String(iso).split('-');
+    if (p.length !== 3) return iso;
+    var d = new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2]));
+    if (isNaN(d.getTime())) return iso;
+    return d.getDate() + ' ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear() + ' (' + WEEKDAYS[d.getDay()] + ')';
+  }
   function daysFromToday(iso) {
     var p = String(iso || '').split('-');
     if (p.length !== 3) return 0;
@@ -343,7 +352,14 @@
   }
   /* skraca etykiety godzin i treningów do samej wartości: „6:00 — tryb wojskowy” → „6:00” */
   function shortLabel(text) { return String(text).split(' — ')[0]; }
-  function lower(s) { return s ? s.charAt(0).toLowerCase() + s.slice(1) : s; }
+  /* nazwy własne zostają wielką literą także w środku zdania kontraktu */
+  var PROPER = ['Merkury', 'Bistro', 'Piotrek', 'Bartek', 'Zdrofit'];
+  function lower(s) {
+    if (!s) return s;
+    var first = String(s).split(/[\s,—]/)[0];
+    if (PROPER.indexOf(first) !== -1) return s;
+    return s.charAt(0).toLowerCase() + s.slice(1);
+  }
 
   /* ==========================================================================
      ODPOWIEDZI W FORMIE TEKSTU
@@ -458,7 +474,10 @@
       el.screen.classList.add('is-entering');
     }
 
-    if (s.img) el.screen.appendChild(figure(s.img, s.alt, state.index === 0));
+    /* ilustracja: ekrany własne trzymają ją u siebie, ekrany pytań — przy pytaniu */
+    var pic = s.img || (s.q && s.q.img);
+    var picAlt = s.alt || (s.q && s.q.alt);
+    if (pic) el.screen.appendChild(figure(pic, picAlt, state.index === 0));
 
     if (s.type === 'welcome') renderWelcome();
     else if (s.type === 'contract') renderContract();
@@ -825,7 +844,7 @@
         (days.length ? ', w dniach: ' + joinList(days.map(lower)) : '') +
         (hours.length ? ', o godzinie ' + joinList(hours) : '') +
         (duration ? ', w wymiarze ' + lower(duration) : '') +
-        (a.q8 ? ', licząc od dnia ' + formatDate(a.q8) : '') + '.',
+        (a.q8 ? ', licząc od dnia ' + formatDateInline(a.q8) : '') + '.',
       goals.length
         ? 'Za oficjalny cel operacji strony uznają: ' + joinList(goals.map(lower)) + '.'
         : 'Cel operacji zostanie ustalony w trybie roboczym.',
@@ -838,7 +857,7 @@
       reasons.length
         ? 'Odwołanie treningu jest dopuszczalne wyłącznie z powodów: ' + joinList(reasons.map(lower)) + '.'
         : 'Katalog dopuszczalnych powodów odwołania pozostaje pusty.',
-      'Strona, która odwoła trening bez ważnego powodu, ponosi następującą karę: ' + (penalty || 'do ustalenia') + '.',
+      'Strona, która odwoła trening bez ważnego powodu, ponosi następującą karę: ' + (penalty ? lower(penalty) : 'do ustalenia') + '.',
       'Wskaźnik ryzyka wymówek w chwili zawarcia kontraktu: ' + RISK_LEVELS[lvl].name.toLowerCase() + '. ' + RISK_LEVELS[lvl].text
     ];
 
