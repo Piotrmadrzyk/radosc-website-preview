@@ -6,6 +6,23 @@
 (function () {
   'use strict';
 
+  /* --------------------------------------------------------------------------
+     WYSYŁKA KONTRAKTU
+
+     ENDPOINT to publiczny adres webhooka n8n, który przyjmuje gotowy kontrakt,
+     składa wiadomość i wysyła ją e-mailem do Piotrka. Ten sam wzorzec obsługuje
+     formularz uzupełniający PM Growth Lab, ale jest to osobny przepływ i osobny
+     adres — te dwa formularze nie mają ze sobą nic wspólnego.
+
+     Adres odbiorcy i poświadczenie skrzynki żyją wyłącznie po stronie n8n.
+     Gdyby ENDPOINT był pusty, formularz nie pokazuje sukcesu — informuje wprost,
+     że wysyłka nie jest uruchomiona, i zachowuje odpowiedzi.
+     -------------------------------------------------------------------------- */
+  var CONFIG = {
+    ENDPOINT: 'https://pmresearch.app.n8n.cloud/webhook/pm-power-lab-kaloryfer',
+    TIMEOUT_MS: 25000
+  };
+
   var STORAGE_KEY = 'pmpowerlab.kaloryfer.v1';
   var FORM_ID = 'pm-power-lab-kaloryfer-v1';
   var GYM = 'Zdrofit Rzeszów, al. gen. Leopolda Okulickiego';
@@ -223,7 +240,11 @@
   /* ==========================================================================
      STAN
      ========================================================================== */
-  var state = { answers: {}, index: 0, savedAt: null, signedP: false, signedB: false };
+  var state = {
+    answers: {}, index: 0, savedAt: null,
+    signedP: false, signedB: false,
+    submissionId: null, sentAt: null
+  };
   var wiping = false;
 
   var el = {
@@ -257,7 +278,8 @@
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({
         answers: state.answers, index: state.index, savedAt: state.savedAt,
-        signedP: state.signedP, signedB: state.signedB
+        signedP: state.signedP, signedB: state.signedB,
+        submissionId: state.submissionId, sentAt: state.sentAt
       }));
       flashSaved('Odpowiedzi zapisane');
     } catch (e) {
@@ -1001,6 +1023,8 @@
 
     c.appendChild(h('p', 'lead', 'Wskaźnik ryzyka wymówek: ' + RISK_LEVELS[parts.level].name.toLowerCase() + '. ' + RISK_LEVELS[parts.level].text));
 
+    c.appendChild(state.sentAt ? sentBox() : sendBox());
+
     var actions = h('div', 'actions-grid');
     actions.appendChild(actionButton('Kopiuj kontrakt', copyContract));
     actions.appendChild(actionButton('Pobierz TXT', downloadTxt));
@@ -1017,6 +1041,219 @@
     c.appendChild(h('p', 'cta-note', 'Odpowiedzi zostają zapisane na tym urządzeniu. Możesz wrócić do nich w każdej chwili.'));
 
     buildPrintDoc();
+  }
+
+  /* ==========================================================================
+     WYSYŁKA KONTRAKTU DO PIOTRKA
+     ========================================================================== */
+  function newSubmissionId() {
+    var d = new Date();
+    var stamp = String(d.getFullYear()).slice(2) + pad(d.getMonth() + 1) + pad(d.getDate())
+      + '-' + pad(d.getHours()) + pad(d.getMinutes());
+    var rnd = Math.random().toString(36).slice(2, 6).toUpperCase();
+    return 'KAL-' + stamp + '-' + rnd;
+  }
+
+  function formatStamp(iso) {
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return '—';
+    return pad(d.getDate()) + '.' + pad(d.getMonth() + 1) + '.' + d.getFullYear()
+      + ', godz. ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+  }
+
+  function payload() {
+    var parts = contractParts();
+    return {
+      formId: FORM_ID,
+      submissionId: state.submissionId,
+      submittedAt: new Date().toISOString(),
+      consent: state.answers.__consent === true,
+      hp: state.answers.__hp || '',
+      ryzyko: { poziom: RISK_LEVELS[parts.level].name, komentarz: RISK_LEVELS[parts.level].text },
+      zatwierdzenia: { piotrek: !!state.signedP, bartek: !!state.signedB },
+      ustalenia: parts.plan,
+      paragrafy: parts.paragraphs,
+      odpowiedzi: QUESTIONS.map(function (q, i) {
+        return { n: i + 1, question: q.title, answer: answerText(q) };
+      })
+    };
+  }
+
+  var SEND_ERRORS = {
+    consent_required: 'Zaznacz zgodę nad przyciskiem — bez niej nie wysyłamy niczego.',
+    unknown_form: 'Serwer nie rozpoznał tego formularza. Odśwież stronę i spróbuj ponownie.',
+    empty_payload: 'Kontrakt wygląda na pusty. Wróć do pytań i uzupełnij odpowiedzi.',
+    no_answers: 'W kontrakcie nie ma ani jednej odpowiedzi.',
+    payload_too_large: 'Kontrakt jest za duży, żeby go wysłać. Skróć własne wpisy.',
+    invalid_payload: 'Serwer odrzucił zgłoszenie jako niepoprawne. Spróbuj ponownie.'
+  };
+
+  function sendBox() {
+    var box = h('div', 'send');
+    box.appendChild(h('h2', 'send__title', 'Wyślij kontrakt do Piotrka'));
+    box.appendChild(h('p', 'send__lead', 'Nic nie musisz pobierać ani przeklejać. Komplet ustaleń wraz z pełnymi odpowiedziami trafi e-mailem prosto do Piotrka.'));
+
+    /* zgoda */
+    var consent = h('div', 'consent');
+    consent.id = 'consentBox';
+    var lab = h('label', 'opt opt--check' + (state.answers.__consent ? ' is-selected' : ''));
+    lab.setAttribute('for', 'in_consent');
+    var chk = document.createElement('input');
+    chk.type = 'checkbox';
+    chk.id = 'in_consent';
+    chk.checked = !!state.answers.__consent;
+    lab.appendChild(chk);
+    lab.appendChild(h('span', 'opt__box'));
+    lab.appendChild(h('span', 'consent__text', 'Zgadzam się na przesłanie tego kontraktu i moich odpowiedzi do Piotrka.'));
+    chk.addEventListener('change', function () {
+      state.answers.__consent = chk.checked;
+      lab.classList.toggle('is-selected', chk.checked);
+      consent.classList.remove('is-invalid');
+      saveSoon();
+    });
+    consent.appendChild(lab);
+    box.appendChild(consent);
+
+    /* pułapka na boty — niewidoczna dla ludzi */
+    var hp = document.createElement('input');
+    hp.type = 'text';
+    hp.className = 'hp';
+    hp.id = 'in_hp';
+    hp.tabIndex = -1;
+    hp.setAttribute('autocomplete', 'off');
+    hp.setAttribute('aria-hidden', 'true');
+    hp.addEventListener('input', function () { state.answers.__hp = hp.value; });
+    box.appendChild(hp);
+
+    var status = h('p', 'send__status');
+    status.id = 'sendStatus';
+    status.setAttribute('role', 'status');
+    status.setAttribute('aria-live', 'polite');
+    status.hidden = true;
+
+    var btn = h('button', 'btn btn--primary btn--xl send__btn', 'WYŚLIJ KONTRAKT DO PIOTRKA');
+    btn.type = 'button';
+    btn.id = 'btnSend';
+    btn.addEventListener('click', function () { askAndSend(btn, status, hp); });
+
+    var row = h('div', 'cta-row');
+    row.appendChild(btn);
+    box.appendChild(row);
+    box.appendChild(status);
+    box.appendChild(h('p', 'send__note', 'Odpowiedzi zostają na tym urządzeniu także po wysłaniu.'));
+    return box;
+  }
+
+  function askAndSend(btn, status, hp) {
+    if (!state.answers.__consent) {
+      var cb = document.getElementById('consentBox');
+      if (cb) { cb.classList.add('is-invalid'); cb.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+      toast(SEND_ERRORS.consent_required);
+      return;
+    }
+    openModal('Wysłać kontrakt do Piotrka?',
+      'Wyślemy ustalenia, treść kontraktu i wszystkie odpowiedzi. Po wysłaniu nic nie znika — możesz dalej pobrać kontrakt albo go wydrukować.',
+      [
+        { label: 'Tak, wysyłamy', primary: true, fn: function () { doSend(btn, status, hp); } },
+        { label: 'Jeszcze nie', fn: function () {} }
+      ]);
+  }
+
+  function setStatus(status, text, warn) {
+    status.hidden = false;
+    status.textContent = text;
+    status.classList.toggle('send__status--warn', !!warn);
+  }
+
+  function doSend(btn, status, hp) {
+    if (!CONFIG.ENDPOINT) {
+      setStatus(status, 'Wysyłka nie jest jeszcze uruchomiona. Skorzystaj z pobrania kontraktu — odpowiedzi zostają zapisane.', true);
+      return;
+    }
+    if (hp && hp.value.trim() !== '') state.answers.__hp = hp.value;
+
+    btn.disabled = true;
+    btn.textContent = 'WYSYŁAMY…';
+    setStatus(status, 'Trwa wysyłanie kontraktu…', false);
+
+    if (!state.submissionId) state.submissionId = newSubmissionId();
+
+    var ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+    var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, CONFIG.TIMEOUT_MS);
+
+    fetch(CONFIG.ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload()),
+      signal: ctrl ? ctrl.signal : undefined
+    }).then(function (res) {
+      clearTimeout(timer);
+      return res.json().catch(function () { return { ok: res.ok }; });
+    }).then(function (data) {
+      if (data && data.ok) {
+        state.sentAt = new Date().toISOString();
+        if (data.submissionId) state.submissionId = data.submissionId;
+        save();
+        render();
+        toast('Kontrakt poleciał do Piotrka.');
+        return;
+      }
+      failSend(btn, status, SEND_ERRORS[data && data.error] || 'Serwer odrzucił zgłoszenie. Spróbuj ponownie za chwilę.');
+    }).catch(function (e) {
+      clearTimeout(timer);
+      var msg = (e && e.name === 'AbortError')
+        ? 'Wysyłka trwała zbyt długo i została przerwana. Odpowiedzi są bezpieczne — spróbuj ponownie.'
+        : 'Nie udało się połączyć z serwerem. Sprawdź internet i spróbuj ponownie. Odpowiedzi zostały zachowane.';
+      failSend(btn, status, msg);
+    });
+  }
+
+  function failSend(btn, status, msg) {
+    btn.disabled = false;
+    btn.textContent = 'WYŚLIJ KONTRAKT DO PIOTRKA';
+    setStatus(status, msg, true);
+  }
+
+  function sentBox() {
+    var box = h('div', 'send send--done');
+    var head = h('p', 'send__done');
+    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 20 20');
+    svg.setAttribute('aria-hidden', 'true');
+    var p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    p.setAttribute('d', 'M4 10.5l4 4 8-9');
+    p.setAttribute('fill', 'none');
+    p.setAttribute('stroke', 'currentColor');
+    p.setAttribute('stroke-width', '2.2');
+    p.setAttribute('stroke-linecap', 'round');
+    p.setAttribute('stroke-linejoin', 'round');
+    svg.appendChild(p);
+    head.appendChild(svg);
+    head.appendChild(h('span', null, 'Kontrakt został wysłany do Piotrka.'));
+    box.appendChild(head);
+
+    box.appendChild(h('p', 'send__lead', 'Wysłano ' + formatStamp(state.sentAt) + '. Odpowiedzi zostają na tym urządzeniu — możesz je nadal pobrać albo wydrukować.'));
+    if (state.submissionId) box.appendChild(h('span', 'sent__id', 'Identyfikator zgłoszenia: ' + state.submissionId));
+
+    var again = h('button', 'linklike linklike--dark', 'Wyślij jeszcze raz');
+    again.type = 'button';
+    again.addEventListener('click', function () {
+      openModal('Wysłać kontrakt ponownie?',
+        'Piotrek dostanie drugą wiadomość z tymi samymi ustaleniami. Rób to tylko wtedy, gdy pierwsza nie dotarła albo odpowiedzi się zmieniły.',
+        [
+          {
+            label: 'Tak, wyślij ponownie', primary: true, fn: function () {
+              state.sentAt = null;
+              state.submissionId = null;
+              save();
+              render();
+            }
+          },
+          { label: 'Zostaw', fn: function () {} }
+        ]);
+    });
+    box.appendChild(again);
+    return box;
   }
 
   /* ==========================================================================
@@ -1188,6 +1425,8 @@
             state.index = 0;
             state.signedP = false;
             state.signedB = false;
+            state.submissionId = null;
+            state.sentAt = null;
             try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
             location.reload();
           }
@@ -1227,6 +1466,8 @@
               state.index = typeof saved.index === 'number' ? Math.min(Math.max(saved.index, 0), SCREENS.length - 1) : 0;
               state.signedP = !!saved.signedP;
               state.signedB = !!saved.signedB;
+              state.submissionId = saved.submissionId || null;
+              state.sentAt = saved.sentAt || null;
               render();
               flashSaved('Wczytano zapisane odpowiedzi');
             }
@@ -1237,6 +1478,8 @@
               state.index = 0;
               state.signedP = false;
               state.signedB = false;
+              state.submissionId = null;
+              state.sentAt = null;
               try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
               render();
             }
@@ -1251,7 +1494,7 @@
   /* interfejs do testów automatycznych */
   window.PMPOWER = {
     state: state, SCREENS: SCREENS, QUESTIONS: QUESTIONS, STORAGE_KEY: STORAGE_KEY,
-    go: go, render: render, save: save, validate: validate,
+    go: go, render: render, save: save, validate: validate, CONFIG: CONFIG, payload: payload,
     contractText: contractText, exportData: exportData,
     riskScore: riskScore, riskLevel: riskLevel, answerText: answerText,
     goTo: function (i) { state.index = Math.max(0, Math.min(SCREENS.length - 1, i)); save(); render(); }

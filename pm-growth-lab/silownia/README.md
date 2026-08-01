@@ -38,7 +38,8 @@ pm-growth-lab/silownia/
 - Autozapis w `localStorage` (klucz `pmpowerlab.kaloryfer.v1`) — po odświeżeniu
   strony formularz proponuje kontynuację od ostatniego miejsca.
 - Stopka zawiera **„Zacznij badanie od nowa”** z potwierdzeniem.
-- Brak backendu, brak zewnętrznych bibliotek, brak wysyłki czegokolwiek na serwer.
+- Brak zewnętrznych bibliotek i brak własnego backendu; jedyne połączenie z siecią
+  to wysyłka kontraktu na końcu, uruchamiana świadomym kliknięciem.
 
 ### Walidacja
 
@@ -61,6 +62,46 @@ Kontrakt zatwierdzają dwa przyciski: „Piotrek — zatwierdzam” i „Bartek 
 zatwierdzam”. Dopiero po obu zatwierdzeniach pojawia się komunikat o zawarciu
 kontraktu i można przejść na ekran końcowy. To zwykłe przełączniki, nie podpis
 elektroniczny.
+
+### Wysyłka kontraktu
+
+Na ekranie końcowym jest przycisk **WYŚLIJ KONTRAKT DO PIOTRKA**. Bartek niczego
+nie musi pobierać ani przeklejać — komplet ustaleń, treść kontraktu i wszystkie
+odpowiedzi trafiają e-mailem prosto do Piotrka.
+
+```
+przeglądarka → POST JSON → webhook n8n → walidacja i złożenie wiadomości → Gmail → e-mail
+```
+
+Przepływ w n8n: **PM POWER LAB — kontrakt Operacji Kaloryfer** (`zE50Z8xXIKn06Kl6`,
+projekt osobisty). Jest **całkowicie osobny** od przepływu formularza Michała —
+inny adres webhooka, inny identyfikator formularza, inna treść wiadomości.
+
+| Węzeł | Rola |
+|---|---|
+| Formularz Operacja Kaloryfer | webhook `POST`, CORS ograniczony do `https://piotrmadrzyk.github.io`, `ignoreBots` |
+| Złóż kontrakt | walidacja zgłoszenia i złożenie wiadomości HTML oraz wersji tekstowej |
+| Czy wysyłać kontrakt? | rozdziela zgłoszenia poprawne od odrzuconych |
+| Wyślij kontrakt do Piotra | węzeł Gmail na istniejącym poświadczeniu, adres odbiorcy tylko tutaj |
+| Potwierdź przyjęcie | odpowiedź `{ ok: true, submissionId }`, kod 200 |
+| Odpowiedz bez wysyłki | honeypot → 200 bez wysyłki, błędy → 400 z kodem błędu |
+
+Adres webhooka jest wpisany w `CONFIG.ENDPOINT` w `script.js`. **Adres odbiorcy
+nie występuje w żadnym pliku repozytorium** — jest wyłącznie w węźle Gmail po
+stronie n8n.
+
+Zanim cokolwiek wyjdzie, przepływ sprawdza: identyfikator formularza
+(`pm-power-lab-kaloryfer-v1`), zgodę użytkownika (`consent === true`), honeypot,
+rozmiar zgłoszenia (limit 200 000 znaków), liczbę pozycji i obecność choć jednej
+odpowiedzi. Każdy tekst jest escapowany przed zbudowaniem HTML, a znaki sterujące
+usuwane. Kody błędów: `consent_required`, `unknown_form`, `empty_payload`,
+`no_answers`, `payload_too_large`, `invalid_payload`.
+
+Po stronie formularza: zgoda jest obowiązkowa, przed wysyłką pojawia się pytanie
+potwierdzające, a po udanej wysyłce odpowiedzi **nie są kasowane** — ponowna
+wysyłka wymaga świadomego kliknięcia i drugiego potwierdzenia. Po nieudanej
+wysyłce dane zostają nietknięte, a komunikat jest spokojny i pozwala spróbować
+jeszcze raz.
 
 ### Eksport
 

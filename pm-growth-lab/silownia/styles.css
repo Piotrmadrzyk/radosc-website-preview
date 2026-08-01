@@ -472,6 +472,56 @@ input:focus, textarea:focus {
 
 .actions-grid { display: grid; gap: 10px; margin-top: 24px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
 
+/* ------------------------------------------------------- wysyłka kontraktu */
+.send {
+  margin-top: 28px; padding: 26px clamp(18px, 3.4vw, 30px);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, rgba(199, 249, 78, .08), rgba(34, 211, 238, .05)), var(--surface-soft);
+  border: 1.5px solid rgba(6, 182, 212, .3);
+}
+.send__title { margin: 0 0 8px; font-size: 22px; letter-spacing: -.012em; color: var(--ink); }
+.send__lead { margin: 0 0 18px; color: var(--ink-soft); font-size: 16.5px; max-width: 54ch; }
+.send__btn { width: 100%; max-width: 360px; }
+.send__note { margin: 14px 0 0; font-size: 14px; color: var(--ink-mute); }
+.send__status { margin: 14px 0 0; font-size: 15px; color: var(--ink-soft); }
+.send__status--warn {
+  background: #FFF7EA; border: 1px solid #F3DFBC; border-radius: var(--radius-sm);
+  padding: 12px 15px; color: #7A5410;
+}
+.send .cta-row { margin-top: 18px; }
+
+.send--done { border-color: rgba(6, 182, 212, .45); }
+.send__done {
+  display: flex; align-items: center; gap: 12px; margin: 0 0 10px;
+  font-size: 19px; font-weight: 700; color: var(--ink); letter-spacing: -.012em;
+}
+.send__done svg {
+  flex: none; width: 34px; height: 34px; padding: 7px; border-radius: 50%;
+  background: var(--grad); color: #04121F;
+}
+.sent__id {
+  display: inline-block; margin-top: 4px; padding: 6px 12px; border-radius: 8px;
+  background: #fff; border: 1px solid var(--surface-line);
+  font-size: 13.5px; color: var(--ink-mute); letter-spacing: .04em;
+}
+.linklike--dark { color: var(--ink-mute); margin-top: 14px; display: inline-block; }
+.linklike--dark:hover { color: var(--accent-deep); }
+
+/* zgoda przed wysyłką */
+.consent {
+  margin: 0 0 4px; padding: 16px 18px; border-radius: var(--radius);
+  border: 1.5px solid var(--surface-line); background: #fff;
+}
+.consent.is-invalid { border-color: #E8A33D; background: #FFFBF3; }
+.consent .opt { background: transparent; border: 0; padding: 0; min-height: 0; align-items: flex-start; }
+.consent .opt:hover { background: transparent; }
+.consent .opt.is-selected { background: transparent; }
+.consent__text { font-size: 15.5px; line-height: 1.55; color: var(--ink-soft); }
+.consent.is-invalid .consent__text { color: #7A5410; }
+
+/* pułapka na boty — poza ekranem, poza czytnikami */
+.hp { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; opacity: 0; }
+
 /* ---------------------------------------------------------------- modal */
 .modal {
   position: fixed; inset: 0; z-index: 50;
