@@ -277,6 +277,9 @@ PLIKI_DANYCH = [
     'assets/data/site-config.js',
     'js/main.js',
     'js/manager.js',
+    # llms.txt to streszczenie strony pisane dla robotow AI. Jest publiczne
+    # i podawalo prywatny adres wprost modelom jezykowym.
+    'llms.txt',
 ]
 
 
