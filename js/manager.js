@@ -33,7 +33,7 @@
     speak: 'Read aloud',
     greetDay: 'Good morning!', greetEve: 'Good evening!',
     greet: " I'm the virtual manager of Zielona Pergola. Happy to tell you about today's lunch, opening hours, wood-fired pizza or catering — what would you like to know?",
-    offline: 'I am sorry, we are having a technical break. Call us at **795 870 359** or use the contact form.'
+    offline: 'I am sorry, we are having a technical break. Call us at **573 569 141** or use the contact form.'
   } : {
     fab: 'Wirtualny Manager',
     sub: 'Restauracja Zielona Pergola · asystent AI',
@@ -50,7 +50,7 @@
     speak: 'Przeczytaj na głos',
     greetDay: 'Dzień dobry!', greetEve: 'Dobry wieczór!',
     greet: ' Jestem wirtualnym managerem Zielonej Pergoli. Chętnie opowiem o dzisiejszym lunchu, godzinach otwarcia, pizzy z pieca albo cateringu — o co chcesz zapytać?',
-    offline: 'Przepraszam, mam chwilową przerwę techniczną. Zadzwoń do nas: **795 870 359** albo napisz przez formularz kontaktowy.'
+    offline: 'Przepraszam, mam chwilową przerwę techniczną. Zadzwoń do nas: **573 569 141** albo napisz przez formularz kontaktowy.'
   };
   var RES_HREF = (EN ? 'kontakt.html' : 'kontakt.html') + '#rezerwacja';
 

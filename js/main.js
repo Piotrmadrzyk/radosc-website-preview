@@ -94,7 +94,7 @@ console.info('[RADOSC] main.js loaded', {
       if (v === '') return t('reqGuests', 'Podaj liczbę osób.');
       var g = guestsParse(v);
       if (!Number.isFinite(g) || g < 1) return t('badGuests', 'Podaj liczbę osób od 1 wzwyż (bez ułamków).');
-      return t('bigGroup', 'Grupy powyżej 12 osób prosimy o kontakt telefoniczny: 795 870 359.');
+      return t('bigGroup', 'Grupy powyżej 12 osób prosimy o kontakt telefoniczny: 573 569 141.');
     }
     if (field.name === 'rdate') {
       if (v === '') return t('reqDate', 'Wybierz datę rezerwacji.');
@@ -262,7 +262,7 @@ console.info('[RADOSC] main.js loaded', {
           document.dispatchEvent(new CustomEvent('zp:form-success', { detail: { form: form } }));
         }).catch(function () {
           status.classList.add('is-error');
-          status.textContent = t('sendError', 'Nie udało się wysłać formularza. Spróbuj ponownie albo zadzwoń: 795 870 359.');
+          status.textContent = t('sendError', 'Nie udało się wysłać formularza. Spróbuj ponownie albo zadzwoń: 573 569 141.');
         }).finally(function () { submitting = false; if (btn) btn.disabled = false; });
         return;
       }
@@ -523,11 +523,11 @@ console.info('[RADOSC] main.js loaded', {
 
   renderMenu(window.RADOSC_PIZZA, 'pizza-menu', {
     title: 'Aktualne menu pizzy potwierdzisz telefonicznie.',
-    text: 'Pełną kartę pizzy przygotowujemy do publikacji. Zadzwoń — powiemy, co dziś pieczemy: <a class="tel-link" href="tel:+48795870359">795 870 359</a>.'
+    text: 'Pełną kartę pizzy przygotowujemy do publikacji. Zadzwoń — powiemy, co dziś pieczemy: <a class="tel-link" href="tel:+48573569141">573 569 141</a>.'
   });
   renderMenu(window.RADOSC_BURGERY, 'burger-menu', {
     title: 'Menu burgerów potwierdzisz telefonicznie.',
-    text: 'Kartę burgerów przygotowujemy do publikacji. Zamówienia i pytania: <a class="tel-link" href="tel:+48795870359">795 870 359</a>.'
+    text: 'Kartę burgerów przygotowujemy do publikacji. Zamówienia i pytania: <a class="tel-link" href="tel:+48573569141">573 569 141</a>.'
   });
   renderMenu(window.RADOSC_SNIADANIA, 'sniadania-menu', {
     title: 'Śniadania', text: ''

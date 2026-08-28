@@ -243,6 +243,43 @@ def przerob(sciezka, jezyk, z_paskiem):
 BEZ_PASKA = {'oferta.html', '404.html'}
 
 
+def przerob_dane(sciezka):
+    """Kontakty siedza takze w plikach .js — w konfiguracji strony
+    (assets/data/site-config.js) i w komunikatach bledu formularzy.
+
+    To jest wazniejsze niz wyglada: site-config.js ladowany jest przez
+    wszystkie 18 stron i to z niego bierze sie adres wstawiany w czasie
+    dzialania strony. Poprawienie samego HTML-a nie wystarczy — prywatny
+    adres wracalby przy kazdym odswiezeniu."""
+    with open(sciezka, encoding='utf-8') as fh:
+        t = fh.read()
+    przed = t
+    zrobione = []
+
+    if MAIL_PRYWATNY in t:
+        zrobione.append('mail x%d' % t.count(MAIL_PRYWATNY))
+        t = t.replace(MAIL_PRYWATNY, MAIL)
+
+    ile = t.count(TEL_PRYWATNY_LINK) + t.count(TEL_PRYWATNY_POKAZ)
+    if ile:
+        t = t.replace(TEL_PRYWATNY_LINK, TEL_LINK)
+        t = t.replace(TEL_PRYWATNY_POKAZ, TEL_POKAZ)
+        zrobione.append('telefon x%d' % ile)
+
+    if t != przed:
+        with open(sciezka, 'w', encoding='utf-8') as fh:
+            fh.write(t)
+    return zrobione
+
+
+# Pliki .js, w ktorych tez trzymane sa kontakty.
+PLIKI_DANYCH = [
+    'assets/data/site-config.js',
+    'js/main.js',
+    'js/manager.js',
+]
+
+
 def main():
     zadania = []
     for nazwa in sorted(os.listdir(ROOT)):
@@ -257,6 +294,16 @@ def main():
                                 nazwa not in BEZ_PASKA, 'en/' + nazwa))
 
     zmienione = 0
+
+    for wzgledna in PLIKI_DANYCH:
+        sciezka = os.path.join(ROOT, wzgledna)
+        if not os.path.isfile(sciezka):
+            continue
+        zrobione = przerob_dane(sciezka)
+        if zrobione:
+            zmienione += 1
+            print('  %-32s %s' % (wzgledna, ', '.join(zrobione)))
+
     for sciezka, jezyk, z_paskiem, etykieta in zadania:
         zrobione = przerob(sciezka, jezyk, z_paskiem)
         if zrobione:
