@@ -9,7 +9,7 @@
    ============================================================ */
 
 /* START MENU PIZZA */
-window.RADOSC_PIZZA = {
+window.PERGOLA_PIZZA = {
   sizeNote: "Wszystkie pizze — średnica 40 cm.",
   note: "Sos czosnkowy lub ziołowy w cenie.",
   items: [
@@ -27,7 +27,7 @@ window.RADOSC_PIZZA = {
 /* KONIEC MENU PIZZA */
 
 /* START MENU BURGERY */
-window.RADOSC_BURGERY = {
+window.PERGOLA_BURGERY = {
   sizeNote: "Burgery — 190 g mięsa, w zestawie frytki.",
   items: [
     { name: "Drobiowy Chrupiący", desc: "bułka maślana, panierowany kurczak, sałata, pomidor, piklowana cebula, ogórek, cheddar, sos ziołowy, frytki", price: 42 },
@@ -39,7 +39,7 @@ window.RADOSC_BURGERY = {
 /* KONIEC MENU BURGERY */
 
 /* START MENU ANTIPASTI */
-window.RADOSC_ANTIPASTI = {
+window.PERGOLA_ANTIPASTI = {
   sizeNote: "Przystawki — na cieście pizzowym.",
   items: [
     { name: "Bruschetta Ogrodowa", desc: "pomidory, czerwona cebula, bazylia, oliwa, rukola", price: 16, veg: true },
@@ -49,7 +49,7 @@ window.RADOSC_ANTIPASTI = {
 /* KONIEC MENU ANTIPASTI */
 
 /* START MENU MAKARONY */
-window.RADOSC_MAKARONY = {
+window.PERGOLA_MAKARONY = {
   sizeNote: "Makaron świeży, przygotowywany na miejscu.",
   note: "Każdy makaron dostępny również w wersji bezglutenowej.",
   items: [
@@ -61,7 +61,7 @@ window.RADOSC_MAKARONY = {
 /* KONIEC MENU MAKARONY */
 
 /* START MENU ŚNIADANIA */
-window.RADOSC_SNIADANIA = {
+window.PERGOLA_SNIADANIA = {
   note: "Do każdego śniadania — kawa w cenie.",
   items: [
     { name: "Śniadanie Angielskie", desc: "2 jajka sadzone, kiełbaski, boczek, grillowany pomidor, fasolka w sosie, pieczywo", price: 32 },

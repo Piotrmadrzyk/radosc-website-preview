@@ -3,7 +3,7 @@
    na document, więc pierwszy rzeczywisty klik działa nawet wtedy, gdy
    main.js i dane menu wciąż się pobierają. main.js NIE dubluje tej logiki. */
 
-window.__RADOSC_DIAGNOSTICS__ = {
+window.__PERGOLA_DIAGNOSTICS__ = {
   navigationInitialized: false,
   initializedAt: null,
   contentReady: false,
@@ -91,8 +91,8 @@ window.__RADOSC_DIAGNOSTICS__ = {
       var before = state.menu;
       toggleMobileNavigation();
       var menuEl = document.getElementById('mobile-menu');
-      if (window.__RADOSC_DIAGNOSTICS__) {
-        window.__RADOSC_DIAGNOSTICS__.lastHamburgerEvent = {
+      if (window.__PERGOLA_DIAGNOSTICS__) {
+        window.__PERGOLA_DIAGNOSTICS__.lastHamburgerEvent = {
           deliveredAt: Math.round(performance.now()),
           target: e.target.tagName + (e.target.id ? '#' + e.target.id : ''),
           beforeOpen: before,
@@ -142,5 +142,5 @@ window.__RADOSC_DIAGNOSTICS__ = {
     }
   });
 
-  window.__RADOSC_NAV__ = { setMenu: setMenu, setSheet: setSheet, state: state };
+  window.__PERGOLA_NAV__ = { setMenu: setMenu, setSheet: setSheet, state: state };
 })();

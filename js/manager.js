@@ -9,8 +9,8 @@
    ============================================================ */
 (function () {
   'use strict';
-  if (window.__RADOSC_MANAGER__) return;
-  window.__RADOSC_MANAGER__ = 1;
+  if (window.__PERGOLA_MANAGER__) return;
+  window.__PERGOLA_MANAGER__ = 1;
 
   var ENDPOINT = 'https://pmresearch.app.n8n.cloud/webhook/zielona-pergola-manager';
   var EN = document.documentElement.lang === 'en';
@@ -56,10 +56,10 @@
 
   /* menu lunchowe: jeśli strona go nie załadowała, dograj skrypt danych */
   function ensureLunch(cb) {
-    if (window.RADOSC_LUNCH) return cb(window.RADOSC_LUNCH);
+    if (window.PERGOLA_LUNCH) return cb(window.PERGOLA_LUNCH);
     var s = document.createElement('script');
     s.src = BASE + 'assets/data/lunch-menu.js';
-    s.onload = function () { cb(window.RADOSC_LUNCH || null); };
+    s.onload = function () { cb(window.PERGOLA_LUNCH || null); };
     s.onerror = function () { cb(null); };
     document.head.appendChild(s);
   }

@@ -11,8 +11,8 @@
    ============================================================ */
 (function () {
   'use strict';
-  if (window.__RADOSC_SIGNATURE__) return; // ochrona przed podwójną inicjalizacją
-  window.__RADOSC_SIGNATURE__ = 1;
+  if (window.__PERGOLA_SIGNATURE__) return; // ochrona przed podwójną inicjalizacją
+  window.__PERGOLA_SIGNATURE__ = 1;
 
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
@@ -98,9 +98,9 @@
     }
 
     var seen = false;
-    try { seen = sessionStorage.getItem('radosc-sig-hero') === '1'; } catch (e) {}
+    try { seen = sessionStorage.getItem('pergola-sig-hero') === '1'; } catch (e) {}
 
-    function markSeen() { try { sessionStorage.setItem('radosc-sig-hero', '1'); } catch (e) {} }
+    function markSeen() { try { sessionStorage.setItem('pergola-sig-hero', '1'); } catch (e) {} }
 
     function tween(from, to, ms, done) {
       var t0 = performance.now();

@@ -1,7 +1,6 @@
 /* ZIELONA PERGOLA — interakcje (wspólne dla wszystkich podstron) */
 window.__MAIN_JS_EXECUTIONS__ = (window.__MAIN_JS_EXECUTIONS__ || 0) + 1;
-console.info('[RADOSC] main.js loaded', {
-  build: window.__RADOSC_BUILD__,
+console.info('[PERGOLA] main.js loaded', {
   executions: window.__MAIN_JS_EXECUTIONS__,
   src: document.currentScript ? document.currentScript.src : null
 });
@@ -114,12 +113,12 @@ console.info('[RADOSC] main.js loaded', {
   function setFieldError(field, message) {
     field.classList.add('field-error');
     field.setAttribute('aria-invalid', 'true');
-    var msg = field.__radoscErr;
+    var msg = field.__pergolaErr;
     if (!msg) {
       msg = document.createElement('span');
       msg.className = 'field-msg';
       msg.id = 'field-msg-' + (++errSeq);
-      field.__radoscErr = msg;
+      field.__pergolaErr = msg;
       (field.closest('label') || field.parentNode).appendChild(msg);
     }
     msg.textContent = message;
@@ -131,7 +130,7 @@ console.info('[RADOSC] main.js loaded', {
     field.classList.remove('field-error');
     field.removeAttribute('aria-invalid');
     field.removeAttribute('aria-describedby');
-    if (field.__radoscErr) { field.__radoscErr.hidden = true; field.__radoscErr.textContent = ''; }
+    if (field.__pergolaErr) { field.__pergolaErr.hidden = true; field.__pergolaErr.textContent = ''; }
   }
   function revalidateField(field) {
     /* korekta na żywo dopiero po pierwszej nieudanej wysyłce danego pola */
@@ -327,7 +326,7 @@ console.info('[RADOSC] main.js loaded', {
   function navigateToSection(id, opts) {
     var target = document.getElementById(id);
     if (!target) return false;
-    var d = window.__RADOSC_DIAGNOSTICS__;
+    var d = window.__PERGOLA_DIAGNOSTICS__;
     var offset = header ? header.getBoundingClientRect().height : 0;
     var rectBefore = target.getBoundingClientRect().top;
     var yBefore = window.scrollY;
@@ -353,13 +352,13 @@ console.info('[RADOSC] main.js loaded', {
   function scrollToSection(id, opts) {
     if (!document.getElementById(id)) return false;
     var options = { hash: !opts || opts.hash !== false };
-    if (window.__RADOSC_DIAGNOSTICS__) window.__RADOSC_DIAGNOSTICS__.lastAnchorRequest = { id: id, contentReady: contentReady, at: Math.round(performance.now()) };
+    if (window.__PERGOLA_DIAGNOSTICS__) window.__PERGOLA_DIAGNOSTICS__.lastAnchorRequest = { id: id, contentReady: contentReady, at: Math.round(performance.now()) };
     if (!contentReady) { pendingAnchor = { id: id, opts: options }; return true; }
     return navigateToSection(id, options);
   }
   document.addEventListener('app:content-ready', function () {
     contentReady = true;
-    if (window.__RADOSC_DIAGNOSTICS__) window.__RADOSC_DIAGNOSTICS__.contentReady = true;
+    if (window.__PERGOLA_DIAGNOSTICS__) window.__PERGOLA_DIAGNOSTICS__.contentReady = true;
     if (pendingAnchor) {
       navigateToSection(pendingAnchor.id, pendingAnchor.opts);
       pendingAnchor = null;
@@ -369,7 +368,7 @@ console.info('[RADOSC] main.js loaded', {
       navigateToSection(window.location.hash.slice(1), { hash: false });
     }
   }, { once: true });
-  window.RADOSC_SCROLL = scrollToSection;
+  window.PERGOLA_SCROLL = scrollToSection;
 
   /* pasek skrótów Restauracji — gaszenie gradientu po dojechaniu do końca */
   var jumpbar = document.querySelector('.jumpbar');
@@ -419,9 +418,9 @@ console.info('[RADOSC] main.js loaded', {
   });
 
   /* diagnostyka: pełna nawigacja podpięta */
-  if (window.__RADOSC_DIAGNOSTICS__) {
-    window.__RADOSC_DIAGNOSTICS__.navigationInitialized = true;
-    window.__RADOSC_DIAGNOSTICS__.initializedAt = performance.now();
+  if (window.__PERGOLA_DIAGNOSTICS__) {
+    window.__PERGOLA_DIAGNOSTICS__.navigationInitialized = true;
+    window.__PERGOLA_DIAGNOSTICS__.initializedAt = performance.now();
   }
 })();
 
@@ -467,8 +466,8 @@ console.info('[RADOSC] main.js loaded', {
 
   /* menu lunchowe (strona Restauracji) */
   var lunchBox = document.getElementById('lunch-menu');
-  if (lunchBox && window.RADOSC_LUNCH) {
-    var L = window.RADOSC_LUNCH;
+  if (lunchBox && window.PERGOLA_LUNCH) {
+    var L = window.PERGOLA_LUNCH;
     var h = '';
     if (L.note) h += '<p class="lead"><b>' + esc(L.note) + '</b></p>';
     h += '<div class="lunch-week">';
@@ -521,15 +520,15 @@ console.info('[RADOSC] main.js loaded', {
     box.innerHTML = h;
   }
 
-  renderMenu(window.RADOSC_PIZZA, 'pizza-menu', {
+  renderMenu(window.PERGOLA_PIZZA, 'pizza-menu', {
     title: 'Aktualne menu pizzy potwierdzisz telefonicznie.',
     text: 'Pełną kartę pizzy przygotowujemy do publikacji. Zadzwoń — powiemy, co dziś pieczemy: <a class="tel-link" href="tel:+48573569141">573 569 141</a>.'
   });
-  renderMenu(window.RADOSC_BURGERY, 'burger-menu', {
+  renderMenu(window.PERGOLA_BURGERY, 'burger-menu', {
     title: 'Menu burgerów potwierdzisz telefonicznie.',
     text: 'Kartę burgerów przygotowujemy do publikacji. Zamówienia i pytania: <a class="tel-link" href="tel:+48573569141">573 569 141</a>.'
   });
-  renderMenu(window.RADOSC_SNIADANIA, 'sniadania-menu', {
+  renderMenu(window.PERGOLA_SNIADANIA, 'sniadania-menu', {
     title: 'Śniadania', text: ''
   });
 })();
@@ -571,8 +570,8 @@ console.info('[RADOSC] main.js loaded', {
     if (data.note) h += '<p class="menu-size-note">' + esc(data.note) + '</p>';
     box.innerHTML = h;
   }
-  renderExtra(window.RADOSC_ANTIPASTI, 'antipasti-menu');
-  renderExtra(window.RADOSC_MAKARONY, 'makarony-menu');
+  renderExtra(window.PERGOLA_ANTIPASTI, 'antipasti-menu');
+  renderExtra(window.PERGOLA_MAKARONY, 'makarony-menu');
 
   /* menu weekendowe (strona Restauracji); id kategorii = kotwica dla paska skrótów */
   function slug(s) {
@@ -581,8 +580,8 @@ console.info('[RADOSC] main.js loaded', {
       .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
   }
   var wkBox = document.getElementById('weekend-menu');
-  if (wkBox && window.RADOSC_WEEKEND) {
-    var W = window.RADOSC_WEEKEND;
+  if (wkBox && window.PERGOLA_WEEKEND) {
+    var W = window.PERGOLA_WEEKEND;
     var h = '';
     W.categories.forEach(function (cat) {
       h += '<h3 class="wk-cat" id="wk-' + slug(cat.title) + '">' + esc(cat.title) + '</h3>' + itemsHtml(cat.items);
@@ -632,7 +631,7 @@ console.info('[RADOSC] main.js loaded', {
        fokus dopiero po przewinięciu i korekcie, z preventScroll.
        ETAP 6.1: fokus na polu „Typ zapytania" — użytkownik od razu
        widzi, że formularz ustawił się zgodnie z klikniętą kartą. */
-    if (window.RADOSC_SCROLL && window.RADOSC_SCROLL('zapytanie', { hash: false })) {
+    if (window.PERGOLA_SCROLL && window.PERGOLA_SCROLL('zapytanie', { hash: false })) {
       requestAnimationFrame(function () {
         requestAnimationFrame(function () {
           var focusTarget = typeField || document.querySelector('#zapytanie h2');

@@ -6,7 +6,7 @@
    `veg: true` dodaje listek opcji wegetariańskiej.
    `note` (opcjonalne) — data obowiązywania menu.
    ============================================================ */
-window.RADOSC_LUNCH = {
+window.PERGOLA_LUNCH = {
   hours: "od poniedziałku do piątku · 11:00–17:00",
   note: "",
   days: [

@@ -6,7 +6,7 @@
    JEDYNE miejsce edycji menu weekendowego. Format jak w menu.js;
    `grams` — gramatura/objętość pozycji.
    ============================================================ */
-window.RADOSC_WEEKEND = {
+window.PERGOLA_WEEKEND = {
   startNote: "W weekendy zapraszamy na pełną kartę Restauracji — bez menu lunchowego.",
   hoursNote: "Sobota 11:00–22:00 · niedziela 11:00–20:00.",
   categories: [

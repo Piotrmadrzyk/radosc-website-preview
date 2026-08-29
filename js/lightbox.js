@@ -17,8 +17,8 @@
    ============================================================ */
 (function () {
   'use strict';
-  if (window.__RADOSC_LIGHTBOX__) return; // ochrona przed podwójną inicjalizacją
-  window.__RADOSC_LIGHTBOX__ = 1;
+  if (window.__PERGOLA_LIGHTBOX__) return; // ochrona przed podwójną inicjalizacją
+  window.__PERGOLA_LIGHTBOX__ = 1;
 
   var groups = {};   // nazwa -> [{full, alt, caption, el}]
   var state = { open: false, group: null, index: 0, list: [], opener: null };

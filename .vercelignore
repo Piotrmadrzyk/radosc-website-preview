@@ -1,0 +1,31 @@
+# Co NIE trafia na pergola-demo.probatum.pl.
+#
+# 29.08.2026, Piotr: "strona pergoli ma byc czysta i niezalezna, bo jesli zaraz
+# sie znajdzie jakis klient ktory chce ja kupic, to musi byc gotowa".
+#
+# To repozytorium trzyma obok siebie kilka niezaleznych rzeczy. Adres demo ma
+# pokazywac WYLACZNIE restauracje — nie cudze projekty i nie narzedzia robocze.
+# Sprawdzone przed odcieciem: strony Pergoli nie odwoluja sie do zadnego
+# z tych katalogow ani razu.
+#
+# Przy okazji demo chudnie z 371 MB do okolo 34 MB, bo samo assets/kolekcja
+# wazylo 333 MB.
+
+# Kolekcja pocztowek — osobny projekt
+kolekcja/
+assets/kolekcja/
+assets/fonts-kolekcja/
+
+# PM Growth Lab — osobny projekt, materialy dla imiennie wskazanej osoby
+pm-growth-lab/
+
+# Funkcja serwerowa PM Growth Lab. Na GitHub Pages byla martwym plikiem,
+# na Vercelu ozywa jako endpoint. Nie ma czego szukac pod adresem restauracji.
+api/
+
+# Narzedzia robocze i skrypty
+tools/
+build/
+
+# Dokumentacja i konfiguracja publikacji
+.github/
